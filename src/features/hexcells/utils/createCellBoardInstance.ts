@@ -7,7 +7,7 @@ export function createCellBoardInstance(definition: CellBoardDefinition): CellBo
     const board: CellBoard = {
         columns: definition.columns,
         underlying: definition.underlying,
-        cells: definition.cells.map((cell, index) => {
+        cells: definition.cells.map((cell) => {
             if (cell === null) {
                 return null;
             }
