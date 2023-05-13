@@ -1,14 +1,12 @@
 import { Cells, hexCellReducer } from 'src/features/hexcells';
 import { createCellBoardInstance } from 'src/features/hexcells/utils/createCellBoardInstance';
-import { CellBoardDefinition } from './features/hexcells/types/CellBoard';
 import { useImmerReducer } from 'use-immer';
+import { CellBoardDefinition } from './features/hexcells/types/CellBoard';
 
-interface Props {
-    definition: CellBoardDefinition;
-}
+const gameDefinition = fetchGameData();
 
-export const HexCells: React.FC<Props> = props => {
-    const [board, dispatch] = useImmerReducer(hexCellReducer, props.definition, createCellBoardInstance);
+export const HexCells: React.FC = () => {
+    const [board, dispatch] = useImmerReducer(hexCellReducer, gameDefinition(), createCellBoardInstance);
 
     return (
         <>
@@ -29,4 +27,34 @@ export const HexCells: React.FC<Props> = props => {
             </div>
         </>
     )
+}
+
+// Fetch external data
+function fetchGameData() {
+    let status = 'pending';
+    let result: CellBoardDefinition;
+    let errorMessage: string;
+
+    let fetching = fetch('game.json')
+        .then(result => result.json())
+        .then((json) => {
+            status = 'fulfilled';
+            result = json;
+        })
+        .catch((error: string) => {
+            status = 'rejected';
+            errorMessage = error;
+        });
+  
+    return () => {
+        if (status === 'pending') {
+            throw fetching; // Suspend(A way to tell React data is still fetching)
+        } else if (status === 'rejected') {
+            throw errorMessage; // Result is an error
+        } else if (status === 'fulfilled') {
+            return result; // Result is a fulfilled promise
+        } else {
+            throw 'invalid state'
+        }
+    };
 }
