@@ -1,0 +1,2 @@
+[functions."generate"]
+schedule = "0 0 * * *"

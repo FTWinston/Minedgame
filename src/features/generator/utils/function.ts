@@ -1,7 +1,7 @@
-import { Handler, HandlerContext, HandlerEvent, schedule } from '@netlify/functions';
+import { Handler, HandlerContext, HandlerEvent } from '@netlify/functions';
 import { generate } from './generate';
 
-const generateHandler: Handler = async (
+export const handler: Handler = async (
     _event: HandlerEvent,
     _context: HandlerContext
 ) => {
@@ -9,8 +9,3 @@ const generateHandler: Handler = async (
 
     return { statusCode: 200 };
 };
-
-// Run every day at midnight UTC.
-const handler = schedule('0 0 * * *', generateHandler);
-
-exports.handler = handler;
