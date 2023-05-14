@@ -13,4 +13,4 @@ const generateHandler: Handler = async (
 // Run every day at midnight UTC.
 const handler = schedule('0 0 * * *', generateHandler);
 
-export { handler }
+exports.handler = handler;
