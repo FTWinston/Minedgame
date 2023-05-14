@@ -1,5 +1,5 @@
 import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
-import { writeFile } from 'fs';
+import { writeFileSync } from 'fs';
 
 const config: GenerationConfig = {
     orientation: 'landscape',
@@ -17,10 +17,5 @@ const config: GenerationConfig = {
 
 const definition = JSON.stringify(generateBoard(config));
 
-writeFile('public/game.json', definition, err => {
-    if (err) {
-      console.error(err);
-    }
+writeFileSync('public/game.json', definition);
 
-    // Otherwise, file written successfully
-});

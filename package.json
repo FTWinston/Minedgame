@@ -5,11 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && esbuild src/generate.ts --platform=node --bundle --outfile=functions/generate.cjs",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build-generate": "esbuild src/generate.ts --platform=node --bundle --outfile=functions/generate.cjs",
-    "run-generate": "node functions/generate.cjs"
+    "generate": "node functions/generate.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
