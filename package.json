@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && esbuild src/generate.ts --platform=node --bundle --outfile=functions/generate.cjs",
+    "build": "tsc && vite build && esbuild src/features/generator/utils/function.ts --platform=node --bundle --outfile=functions/generate.cjs",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate": "node functions/generate.cjs"
+    "generate": "esbuild src/features/generator/utils/function.ts --platform=node --bundle --outfile=functions/generate.cjs && node functions/generate.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.0",
+    "@netlify/functions": "^1.6.0",
     "immer": "^10.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
