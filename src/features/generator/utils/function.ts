@@ -1,9 +1,9 @@
-import { Handler, schedule } from '@netlify/functions';
+import { Handler, HandlerContext, HandlerEvent, schedule } from '@netlify/functions';
 import { generate } from './generate';
 
 const generateHandler: Handler = async (
-//    event: HandlerEvent,
-//    context: HandlerContext
+    _event: HandlerEvent,
+    _context: HandlerContext
 ) => {
     generate();
 
