@@ -1,4 +1,5 @@
 [functions."generate"]
 schedule = "0 0 * * *"
 [context.data]
+publish = ""
 command = ""
