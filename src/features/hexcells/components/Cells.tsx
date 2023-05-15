@@ -24,6 +24,7 @@ const Root = styled(Box)({
     position: 'relative',
     overflow: 'hidden',
     padding: '0.25em 0.25em 3em 0.25em', // Extra bottom padding to fit letters in.
+    userSelect: 'none',
 });
 
 const CellContainer = styled('ul')({
