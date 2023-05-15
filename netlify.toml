@@ -3,6 +3,6 @@ publish = "dist"
 command = "node --version"
 functions = ""
 [[headers]]
-  for = "/data/*"
+  for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
