@@ -4,3 +4,7 @@ schedule = "0 0 * * *"
 publish = "dist"
 command = ""
 functions = ""
+[[headers]]
+  for = "/data/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
