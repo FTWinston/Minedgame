@@ -1,7 +1,7 @@
 import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
-import { writeFileSync } from 'fs';
+import { Octokit } from 'octokit';
 
-export function generate() {
+export async function generate() {
     const config: GenerationConfig = {
         orientation: 'landscape',
         numCells: 50,
@@ -18,5 +18,39 @@ export function generate() {
 
     const definition = JSON.stringify(generateBoard(config));
 
-    writeFileSync('../../minedgame-data/daily.json', definition);
+    await pushFile(definition);
+}
+
+async function pushFile(definition: string) {
+    const octokit = new Octokit({
+        auth: import.meta.env.VITE_GITHUB_AUTH_TOKEN
+    });
+
+    const owner = import.meta.env.VITE_GITHUB_OWNER;
+    const repo = import.meta.env.VITE_GITHUB_REPO;
+    const path = import.meta.env.VITE_GIT_DATA_PATH;
+    
+    const existingFile = await octokit.rest.repos.getContent({ owner, repo, path });
+    const data = await existingFile.data;
+    const sha = Array.isArray(data) ? undefined : data.sha;
+
+    const content = Buffer.from(definition).toString('base64');
+    const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
+
+    await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+        owner,
+        repo,
+        path,
+        message,
+        branch: import.meta.env.VITE_GIT_BRANCH,
+        committer: {
+            name: import.meta.env.VITE_GIT_COMMITTER_NAME,
+            email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
+        },
+        content,
+        sha,
+        headers: {
+            'X-GitHub-Api-Version': '2023-15-15'
+        }
+    });
 }
