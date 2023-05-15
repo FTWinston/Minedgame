@@ -2,3 +2,7 @@
 publish = "dist"
 command = "node --version"
 functions = ""
+[[headers]]
+  for = "/data/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
