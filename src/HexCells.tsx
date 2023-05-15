@@ -5,7 +5,7 @@ import { CellBoardDefinition } from './features/hexcells/types/CellBoard';
 import { suspendPromise } from './utils/suspendPromise';
 
 const getDefinition = suspendPromise<CellBoardDefinition>(
-    fetch('game.json')
+    fetch(import.meta.env.VITE_GAME_DATA_URL)
         .then(result => result.json())
 );
 
