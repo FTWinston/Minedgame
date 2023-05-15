@@ -1,6 +1,6 @@
 [functions."generate"]
 schedule = "0 0 * * *"
 [context.data]
-publish = ""
+publish = "dist"
 command = ""
 functions = ""
