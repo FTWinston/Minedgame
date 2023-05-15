@@ -1,3 +1,4 @@
 [context.data]
-publish = "/"
+publish = "dist"
 command = "node --version"
+functions = ""
