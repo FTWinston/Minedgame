@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && esbuild src/features/generator/utils/function.ts --platform=node --bundle --outfile=functions/generate.cjs",
+    "build": "tsc && vite build && vite build --ssr -c vite.generate.config.ts",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate": "esbuild src/features/generator/utils/manual.ts --platform=node --bundle --outfile=functions/generate.cjs && node functions/generate.cjs",
+    "generate": "node functions/generate.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.0",
     "@netlify/functions": "^1.6.0",
+    "@octokit/auth-app": "^4.0.9",
     "@octokit/auth-token": "^3.0.3",
     "encoding": "^0.1.13",
     "immer": "^10.0.2",
