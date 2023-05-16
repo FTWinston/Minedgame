@@ -23,7 +23,7 @@ const Root = styled(Box)({
     height: '100svh',
     position: 'relative',
     overflow: 'hidden',
-    padding: '0.25em 0.25em 3em 0.25em', // Extra bottom padding to fit letters in.
+    padding: '0 0 3rem 0', // Extra bottom padding to fit letters in.
     userSelect: 'none',
 });
 
@@ -31,6 +31,7 @@ const CellContainer = styled('ul')({
     display: 'grid',
     listStyleType: 'none',
     margin: 0,
+    padding: 0,
     gridGap: `${gapSize}em ${gapSize * 2}em`,
     filter: 'drop-shadow(-0.15em 0.125em 0.1em rgba(0, 0, 0, 0.25))',
 });
@@ -112,8 +113,8 @@ export const Cells: React.FC<Props> = props => {
         )
     });
 
-    const cellSizeLimitByWidth = `calc((100vw - 0.5em) / ${columns} / ${cellWidth * 0.75 - gapSize})`;
-    const cellSizeLimitByHeight = `calc((100svh - 3.5em) / ${rows - 0.25} / ${cellHeight + gapSize})`;
+    const cellSizeLimitByWidth = `calc(100vw / ${columns * 1.94})`;
+    const cellSizeLimitByHeight = `calc((100svh - 3rem) / ${rows - 0.25} / ${cellHeight + gapSize})`;
     const containerStyle: React.CSSProperties = {
         gridTemplateColumns: `repeat(${columns}, ${cellWidth * 0.25 + gapSize * 0.5}em ${cellWidth * 0.5 + gapSize}em ) ${cellWidth * 0.25 + gapSize * 0.5}em`,
         gridTemplateRows: `repeat(${rows * 2}, ${cellHeight / 2 + gapSize}em)`,
