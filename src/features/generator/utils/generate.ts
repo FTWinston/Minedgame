@@ -24,8 +24,8 @@ export async function generate() {
 
 async function pushFile(definition: string) {
     const octokit = new Octokit({
-        auth: import.meta.env.VITE_GITHUB_AUTH_TOKEN
         authStrategy: createTokenAuth,
+        auth: import.meta.env.VITE_GITHUB_AUTH_TOKEN,
     });
 
     const owner = import.meta.env.VITE_GITHUB_OWNER;
