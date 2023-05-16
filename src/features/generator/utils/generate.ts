@@ -1,5 +1,6 @@
 import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
 import { Octokit } from 'octokit';
+import { createTokenAuth } from '@octokit/auth-token';
 
 export async function generate() {
     const config: GenerationConfig = {
@@ -24,11 +25,13 @@ export async function generate() {
 async function pushFile(definition: string) {
     const octokit = new Octokit({
         auth: import.meta.env.VITE_GITHUB_AUTH_TOKEN
+        authStrategy: createTokenAuth,
     });
 
     const owner = import.meta.env.VITE_GITHUB_OWNER;
     const repo = import.meta.env.VITE_GITHUB_REPO;
     const path = import.meta.env.VITE_GIT_DATA_PATH;
+    await octokit.auth();
     
     const existingFile = await octokit.rest.repos.getContent({ owner, repo, path });
     const data = await existingFile.data;
