@@ -1,4 +1,7 @@
+import React from "react";
 import type { Preview } from "@storybook/react";
+import { ThemeProvider, theme } from '../src/lib/mui';
+import '../src/index.css';
 
 const preview: Preview = {
   parameters: {
@@ -10,6 +13,13 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider theme={theme}>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default preview;

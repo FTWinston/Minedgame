@@ -1,8 +1,8 @@
 import { Cells, hexCellReducer } from 'src/features/hexcells';
 import { createCellBoardInstance } from 'src/features/hexcells/utils/createCellBoardInstance';
 import { useImmerReducer } from 'use-immer';
-import { CellBoardDefinition } from './features/hexcells/types/CellBoard';
-import { suspendPromise } from './utils/suspendPromise';
+import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
+import { suspendPromise } from 'src/utils/suspendPromise';
 
 const getDefinition = suspendPromise<CellBoardDefinition>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
