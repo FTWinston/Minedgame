@@ -24,15 +24,14 @@ export async function generate() {
 
 async function pushFile(definition: string) {
     const octokit = new Octokit({
+        auth: import.meta.env.VITE_GITHUB_AUTH_TOKEN
         authStrategy: createTokenAuth,
-        auth: process.env.VITE_GITHUB_AUTH_TOKEN,
     });
 
+    const owner = import.meta.env.VITE_GITHUB_OWNER;
+    const repo = import.meta.env.VITE_GITHUB_REPO;
+    const path = import.meta.env.VITE_GIT_DATA_PATH;
     await octokit.auth();
-
-    const owner = process.env.VITE_GITHUB_OWNER!;
-    const repo = process.env.VITE_GITHUB_REPO!;
-    const path = process.env.VITE_GIT_DATA_PATH!;
     
     const existingFile = await octokit.rest.repos.getContent({ owner, repo, path });
     const data = await existingFile.data;
@@ -46,10 +45,10 @@ async function pushFile(definition: string) {
         repo,
         path,
         message,
-        branch: process.env.VITE_GIT_BRANCH,
+        branch: import.meta.env.VITE_GIT_BRANCH,
         committer: {
-            name: process.env.VITE_GIT_COMMITTER_NAME!,
-            email: process.env.VITE_GIT_COMMITTER_EMAIL!,
+            name: import.meta.env.VITE_GIT_COMMITTER_NAME,
+            email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
         },
         content,
         sha,
