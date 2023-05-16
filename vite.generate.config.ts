@@ -16,5 +16,6 @@ export default defineConfig({
       }
     },
     outDir: path.resolve(__dirname, 'functions'),
+    ssr: true,
   }
 })
