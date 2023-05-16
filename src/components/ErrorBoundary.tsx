@@ -1,4 +1,3 @@
-import { styled } from 'src/lib/mui';
 import { Component } from 'react';
 
 interface Props {
@@ -21,12 +20,12 @@ export class ErrorBoundary extends Component<React.PropsWithChildren<Props>, Sta
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error: unknown) {
+    static getDerivedStateFromError(_error: unknown) {
         // Update state so the next render will show the fallback UI.
         return { hasError: true };
     }
 
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
         // Optionally log the error here.
         // This already shows in console.error in development mode.
     }
