@@ -11,12 +11,15 @@ type Story = StoryObj<typeof Indicator>;
 
 export const Obscured: Story = {
     args: {
-        type: CellType.Obscured
+        type: CellType.Obscured,
+        spin: true,
     }
 }
 
 export const Error: Story = {
     args: {
-        type: CellType.Exploded
+        type: CellType.Exploded,
+        text: "ERROR",
+        spin: false,
     }
 }

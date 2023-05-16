@@ -5,6 +5,7 @@ import './Indicator.css';
 interface Props {
     type: CellType;
     spin: boolean;
+    text?: string;
 }
 
 const spinSx = {
@@ -14,13 +15,23 @@ const spinSx = {
     width: '100vw',
 };
 
-export const Indicator: React.FC<Props> = props => (
-    <Box
-        sx={props.spin ? spinSx : undefined}
-        fontSize="20vmin"
-        display="flex"
-        justifyContent="center"
-    >
-        <Cell cellType={props.type} />
-    </Box>
-);
+export const Indicator: React.FC<Props> = props => {
+    const content = props.text
+        ? (
+            <Box sx={{fontSize: '0.45em', color: '#633'}}>{props.text}</Box>
+        )
+        : undefined;
+
+    return (
+        <Box
+            sx={props.spin ? spinSx : undefined}
+            fontSize="20vmin"
+            display="flex"
+            justifyContent="center"
+        >
+            <Cell cellType={props.type}>
+                {content}
+            </Cell>
+        </Box>
+    );
+}

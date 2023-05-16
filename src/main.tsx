@@ -10,7 +10,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
-            <ErrorBoundary fallback={<Indicator type={CellType.Bomb} spin={false} />}>
+            <ErrorBoundary fallback={<Indicator type={CellType.Bomb} spin={false} text="ERROR" />}>
                 <Suspense fallback={<Indicator type={CellType.Obscured} spin={true} />}>
                     <HexCells />
                 </Suspense>

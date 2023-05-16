@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import { useLongPress } from 'src/hooks/useLongPress';
 import { Box, styled } from 'src/lib/mui'
 import { CellType, CountType, RowDirection } from '../types/CellState';
@@ -165,7 +166,7 @@ const Text = styled(Box)({
     fontSize: '1.2em',
 })
 
-export const Cell: React.FC<Props> = props => {
+export const Cell: React.FC<PropsWithChildren<Props>> = props => {
     let content;
 
     switch (props.cellType) {
@@ -191,6 +192,10 @@ export const Cell: React.FC<Props> = props => {
         case CellType.Hint:
             content = '!';
             break;
+    }
+
+    if (props.children) {
+        content = props.children;
     }
 
     const handlers = useLongPress(props.onLongPress, props.onClick);
