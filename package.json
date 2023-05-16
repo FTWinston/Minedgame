@@ -18,6 +18,7 @@
     "@mui/material": "^5.13.0",
     "@netlify/functions": "^1.6.0",
     "@octokit/auth-token": "^3.0.3",
+    "encoding": "^0.1.13",
     "immer": "^10.0.2",
     "octokit": "^2.0.14",
     "react": "^18.2.0",
