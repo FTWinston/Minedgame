@@ -1,5 +1,3 @@
-[functions."generate"]
-schedule = "55 7 * * *"
 [context.data]
 publish = "dist"
 command = ""
