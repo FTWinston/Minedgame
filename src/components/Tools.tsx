@@ -111,7 +111,8 @@ export const Tools: React.FC<Props> = props => {
             </HintWrapper>
 
             <Errors
-                color={props.errors > 0 ? 'error' : 'secondary'}
+                color="error"
+                disabled={props.errors === 0}
                 variant="outlined"
                 icon={<ErrorIcon fontSize="large" />}
                 label={props.errors}
