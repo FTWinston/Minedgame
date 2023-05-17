@@ -34,7 +34,7 @@ export async function generate() {
     await pushFile(definition);
 }
 
-async function pushFile(_definition: string) {
+async function pushFile(definition: string) {
     console.time('authenticating with github');
     let octokit: Octokit;
 
@@ -63,25 +63,21 @@ async function pushFile(_definition: string) {
     };
 
     console.time('reading existing file');
+    let sha: string | undefined;
 
     try {
         console.log('call getContext');
-        octokit.rest.repos.getContent({
+        const existingFile = await octokit.rest.repos.getContent({
             owner,
             repo,
             path,
             ref: branch,
             headers,
-        })
-        .then(_existingFile => {
-            console.log('got existingFile');
-        })
-        .catch(error => {
-            console.log('caught', error);
-        })
-        .finally(() => {
-            console.log('getContext call completed');
-        })
+        });
+        console.log('call data');
+        const data = await existingFile.data;
+        console.log('reading sha');
+        sha = Array.isArray(data) ? undefined : data.sha;
     }
     catch (error) {
         console.log(error);
@@ -89,5 +85,38 @@ async function pushFile(_definition: string) {
     }
     finally {
         console.timeEnd('reading existing file');
+    }
+    
+    console.log('buffer thing');
+    const content = Buffer.from(definition).toString('base64');
+    
+    console.log('message');
+    const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
+
+    console.log('gonna push');
+    console.time('pushing new definition');
+    try
+    {
+        await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+            owner,
+            repo,
+            path,
+            message,
+            branch,
+            committer: {
+                name: import.meta.env.VITE_GIT_COMMITTER_NAME,
+                email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
+            },
+            content,
+            sha,
+            headers,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        throw error;
+    }
+    finally {
+        console.timeEnd('pushing new definition');
     }
 }
