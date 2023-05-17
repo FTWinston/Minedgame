@@ -10,9 +10,9 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/features/generator/utils/function.ts'),
+      input: path.resolve(__dirname, 'src/utils/generate.ts'),
       output: {
-        entryFileNames: `generate.js`,
+        entryFileNames: '[name].js',
       }
     },
     outDir: path.resolve(__dirname, 'functions'),

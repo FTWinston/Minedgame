@@ -8,7 +8,6 @@
     "build": "tsc && vite build && vite build -c vite.generate.config.ts",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate": "vite build -c vite.generate-manual.config.ts && node functions/generate.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

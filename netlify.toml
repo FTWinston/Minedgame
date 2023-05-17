@@ -1,3 +1,5 @@
+[functions]
+directory = "functions"
 [functions."generate"]
 schedule = "0 4 * * *"
 [context.data]

@@ -1,10 +1,20 @@
-import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
+import { Handler, HandlerContext, HandlerEvent } from '@netlify/functions';
 import { Octokit } from 'octokit';
 import { createTokenAuth } from '@octokit/auth-token';
+import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
 
-export async function generate() {
+export const handler: Handler = async (
+    _event: HandlerEvent,
+    _context: HandlerContext
+) => {
+    await generate();
+
+    return { statusCode: 200 };
+};
+
+async function generate() {
     const config: GenerationConfig = {
-        orientation: 'landscape',
+        orientation: 'portrait',
         numCells: 50,
         gapFraction: 0.3,
         bombFraction: 0.45,
@@ -23,10 +33,6 @@ export async function generate() {
     try {
         definition = JSON.stringify(generateBoard(config));
     }
-    catch (error) {
-        console.log(error);
-        throw error;
-    }
     finally {
         console.timeEnd('generating definition');
     }
@@ -43,10 +49,6 @@ async function pushFile(definition: string) {
         const { token } = await authenticate();
     
         octokit = new Octokit({ auth: token });
-    }
-    catch (error) {
-        console.log(error);
-        throw error;
     }
     finally {
         console.timeEnd('authenticating with github');
@@ -66,7 +68,6 @@ async function pushFile(definition: string) {
     let sha: string | undefined;
 
     try {
-        console.log('call getContext');
         const existingFile = await octokit.rest.repos.getContent({
             owner,
             repo,
@@ -74,27 +75,19 @@ async function pushFile(definition: string) {
             ref: branch,
             headers,
         });
-        console.log('call data');
+
         const data = await existingFile.data;
-        console.log('reading sha');
+        
         sha = Array.isArray(data) ? undefined : data.sha;
-    }
-    catch (error) {
-        console.log(error);
-        throw error;
     }
     finally {
         console.timeEnd('reading existing file');
     }
     
-    console.log('buffer thing');
     const content = Buffer.from(definition).toString('base64');
     
-    console.log('message');
     const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
 
-    console.log('gonna push');
-    console.time('pushing new definition');
     try
     {
         await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
@@ -111,10 +104,6 @@ async function pushFile(definition: string) {
             sha,
             headers,
         });
-    }
-    catch (error) {
-        console.log(error);
-        throw error;
     }
     finally {
         console.timeEnd('pushing new definition');
