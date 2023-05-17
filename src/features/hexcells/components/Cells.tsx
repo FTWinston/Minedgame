@@ -1,10 +1,13 @@
-import { Box, Button, styled, Typography } from 'src/lib/mui'
+import { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useCellCascade } from '../hooks/useCellCascade';
 import { useTemporaryValue } from 'src/hooks/useTemporaryValue';
 import { CellBoardInfo } from '../types/CellBoard';
 import { CellType } from '../types/CellState';
 import { Cell, cellHeight, cellWidth, Special } from './Cell';
-import { useState } from 'react';
 import { isObscured } from '../utils/resolved';
 
 interface Props extends CellBoardInfo {

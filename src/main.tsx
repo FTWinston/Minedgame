@@ -1,10 +1,11 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { ThemeProvider, theme } from 'src/lib/mui';
+import { ThemeProvider } from '@mui/material/styles';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { HexCells } from 'src/components/HexCells'
 import { Indicator } from 'src/components/Indicator';
 import { CellType } from 'src/features/hexcells';
+import { theme } from './theme';
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import { useLongPress } from 'src/hooks/useLongPress';
-import { Box, styled } from 'src/lib/mui'
 import { CellType, CountType, RowDirection } from '../types/CellState';
 import './Cell.css';
 

@@ -1,4 +1,7 @@
-import { Box, Button, Typography, styled} from 'src/lib/mui';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import BombIcon from '@mui/icons-material/FlagOutlined';
 import TimeIcon from '@mui/icons-material/TimerOutlined';
 import PageIcon from '@mui/icons-material/Numbers';

@@ -1,5 +1,5 @@
+import Box from '@mui/material/Box';
 import { Cell, CellType } from '../features/hexcells';
-import { Box } from 'src/lib/mui';
 import './Indicator.css';
 
 interface Props {
