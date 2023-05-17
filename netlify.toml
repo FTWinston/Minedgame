@@ -1,3 +1,5 @@
+[functions."generate"]
+schedule = "0 4 * * *"
 [context.data]
 publish = "dist"
 command = ""
