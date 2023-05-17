@@ -24,7 +24,7 @@ export async function generate() {
         definition = JSON.stringify(generateBoard(config));
     }
     catch (error) {
-        console.error(error);
+        console.log(error);
         throw error;
     }
     finally {
@@ -45,7 +45,7 @@ async function pushFile(definition: string) {
         octokit = new Octokit({ auth: token });
     }
     catch (error) {
-        console.error(error);
+        console.log(error);
         throw error;
     }
     finally {
@@ -77,7 +77,7 @@ async function pushFile(definition: string) {
         sha = Array.isArray(data) ? undefined : data.sha;
     }
     catch (error) {
-        console.error(error);
+        console.log(error);
         throw error;
     }
     finally {
@@ -106,7 +106,7 @@ async function pushFile(definition: string) {
         });
     }
     catch (error) {
-        console.error(error);
+        console.log(error);
         throw error;
     }
     finally {
