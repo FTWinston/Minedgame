@@ -90,7 +90,10 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
                 for (let i = 0; i < state.cells.length; i++) {
                     if (state.cells[i]?.type === CellType.Obscured) {
                         const underlying = state.underlying[i];
-                        if (underlying?.type === CellType.Empty) {
+                        if (!underlying) {
+                            continue;
+                        }
+                        if (underlying.type === CellType.Empty) {
                             state.cells[i] = {
                                 type: underlying.type,
                                 countType: underlying.countType,
@@ -98,10 +101,14 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
                                 resolved: isClueResolved(state, underlying.targetIndexes),
                             };
                         }
-                        else if (underlying) {
+                        else {
                             state.cells[i] = {
                                 type: underlying.type as CellType.Bomb | CellType.Unknown
                             };
+                        }
+
+                        if (underlying.type === CellType.Empty || underlying.type === CellType.Unknown) {
+                            markCluesAsResolved(state, underlying.clueIndexes);
                         }
                     }
                 }
