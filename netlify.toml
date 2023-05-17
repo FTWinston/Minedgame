@@ -1,7 +1,7 @@
 [functions]
 directory = "functions"
 [functions."generate"]
-schedule = "0 4 * * *"
+schedule = "5 17 * * *"
 [context.data]
 publish = "dist"
 command = ""
