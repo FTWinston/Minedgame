@@ -14,5 +14,7 @@ export const Default: Story = {
         errors: 7,
         hintsUsed: 3,
         timeSpent: '0:07',
+        board: 1,
+        numBoards: 3,
     }
 }

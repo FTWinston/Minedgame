@@ -1,6 +1,7 @@
 import { Box, Button, Typography, styled} from 'src/lib/mui';
 import BombIcon from '@mui/icons-material/FlagOutlined';
 import TimeIcon from '@mui/icons-material/TimerOutlined';
+import PageIcon from '@mui/icons-material/Numbers';
 import HintIcon from '@mui/icons-material/QuestionMark';
 import ErrorIcon from '@mui/icons-material/ReportOutlined';
 
@@ -9,6 +10,8 @@ interface Props {
     errors: number;
     hintsUsed: number;
     timeSpent: string;
+    board: number;
+    numBoards: number;
     getHint?: () => void;
 }
 
@@ -45,6 +48,14 @@ export const Toolbar: React.FC<Props> = props => {
                 startIcon={<TimeIcon />}
             >
                 {props.timeSpent}
+            </Button>
+
+            <Button
+                color="secondary"
+                variant="text"
+                startIcon={<PageIcon />}
+            >
+                {props.board} / {props.numBoards}
             </Button>
 
             <Button
