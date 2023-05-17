@@ -66,6 +66,7 @@ async function pushFile(definition: string) {
     let sha: string | undefined;
 
     try {
+        console.log('call getContext');
         const existingFile = await octokit.rest.repos.getContent({
             owner,
             repo,
@@ -73,7 +74,9 @@ async function pushFile(definition: string) {
             ref: branch,
             headers,
         });
+        console.log('call data');
         const data = await existingFile.data;
+        console.log('reading sha');
         sha = Array.isArray(data) ? undefined : data.sha;
     }
     catch (error) {
@@ -83,10 +86,14 @@ async function pushFile(definition: string) {
     finally {
         console.timeEnd('reading existing file');
     }
-
+    
+    console.log('buffer thing');
     const content = Buffer.from(definition).toString('base64');
+    
+    console.log('message');
     const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
 
+    console.log('gonna push');
     console.time('pushing new definition');
     try
     {
