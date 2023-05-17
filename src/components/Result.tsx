@@ -9,6 +9,24 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Box from '@mui/material/Box';
+import { TransitionProps } from '@mui/material/transitions';
+import { forwardRef } from 'react';
+import Zoom from '@mui/material/Zoom';
+
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return (
+        <Zoom
+            style={{ transitionDelay: '3000ms' }}
+            ref={ref}
+            {...props}
+        />
+    );
+});
 
 interface Props {
     result: 'success' | 'failure';
@@ -30,7 +48,10 @@ export const Result: React.FC<Props> = props => {
         : 'You lose';
 
     return (
-        <Dialog open={true}>
+        <Dialog
+            open={true}
+            TransitionComponent={Transition}
+        >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -39,39 +60,39 @@ export const Result: React.FC<Props> = props => {
                 <DialogContentText>
                     Come back tomorrow, when a new game will be available!
                 </DialogContentText>
-                    <Box display="flex" justifyContent="center">
-                        <BorderlessChip
-                            color="primary"
-                            variant="outlined"
-                            icon={<BombIcon fontSize="large" />}
-                            label={props.bombsLeft.toString()}
-                            title="Number of bombs remaining"
-                        />
+                <Box display="flex" justifyContent="center">
+                    <BorderlessChip
+                        color="primary"
+                        variant="outlined"
+                        icon={<BombIcon fontSize="large" />}
+                        label={props.bombsLeft.toString()}
+                        title="Number of bombs remaining"
+                    />
 
-                        <BorderlessChip
-                            color="secondary"
-                            variant="outlined"
-                            icon={<TimeIcon fontSize="large" />}
-                            label={props.timeSpent}
-                            title="Elapsed time"
-                        />
+                    <BorderlessChip
+                        color="secondary"
+                        variant="outlined"
+                        icon={<TimeIcon fontSize="large" />}
+                        label={props.timeSpent}
+                        title="Elapsed time"
+                    />
 
-                        <BorderlessChip
-                            color="success"
-                            variant="outlined"
-                            icon={<HintIcon />}
-                            label={props.hintsUsed.toString()}
-                            title="Hints used"
-                        />
+                    <BorderlessChip
+                        color="success"
+                        variant="outlined"
+                        icon={<HintIcon />}
+                        label={props.hintsUsed.toString()}
+                        title="Hints used"
+                    />
 
-                        <BorderlessChip
-                            color="error"
-                            variant="outlined"
-                            icon={<ErrorIcon fontSize="large" />}
-                            label={props.errors}
-                            title="Number of errors made"
-                        />
-                    </Box>
+                    <BorderlessChip
+                        color="error"
+                        variant="outlined"
+                        icon={<ErrorIcon fontSize="large" />}
+                        label={props.errors}
+                        title="Number of errors made"
+                    />
+                </Box>
             </DialogContent>
         </Dialog>
     );
