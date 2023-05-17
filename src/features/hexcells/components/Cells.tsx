@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { useCellCascade } from '../hooks/useCellCascade';
 import { useTemporaryValue } from 'src/hooks/useTemporaryValue';
 import { CellBoardInfo } from '../types/CellBoard';
@@ -10,10 +8,9 @@ import { CellType } from '../types/CellState';
 import { Cell, cellHeight, cellWidth, Special } from './Cell';
 import { isObscured } from '../utils/resolved';
 
-interface Props extends CellBoardInfo {
+interface Props extends Omit<CellBoardInfo, 'numBombs' | 'numErrors' | 'hintsUsed'> {
     revealCell: (index: number) => void;
     flagCell: (index: number) => void;
-    getHint: () => void;
     errorIndex?: number;
 }
 
@@ -23,6 +20,7 @@ const Root = styled(Box)({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100vw',
     height: '100svh',
     position: 'relative',
     overflow: 'hidden',
@@ -42,14 +40,6 @@ const CellContainer = styled('ul')({
 const CellWrapper = styled('li')({
     position: 'relative',
 });
-
-const HintButton = styled(Button)({
-    position: 'absolute',
-    bottom: 0,
-    left: 'auto',
-    right: 'auto',
-    marginBottom: '0.25em',
-})
 
 export const Cells: React.FC<Props> = props => {
     const { columns, cells } = props;
@@ -129,37 +119,6 @@ export const Cells: React.FC<Props> = props => {
             <CellContainer style={containerStyle}>
                 {contents}
             </CellContainer>
-            
-            <Typography
-                fontSize="2em !important"
-                color="primary"
-                fontWeight="bold"
-                position="absolute"
-                bottom="0"
-                left="0"
-                margin="0 0.25em"
-                title="Bombs remaining"
-            >
-                {props.numBombs}
-            </Typography>
-            <HintButton
-                color="success"
-                onClick={props.getHint}
-            >
-                hint
-            </HintButton>
-            <Typography
-                fontSize="2em !important"
-                color="secondary"
-                fontWeight="bold"
-                position="absolute"
-                bottom="0"
-                right="0"
-                margin="0 0.25em"
-                title="Mistakes made"
-            >
-                {props.numErrors}
-            </Typography>
         </Root>
     );
 }

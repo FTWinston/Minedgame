@@ -116,8 +116,12 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
 
                 // When we find a still-valid hint, apply that, and remove any prior hints, as they're all no longer valid.
                 if (isObscured(hintCell)) {
+                    const notAlreadyHinted = state.cells[hintIndex]?.type !== CellType.Hint;
                     state.cells[hintIndex] = { type: CellType.Hint };
                     state.hints.splice(0, i);
+                    if (notAlreadyHinted) {
+                        state.hintsUsed++;
+                    }
                     break;
                 }
             }

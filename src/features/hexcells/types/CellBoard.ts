@@ -11,6 +11,7 @@ interface InstanceInfo {
     cells: Array<DisplayCellState | null>;
     numBombs: number;
     numErrors: number;
+    hintsUsed: number;
     result?: 'success' | 'failure';
     errorIndex?: number;
 }

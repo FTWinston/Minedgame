@@ -15,8 +15,6 @@ interface Props {
     errors: number;
     hintsUsed: number;
     timeSpent: string;
-    board: number;
-    numBoards: number;
     getHint?: () => void;
     showHelp?: () => void;
 }
@@ -27,10 +25,8 @@ const Number = styled(Typography)({
 
 const BorderlessChip = styled(Chip)({
     border: 'none',
+    fontSize: '1.75em',
     padding: '24px 8px',
-    '& .MuiChip-label': {
-        fontSize: '18px',
-    }
 });
 
 const Remaining = styled(BorderlessChip)({
@@ -59,11 +55,19 @@ const Errors = styled(BorderlessChip)({
 
 const HintWrapper = styled(Box)({
     position: 'absolute',
-    bottom: '8px',
+    bottom: '0',
     left: 0,
     right: 0,
     textAlign: 'center',
 });
+
+const Hint = styled(Button)({
+    fontSize: '1.25em',
+});
+
+const BigHintIcon = styled(HintIcon)({
+    fontSize: '1.5em !important',
+})
 
 export const Tools: React.FC<Props> = props => {
     return (
@@ -71,7 +75,7 @@ export const Tools: React.FC<Props> = props => {
             <Remaining
                 color="primary"
                 variant="outlined"
-                icon={<BombIcon />}
+                icon={<BombIcon fontSize="large" />}
                 label={props.bombsLeft.toString()}
                 title="Number of bombs remaining"
             />
@@ -79,7 +83,7 @@ export const Tools: React.FC<Props> = props => {
             <Elapsed
                 color="secondary"
                 variant="outlined"
-                icon={<TimeIcon />}
+                icon={<TimeIcon fontSize="large" />}
                 label={props.timeSpent}
                 title="Elapsed time"
             />
@@ -87,28 +91,29 @@ export const Tools: React.FC<Props> = props => {
             <Help
                 color="secondary"
                 title="Help"
+                size="large"
                 onClick={props.showHelp}
             >
-                <HelpIcon />
+                <HelpIcon fontSize="inherit" />
             </Help>
 
             <HintWrapper>
-            <Button
-                color="success"
-                variant="text"
-                startIcon={<HintIcon />}
-                endIcon={props.hintsUsed > 0 ? <Number>({props.hintsUsed})</Number> : undefined}
-                onClick={props.getHint}
-                title="Highlights a cell that can be solved"
-            >
-                Hint
-            </Button>
+                <Hint
+                    color="success"
+                    variant="text"
+                    startIcon={<BigHintIcon />}
+                    endIcon={props.hintsUsed > 0 ? <Number>({props.hintsUsed})</Number> : undefined}
+                    onClick={props.getHint}
+                    title="Highlights a cell that can be solved"
+                >
+                    Hint
+                </Hint>
             </HintWrapper>
 
             <Errors
-                color="error"
+                color={props.errors > 0 ? 'error' : 'secondary'}
                 variant="outlined"
-                icon={<ErrorIcon />}
+                icon={<ErrorIcon fontSize="large" />}
                 label={props.errors}
                 title="Number of errors made"
             />
