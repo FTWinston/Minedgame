@@ -85,8 +85,9 @@ async function pushFile(definition: string) {
     }
     
     const content = Buffer.from(definition).toString('base64');
-    
     const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
+
+    console.time('pushing new definition');
 
     try
     {
