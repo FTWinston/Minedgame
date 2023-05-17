@@ -7,7 +7,7 @@ export const theme = createTheme({
             main: '#f44336',
             dark: '#d32f2f',
             light: '#e57373',
-            contrastText: 'black',
+            contrastText: '#000',
         },
     }
 });

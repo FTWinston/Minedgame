@@ -1,12 +1,12 @@
 import { StoryObj } from '@storybook/react';
-import { Toolbar } from './Toolbar';
+import { Tools } from './Tools';
 
 export default {
-    title: 'Toolbar',
-    component: Toolbar,
+    title: 'Tools',
+    component: Tools,
 };
 
-type Story = StoryObj<typeof Toolbar>;
+type Story = StoryObj<typeof Tools>;
 
 export const Default: Story = {
     args: {
@@ -14,7 +14,5 @@ export const Default: Story = {
         errors: 7,
         hintsUsed: 3,
         timeSpent: '0:07',
-        board: 1,
-        numBoards: 3,
     }
 }
