@@ -18,21 +18,39 @@ export async function generate() {
     };
 
     console.time('generating definition');
-    const definition = JSON.stringify(generateBoard(config));
-    console.timeEnd('generating definition');
+    let definition: string;
+
+    try {
+        definition = JSON.stringify(generateBoard(config));
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+    finally {
+        console.timeEnd('generating definition');
+    }
 
     await pushFile(definition);
 }
 
 async function pushFile(definition: string) {
     console.time('authenticating with github');
+    let octokit: Octokit;
 
-    const authenticate = createTokenAuth(import.meta.env.VITE_GITHUB_AUTH_TOKEN);
-    const { token } = await authenticate();
+    try {
+        const authenticate = createTokenAuth(import.meta.env.VITE_GITHUB_AUTH_TOKEN);
+        const { token } = await authenticate();
     
-    const octokit = new Octokit({ auth: token });
-
-    console.timeEnd('authenticating with github');
+        octokit = new Octokit({ auth: token });
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+    finally {
+        console.timeEnd('authenticating with github');
+    }
 
     const owner: string = import.meta.env.VITE_GITHUB_OWNER;
     const repo: string = import.meta.env.VITE_GITHUB_REPO;
@@ -45,36 +63,53 @@ async function pushFile(definition: string) {
     };
 
     console.time('reading existing file');
-    const existingFile = await octokit.rest.repos.getContent({
-        owner,
-        repo,
-        path,
-        ref: branch,
-        headers,
-    });
-    const data = await existingFile.data;
-    const sha = Array.isArray(data) ? undefined : data.sha;
-    console.timeEnd('reading existing file');
+    let sha: string | undefined;
+
+    try {
+        const existingFile = await octokit.rest.repos.getContent({
+            owner,
+            repo,
+            path,
+            ref: branch,
+            headers,
+        });
+        const data = await existingFile.data;
+        sha = Array.isArray(data) ? undefined : data.sha;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+    finally {
+        console.timeEnd('reading existing file');
+    }
 
     const content = Buffer.from(definition).toString('base64');
     const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
 
     console.time('pushing new definition');
-
-    await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-        owner,
-        repo,
-        path,
-        message,
-        branch,
-        committer: {
-            name: import.meta.env.VITE_GIT_COMMITTER_NAME,
-            email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
-        },
-        content,
-        sha,
-        headers,
-    });
-
-    console.timeEnd('pushing new definition');
+    try
+    {
+        await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+            owner,
+            repo,
+            path,
+            message,
+            branch,
+            committer: {
+                name: import.meta.env.VITE_GIT_COMMITTER_NAME,
+                email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
+            },
+            content,
+            sha,
+            headers,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+    finally {
+        console.timeEnd('pushing new definition');
+    }
 }
