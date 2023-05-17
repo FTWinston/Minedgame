@@ -4,6 +4,7 @@ import { useImmerReducer } from 'use-immer';
 import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
 import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
+import { Result } from './Result';
 
 const getDefinition = suspendPromise<CellBoardDefinition>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
@@ -12,6 +13,19 @@ const getDefinition = suspendPromise<CellBoardDefinition>(
 
 export const HexCells: React.FC = () => {
     const [board, dispatch] = useImmerReducer(hexCellReducer, getDefinition(), createCellBoardInstance);
+
+    const timeSpent = '0:00';
+    const result = board.result
+        ? (
+            <Result
+                result={board.result}
+                bombsLeft={board.numBombs}
+                errors={board.numErrors}
+                hintsUsed={board.hintsUsed}
+                timeSpent={timeSpent}
+            />
+        )
+        : undefined;
 
     return (
         <>
@@ -28,14 +42,12 @@ export const HexCells: React.FC = () => {
                 bombsLeft={board.numBombs}
                 errors={board.numErrors}
                 hintsUsed={board.hintsUsed}
-                timeSpent="0:00"
+                timeSpent={timeSpent}
                 getHint={() => dispatch({ type: 'hint' })}
                 showHelp={() => alert('help')}
             />
 
-            <div style={{display: board.result ? undefined : 'none'}}>
-                Result: {board.result}
-            </div>
+            {result}
         </>
     )
 }
