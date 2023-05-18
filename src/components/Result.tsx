@@ -89,11 +89,13 @@ export const Result: React.FC<Props> = props => {
         if (props.result === 'failure') {
             text = `🏴 ${props.bombsLeft}   ${text}`;
         }
+        const title = props.result === 'success'
+            ? 'I won at Minedgame'
+            : 'I lost at Minedgame';
+        text = `${title} \n${text}`;
 
         navigator.share({
-            title: props.result === 'success'
-                ? 'I won at Minedgame'
-                : 'I lost at Minedgame',
+            title,
             text,
             url: document.location.href,
         });
