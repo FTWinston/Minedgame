@@ -53,7 +53,7 @@ export type CellState = ClueCell | NonClueCell | DisplayOnlyCell;
 type ClueCellExtraUnderlying = { targetIndexes: number[]; };
 type RevealableCellExtraUnderlying = { clueIndexes: number[] };
 
-type ClueCellExtraDisplay = { resolved: boolean };
+type ClueCellExtraDisplay = ClueCellExtraUnderlying & { resolved: boolean };
 
 export type UnderlyingCellState = 
     (FixedClueCell & ClueCellExtraUnderlying)

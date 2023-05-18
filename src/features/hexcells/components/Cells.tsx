@@ -47,6 +47,7 @@ export const Cells: React.FC<Props> = props => {
     const rows = Math.ceil(cells.length / columns);
 
     const [revealingIndex, setRevealingIndex] = useState<number | undefined>(undefined);
+    const [highlightIndexes, setHighlightIndexes] = useState<number[]>([]);
 
     const explodedIndex = cells.findIndex(cell => cell?.type === CellType.Exploded);
     const explosionCascadeCells = useCellCascade(explodedIndex, columns, rows);
@@ -75,7 +76,9 @@ export const Cells: React.FC<Props> = props => {
             ? Special.Error
             : cell.type === CellType.Obscured && revealingIndex === index
                 ? Special.Revealing
-                : undefined;
+                : highlightIndexes.includes(index)
+                    ? Special.Revealing
+                    : undefined;
         
         return (
             <CellWrapper key={index} style={wrapperStyle}>
@@ -92,7 +95,7 @@ export const Cells: React.FC<Props> = props => {
                             props.revealCell(index);
                         }
                         if (isClueCell(cell)) {
-                            // TODO: toggle indicator
+                            setHighlightIndexes(highlightIndexes === cell.targetIndexes ? [] : cell.targetIndexes);
                         }
                     }}
                     onLongPress={() => {

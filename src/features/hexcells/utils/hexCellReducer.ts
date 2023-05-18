@@ -37,6 +37,7 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
                     type: underlyingState.type,
                     countType: underlyingState.countType,
                     number: underlyingState.number,
+                    targetIndexes: underlyingState.targetIndexes,
                     resolved: isClueResolved(state, underlyingState.targetIndexes),
                 };
 
@@ -98,6 +99,7 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
                                 type: underlying.type,
                                 countType: underlying.countType,
                                 number: underlying.number,
+                                targetIndexes: underlying.targetIndexes,
                                 resolved: isClueResolved(state, underlying.targetIndexes),
                             };
                         }
