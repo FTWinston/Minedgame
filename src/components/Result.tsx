@@ -92,7 +92,7 @@ export const Result: React.FC<Props> = props => {
         const title = props.result === 'success'
             ? 'I won at Minedgame'
             : 'I lost at Minedgame';
-        text = `${title} \n${text}`;
+        text = `${title} \n${text}\n`;
 
         navigator.share({
             title,
