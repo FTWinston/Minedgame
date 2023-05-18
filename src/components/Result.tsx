@@ -1,3 +1,7 @@
+
+import { forwardRef } from 'react';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import BombIcon from '@mui/icons-material/FlagOutlined';
 import TimeIcon from '@mui/icons-material/TimerOutlined';
@@ -8,10 +12,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import Box from '@mui/material/Box';
-import { TransitionProps } from '@mui/material/transitions';
-import { forwardRef } from 'react';
 import Zoom from '@mui/material/Zoom';
+import { TransitionProps } from '@mui/material/transitions';
+import ShareIcon from '@mui/icons-material/Share';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -59,6 +62,11 @@ const BorderlessChip = styled(Chip)({
     padding: '24px 8px',
 });
 
+const ButtonWrapper = styled(DialogContent)({
+    display: 'flex',
+    justifyContent: 'space-evenly',
+});
+
 export const Result: React.FC<Props> = props => {
     const title = props.result === 'success'
         ? 'You win'
@@ -75,6 +83,21 @@ export const Result: React.FC<Props> = props => {
                 title="Number of bombs remaining"
             />
         )
+
+    const share = () => {
+        let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
+        if (props.result === 'failure') {
+            text = `🏴 ${props.bombsLeft}   ${text}`;
+        }
+
+        navigator.share({
+            title: props.result === 'success'
+                ? 'I won at Minedgame'
+                : 'I lost at Minedgame',
+            text,
+            url: document.location.href,
+        });
+    }
 
     return (
         <Dialog
@@ -118,6 +141,16 @@ export const Result: React.FC<Props> = props => {
                     title="Number of errors made"
                 />
             </ResultBox>
+            <ButtonWrapper>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    endIcon={<ShareIcon />}
+                    onClick={share}
+                >
+                    Share
+                </Button>
+            </ButtonWrapper>
         </Dialog>
     );
 }
