@@ -15,6 +15,10 @@ const spinSx = {
     width: '100vw',
 };
 
+const fixedSx = {
+    width: '100vw',
+};
+
 export const Indicator: React.FC<Props> = props => {
     const content = props.text
         ? (
@@ -24,7 +28,7 @@ export const Indicator: React.FC<Props> = props => {
 
     return (
         <Box
-            sx={props.spin ? spinSx : undefined}
+            sx={props.spin ? spinSx : fixedSx}
             fontSize="20vmin"
             display="flex"
             justifyContent="center"
