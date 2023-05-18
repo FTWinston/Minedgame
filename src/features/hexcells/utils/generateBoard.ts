@@ -8,6 +8,7 @@ import { ResolvableCells, getResolvableCells } from './getResolvableCells';
 import { deleteRandom, getRandom, getRandomFloat, insertRandom } from 'src/utils/random';
 import { shuffle } from 'src/utils/shuffle';
 import { coordinateFromIndex, getAdjacentIndexes, getIndexesInRadius, getIndexesInRow } from './indexes';
+import { isClueCell } from './isClueCell';
 
 export interface GenerationConfig extends ShapeConfig {
     /** Fraction of obscured cells that will be revealed to be bombs. Lower values are easier. */
@@ -520,7 +521,7 @@ function createUnderlyingCell(state: GeneratingState, cell: CellState | null, in
         ...cell,
     } as UnderlyingCellState;
 
-    if (result.type === CellType.Empty || result.type === CellType.RowClue || result.type === CellType.RadiusClue) {
+    if (isClueCell(result)) {
         result.targetIndexes = state.clues.get(index)?.associatedIndexes
             .filter(index => index !== null) as number[]
             ?? [];

@@ -1,5 +1,6 @@
 import { CellBoard } from '../types/CellBoard';
 import { CellType, DisplayCellState } from '../types/CellState';
+import { isClueCell } from './isClueCell';
 
 export function isObscured(cell: DisplayCellState | null) {
     if (cell === null) {
@@ -20,17 +21,11 @@ export function markCluesAsResolved(state: CellBoard, clueIndexes: number[]) {
     for (const clueIndex of clueIndexes) {
         const clueCell = state.underlying[clueIndex];
 
-        if (!clueCell) {
-            continue;
-        }
-
-        if (clueCell.type === CellType.Empty || clueCell.type === CellType.RowClue || clueCell.type === CellType.RadiusClue) {
+        if (isClueCell(clueCell)) {
             if (isClueResolved(state, clueCell.targetIndexes)) {
                 const display = state.cells[clueIndex];
-                if (!display) {
-                    continue;
-                }
-                if (display.type === CellType.Empty || display.type === CellType.RowClue || display.type === CellType.RadiusClue) {
+                
+                if (isClueCell(display)) {
                     display.resolved = true;
                 }
             }

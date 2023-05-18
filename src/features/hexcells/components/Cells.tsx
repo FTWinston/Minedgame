@@ -7,6 +7,7 @@ import { CellBoardInfo } from '../types/CellBoard';
 import { CellType } from '../types/CellState';
 import { Cell, cellHeight, cellWidth, Special } from './Cell';
 import { isObscured } from '../utils/resolved';
+import { isClueCell } from '../utils/isClueCell';
 
 interface Props extends Omit<CellBoardInfo, 'numBombs' | 'numErrors' | 'hintsUsed'> {
     revealCell: (index: number) => void;
@@ -90,8 +91,7 @@ export const Cells: React.FC<Props> = props => {
                             setRevealingIndex(index);
                             props.revealCell(index);
                         }
-                        if (cell.type === CellType.RowClue
-                            || cell.type === CellType.RadiusClue) {
+                        if (isClueCell(cell)) {
                             // TODO: toggle indicator
                         }
                     }}
