@@ -9,5 +9,14 @@ export const theme = createTheme({
             light: '#e57373',
             contrastText: '#000',
         },
-    }
+    },
+    breakpoints: {
+        values: {
+            xs: 300,
+            sm: 400,
+            md: 500,
+            lg: 600,
+            xl: 900,
+        },
+    },
 });

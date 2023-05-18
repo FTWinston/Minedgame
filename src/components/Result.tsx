@@ -36,6 +36,23 @@ interface Props {
     timeSpent: string;
 }
 
+const ResultBox = styled(Box)<{ result: 'success' | 'failure' }>(({ theme, result }) => {
+    const applyWidthTo = result === 'success'
+        ? '& > :first-child' // 3 elements, size the first one
+        : '& > *'; // 4 elements, size them all
+
+    return {
+        display: 'flex',
+        justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            flexWrap: 'wrap',
+            [applyWidthTo]: {
+                minWidth: result === 'success' ? '90%' : '35%',
+            },
+        },
+    };
+})
+
 const BorderlessChip = styled(Chip)({
     border: 'none',
     fontSize: '1.75em',
@@ -46,6 +63,18 @@ export const Result: React.FC<Props> = props => {
     const title = props.result === 'success'
         ? 'You win'
         : 'You lose';
+
+    const remaining = props.bombsLeft === 0
+        ? undefined
+        : (
+            <BorderlessChip
+                color="primary"
+                variant="outlined"
+                icon={<BombIcon fontSize="large" />}
+                label={props.bombsLeft.toString()}
+                title="Number of bombs remaining"
+            />
+        )
 
     return (
         <Dialog
@@ -60,40 +89,35 @@ export const Result: React.FC<Props> = props => {
                 <DialogContentText>
                     Come back tomorrow, when a new game will be available!
                 </DialogContentText>
-                <Box display="flex" justifyContent="center">
-                    <BorderlessChip
-                        color="primary"
-                        variant="outlined"
-                        icon={<BombIcon fontSize="large" />}
-                        label={props.bombsLeft.toString()}
-                        title="Number of bombs remaining"
-                    />
-
-                    <BorderlessChip
-                        color="secondary"
-                        variant="outlined"
-                        icon={<TimeIcon fontSize="large" />}
-                        label={props.timeSpent}
-                        title="Elapsed time"
-                    />
-
-                    <BorderlessChip
-                        color="success"
-                        variant="outlined"
-                        icon={<HintIcon />}
-                        label={props.hintsUsed.toString()}
-                        title="Hints used"
-                    />
-
-                    <BorderlessChip
-                        color="error"
-                        variant="outlined"
-                        icon={<ErrorIcon fontSize="large" />}
-                        label={props.errors}
-                        title="Number of errors made"
-                    />
-                </Box>
             </DialogContent>
+            <ResultBox result={props.result}>
+                {remaining}
+
+                <BorderlessChip
+                    color="secondary"
+                    className="time"
+                    variant="outlined"
+                    icon={<TimeIcon fontSize="large" />}
+                    label={props.timeSpent}
+                    title="Elapsed time"
+                />
+
+                <BorderlessChip
+                    color="success"
+                    variant="outlined"
+                    icon={<HintIcon />}
+                    label={props.hintsUsed.toString()}
+                    title="Hints used"
+                />
+
+                <BorderlessChip
+                    color="error"
+                    variant="outlined"
+                    icon={<ErrorIcon fontSize="large" />}
+                    label={props.errors}
+                    title="Number of errors made"
+                />
+            </ResultBox>
         </Dialog>
     );
 }
