@@ -31,7 +31,7 @@ async function generate() {
     let definition: string;
 
     try {
-        definition = JSON.stringify(generateBoard(config));
+        definition = JSON.stringify([generateBoard(config)]);
     }
     finally {
         console.timeEnd('generating definition');

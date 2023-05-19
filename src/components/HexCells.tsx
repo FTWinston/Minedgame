@@ -7,13 +7,13 @@ import { Tools } from './Tools';
 import { Result } from './Result';
 import { useTimer } from 'src/hooks/useTimer';
 
-const getDefinition = suspendPromise<CellBoardDefinition>(
+const getDefinition = suspendPromise<CellBoardDefinition[]>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
         .then(result => result.json())
 );
 
 export const HexCells: React.FC = () => {
-    const [board, dispatch] = useImmerReducer(hexCellReducer, getDefinition(), createCellBoardInstance);
+    const [board, dispatch] = useImmerReducer(hexCellReducer, getDefinition()[0], createCellBoardInstance);
     const {
         display: timeSpent,
         enabled: timerEnabled,
