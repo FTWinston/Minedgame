@@ -24,7 +24,7 @@ export const Bomb: Story = {
 export const Revealing: Story = {
     args: {
         cellType: CellType.Obscured,
-        special: Special.Revealing,
+        special: Special.Highlight,
     }
 }
 

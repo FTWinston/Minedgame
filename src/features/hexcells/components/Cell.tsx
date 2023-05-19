@@ -6,7 +6,7 @@ import { CellType, CountType, RowDirection } from '../types/CellState';
 import './Cell.css';
 
 export enum Special {
-    Revealing = 1,
+    Highlight = 1,
     Error = 2,
 }
 
@@ -208,7 +208,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
             {...handlers}
         >
             <InnerFillHexagon state={props.cellType} fullyResolved={props.resolved} direction={props.direction}>
-                <GlowHexagon state={props.cellType} revealing={props.special === Special.Revealing}>
+                <GlowHexagon state={props.cellType} revealing={props.special === Special.Highlight}>
                     <Text>
                         {content}
                     </Text>

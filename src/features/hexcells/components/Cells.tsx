@@ -74,11 +74,9 @@ export const Cells: React.FC<Props> = props => {
 
         const special = errorIndex === index
             ? Special.Error
-            : cell.type === CellType.Obscured && revealingIndex === index
-                ? Special.Revealing
-                : highlightIndexes.includes(index)
-                    ? Special.Revealing
-                    : undefined;
+            : cell.type === CellType.Obscured && revealingIndex === index || highlightIndexes.includes(index)
+                ? Special.Highlight
+                : undefined;
         
         return (
             <CellWrapper key={index} style={wrapperStyle}>
