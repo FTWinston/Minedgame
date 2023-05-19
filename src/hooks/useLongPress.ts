@@ -62,10 +62,6 @@ export function useLongPress(
             let extra = extraHandlers ?? {};
 
             return {
-                onMouseDown: (e: React.MouseEvent<Element, MouseEvent>) => {
-                    start(e, e.pageX, e.pageY);
-                    extra.onMouseDown?.(e);
-                },
                 onTouchStart: (e: React.TouchEvent<Element>) => {
                     if (e.touches.length < 2) {
                         const touch = e.touches[0];
@@ -74,7 +70,12 @@ export function useLongPress(
                     extra.onTouchStart?.(e);
                 },
                 onMouseUp: (e: React.MouseEvent<Element, MouseEvent>) => {
-                    clear();
+                    if (e.button === 0) {
+                        onClick?.({ x: e.pageX, y: e.pageY });
+                    }
+                    else if (e.button === 2) {
+                        onLongPress?.({ x: e.pageX, y: e.pageY });
+                    }
                     extra.onMouseUp?.(e);
                 },
                 onMouseLeave: (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -96,6 +97,9 @@ export function useLongPress(
                     }
                     extra.onTouchMove?.(e);
                 },
+                onContextMenu: (e: React.MouseEvent<Element>) => {
+                    e.preventDefault();
+                }
             };
         },
         [onLongPress, onClick, extraHandlers, startPos, latestPos]
