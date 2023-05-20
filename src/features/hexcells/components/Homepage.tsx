@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { getDateForTime } from 'src/utils/getDateForTime';
+import { Cell, CellType } from '..';
 
 interface Props {
     play: () => void;
@@ -16,14 +17,43 @@ export const Homepage: React.FC<Props> = props => {
     const strDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(date);
     
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh">
-            <Typography variant="h1" color={theme.palette.text.primary}>Minedgame</Typography>
-            <Typography variant="h4" component="h2" color={theme.palette.text.secondary}>A daily minesweeping puzzle</Typography>
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh" gap="0.5em">
+            <Typography
+                fontFamily="Rajdhani"
+                variant="h1"
+                fontSize="min(6em, 15vw)"
+                color={theme.palette.text.primary}
+                display="flex"
+                alignItems="center"
+                gap="0.15em"
+            >
+                <Cell
+                    cellType={CellType.Obscured}
+                    role="hidden"
+                    sx={{
+                        fontSize: '0.325em',
+                        cursor: 'default',
+                        marginBottom: '0.2em',
+                    }}
+                />
+                Minedgame
+            </Typography>
+
+            <Typography
+                variant="h4"
+                component="h2"
+                fontSize="min(2.125em, 5.5vw)"
+                color={theme.palette.text.secondary}
+                textAlign="center"
+            >
+                A daily minesweeping puzzle
+            </Typography>
 
             <Box margin="2em" display="flex" gap="1em">
                 <Button
                     variant="contained"
                     color="primary"
+                    size="large"
                     onClick={props.play}
                 >
                     Play
@@ -31,6 +61,7 @@ export const Homepage: React.FC<Props> = props => {
                 <Button
                     variant="outlined"
                     color="primary"
+                    size="large"
                     onClick={props.help}
                 >
                     How to play

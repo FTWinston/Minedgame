@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
+import { SxProps, Theme, styled } from '@mui/material/styles';
 import { useLongPress } from 'src/hooks/useLongPress';
 import { CellType, CountType, RowDirection } from '../types/CellState';
 import './Cell.css';
@@ -17,6 +17,8 @@ interface Props {
     number?: number;
     special?: Special;
     resolved?: boolean;
+    sx?: SxProps<Theme> | undefined;
+    role?: string;
     onClick?: () => void;
     onLongPress?: () => void;
 }
@@ -206,6 +208,8 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
             state={props.cellType}
             error={props.special === Special.Error}
             {...handlers}
+            sx={props.sx}
+            role={props.role}
         >
             <InnerFillHexagon state={props.cellType} fullyResolved={props.resolved} direction={props.direction}>
                 <GlowHexagon state={props.cellType} revealing={props.special === Special.Highlight}>

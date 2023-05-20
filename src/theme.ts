@@ -10,13 +10,7 @@ export const theme = createTheme({
             contrastText: '#000',
         },
     },
-    breakpoints: {
-        values: {
-            xs: 300,
-            sm: 400,
-            md: 500,
-            lg: 600,
-            xl: 900,
-        },
+    typography: {
+        fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif',
     },
 });
