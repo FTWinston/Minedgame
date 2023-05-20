@@ -19,7 +19,7 @@ export const Help: React.FC<Props> = props => (
     >
         <AppBar sx={{ position: 'relative' }}>
             <Toolbar>
-                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                <Typography sx={{ flex: 1 }} variant="h6" component="div">
                     How to play
                 </Typography>
                 <IconButton
