@@ -11,9 +11,24 @@ import { TransitionProps } from '@mui/material/transitions';
 import ShareIcon from '@mui/icons-material/Share';
 import { Countdown } from './Countdown';
 
-const Transition = forwardRef(function Transition(
+const SuccessTransition = forwardRef(function Transition(
     props: TransitionProps & {
-        children: React.ReactElement<any, any>;
+        children: React.ReactElement;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return (
+        <Zoom
+            style={{ transitionDelay: '750ms' }}
+            ref={ref}
+            {...props}
+        />
+    );
+});
+
+const FailureTransition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement;
     },
     ref: React.Ref<unknown>,
 ) {
@@ -59,7 +74,7 @@ export const Result: React.FC<Props> = props => {
     return (
         <Dialog
             open={true}
-            TransitionComponent={Transition}
+            TransitionComponent={props.result === 'success' ? SuccessTransition : FailureTransition}
         >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
