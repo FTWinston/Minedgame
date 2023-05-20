@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import { Cell, CellType } from 'src/features/hexcells';
 import { getDateForTime } from 'src/utils/getDateForTime';
-import { Cell, CellType } from '..';
 
 interface Props {
     play: () => void;
