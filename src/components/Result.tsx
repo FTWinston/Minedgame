@@ -84,7 +84,7 @@ export const Result: React.FC<Props> = props => {
                 <DialogContentText>
                     A new game is available every day, so come back tomorrow! Next game in:
                 </DialogContentText>
-                <Box textAlign="center">
+                <Box textAlign="center" m={1}>
                     <Countdown endTime={import.meta.env.VITE_GENERATE_TIME_UTC} action={() => location.reload()} />
                 </Box>
                 <Box textAlign="center">
