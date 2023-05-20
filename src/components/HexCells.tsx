@@ -6,13 +6,19 @@ import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
 import { Result } from './Result';
 import { useTimer } from 'src/hooks/useTimer';
+import { Help } from './Help';
 
 const getDefinition = suspendPromise<CellBoardDefinition[]>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
         .then(result => result.json())
 );
 
-export const HexCells: React.FC = () => {
+interface Props {
+    showHelp: boolean;
+    setShowHelp: (show: boolean) => void;
+}
+
+export const HexCells: React.FC<Props> = props => {
     const [board, dispatch] = useImmerReducer(hexCellReducer, getDefinition()[0], createCellBoardInstance);
     const {
         display: timeSpent,
@@ -38,6 +44,11 @@ export const HexCells: React.FC = () => {
 
     return (
         <>
+            <Help 
+                open={props.showHelp}
+                close={() => props.setShowHelp(false)}
+            />
+
             <Cells
                 cells={board.cells}
                 columns={board.columns}
@@ -53,7 +64,7 @@ export const HexCells: React.FC = () => {
                 hintsUsed={board.hintsUsed}
                 timeSpent={timeSpent}
                 getHint={() => { enableTimer(true); dispatch({ type: 'hint' })} }
-                showHelp={() => alert('help')}
+                showHelp={() => props.setShowHelp(true)}
             />
 
             {result}
