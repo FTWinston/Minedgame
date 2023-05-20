@@ -51,6 +51,24 @@ export const Help: React.FC<Props> = props => (
             <Typography mt={2}>
                 If you are stuck, the <em>hint</em> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.
             </Typography>
+            <Typography mt={2}>
+                A <strong>basic clue</strong> shows the number of bombs in adjacent cells.
+            </Typography>
+            <Typography mt={2}>
+                A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.
+            </Typography>
+            <Typography mt={2}>
+                A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.
+            </Typography>
+            <Typography mt={2}>
+                A number not contained in a cell is a <strong>row clue</strong>. This shows the number of bombs along a line to the edge of the board.
+            </Typography>
+            <Typography mt={2}>
+                A number in a blue cell is an <strong>area clue</strong>. This shows the number of bombs within a two-cell radius.
+            </Typography>
+            <Typography mt={2}>
+                Tap or click on any clue to highlight its associated cells.
+            </Typography>
         </DialogContent>
     </Dialog>
 );
