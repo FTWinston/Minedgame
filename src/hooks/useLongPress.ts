@@ -35,7 +35,7 @@ export function useLongPress(
                 }, delay) as unknown as number;
             };
 
-            const clear = (shouldTriggerClick: boolean = true) => {
+            const clear = (shouldTriggerClick = true) => {
                 if (timeout.current) {
                     clearTimeout(timeout.current);
                     timeout.current = undefined;
@@ -59,7 +59,7 @@ export function useLongPress(
                 }
             };
 
-            let extra = extraHandlers ?? {};
+            const extra = extraHandlers ?? {};
 
             return {
                 onTouchStart: (e: React.TouchEvent<Element>) => {
@@ -106,4 +106,4 @@ export function useLongPress(
     );
 
     return results;
-};
+}

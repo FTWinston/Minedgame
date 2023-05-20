@@ -54,7 +54,7 @@ export const Cells: React.FC<Props> = props => {
 
     const errorIndex = useTemporaryValue(props.errorIndex, undefined, 500);
 
-    let contents = cells.map((cell, index) => {
+    const contents = cells.map((cell, index) => {
         if (cell === null) {
             return null;
         }
@@ -117,7 +117,7 @@ export const Cells: React.FC<Props> = props => {
 
     return (
         <Root>
-            <CellContainer style={containerStyle}>
+            <CellContainer style={containerStyle} onContextMenu={(e: React.MouseEvent<Element>) => e.preventDefault()}>
                 {contents}
             </CellContainer>
         </Root>
