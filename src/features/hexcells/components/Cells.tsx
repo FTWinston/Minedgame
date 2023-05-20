@@ -25,7 +25,7 @@ const Root = styled(Box)({
     height: '100svh',
     position: 'relative',
     overflow: 'hidden',
-    padding: '0 0 3rem 0', // Extra bottom padding to fit letters in.
+    padding: '2rem 0 3rem 0',
     userSelect: 'none',
 });
 
@@ -108,7 +108,7 @@ export const Cells: React.FC<Props> = props => {
     });
 
     const cellSizeLimitByWidth = `calc(100vw / ${columns * 1.94})`;
-    const cellSizeLimitByHeight = `calc((100svh - 3rem) / ${rows - 0.25} / ${cellHeight + gapSize})`;
+    const cellSizeLimitByHeight = `calc((100svh - 5rem) / ${rows - 0.25} / ${cellHeight + gapSize})`;
     const containerStyle: React.CSSProperties = {
         gridTemplateColumns: `repeat(${columns}, ${cellWidth * 0.25 + gapSize * 0.5}em ${cellWidth * 0.5 + gapSize}em ) ${cellWidth * 0.25 + gapSize * 0.5}em`,
         gridTemplateRows: `repeat(${rows * 2}, ${cellHeight / 2 + gapSize}em)`,
