@@ -1,19 +1,7 @@
 
 import { Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-
-/** Given a time string (HH:mm format), gets the time value (epoch ms) of the closest future Date at that time. */
-function getTimeInFuture(strTime: string): number {
-    const strToday = new Date().toISOString().split('T')[0];
-    const date = new Date(`${strToday}T${strTime}:00.000+00:00`);
-
-    // If that time TODAY is in the past, add a day.
-    if (date < new Date()) {
-        date.setDate(date.getDate() + 1);
-    }
-
-    return date.getTime();
-}
+import { getDateForTime } from 'src/utils/getDateForTime';
 
 interface Props {
     endTime: string;
@@ -22,7 +10,7 @@ interface Props {
 
 export const Countdown: React.FC<Props> = props => {
     const { endTime, action } = props;
-    const endDate = useMemo(() => getTimeInFuture(endTime), [endTime]);
+    const endDate = useMemo(() => getDateForTime(endTime, true).getTime(), [endTime]);
     const [remaining, setRemaining] = useState('');
 
     useEffect(() => {
