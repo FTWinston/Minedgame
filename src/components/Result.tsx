@@ -57,7 +57,7 @@ export const Result: React.FC<Props> = props => {
     const share = () => {
         let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
         if (props.result === 'failure') {
-            text = `🏴 ${props.bombsLeft}   ${text}`;
+            text = `🚩 ${props.bombsLeft}   ${text}`;
         }
         const title = props.result === 'success'
             ? 'I won at Minedgame'
