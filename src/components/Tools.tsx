@@ -25,8 +25,9 @@ const Number = styled(Typography)({
 
 const BorderlessChip = styled(Chip)({
     border: 'none',
-    fontSize: '1.75em',
+    fontSize: '2.25em',
     padding: '24px 8px',
+    fontFamily: 'monospace',
 });
 
 const Remaining = styled(BorderlessChip)({
