@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { TransitionProps } from '@mui/material/transitions';
 import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { CyclingCells } from './CyclingCells';
 import { CellType } from 'src/features/hexcells';
 import { CountType } from 'src/features/hexcells/types/CellState';
@@ -18,12 +18,34 @@ interface Props {
     close: () => void;
 }
 
+const ParagraphSet = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'stretch',
+    gap: 3,
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+    },
+}));
+
+const Paragraph = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    flexBasis: 0,
+    flexGrow: 1,
+    gap: '1em',
+});
+
+const ParagraphText = styled(Box)({
+    flexGrow: 1,
+    alignSelf: 'stretch',
+});
+
 export const Help: React.FC<Props> = props => {
     // No transition time if showing immediately on mount.
     const [transitionProps, setTransitionProps] = useState<TransitionProps | undefined>({ timeout: 0 });
     useEffect(() => setTransitionProps(undefined), []);
-
-    const theme = useTheme();
 
     return (
         <Dialog
@@ -67,112 +89,106 @@ export const Help: React.FC<Props> = props => {
                     If you are stuck, the <em>hint</em> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.
                 </Typography>
                 
-                <Box display="flex" mt={2} gap={3} sx={{
-                    alignItems: 'stretch',
-                    [theme.breakpoints.down('md')]: {
-                        flexDirection: 'column',
-                        alignItems: 'stretch',
-                    },
-                }}>
-                    <Typography flexBasis={0} flexGrow={1} display="flex" flexDirection="column" alignItems="center">
-                        <Box flexGrow={1} alignSelf="stretch">A <strong>basic clue</strong> shows the number of bombs in adjacent cells.</Box>
+                <ParagraphSet mt={2}>
+                    <Paragraph>
+                        <ParagraphText>A <strong>basic clue</strong> shows the number of bombs in adjacent cells.</ParagraphText>
 
-                        <Box m={1}>
-                            <CyclingCells
-                                columns={3}
-                                duration={1500}
-                                cellSets={[
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Obscured },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 0, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Bomb },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 1, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Bomb }, { type: CellType.Bomb }, { type: CellType.Obscured },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Obscured },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
-                                        null, { type: CellType.Bomb }, null
-                                    ],
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Bomb }, { type: CellType.Bomb },
-                                        { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Normal, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Bomb }, null
-                                    ],
-                                ]}
-                            />
-                        </Box>
-                    </Typography>
-                    <Typography flexBasis={0} flexGrow={1} display="flex" flexDirection="column" alignItems="center">
-                        <Box flexGrow={1} alignSelf="stretch">A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.</Box>
+                        <CyclingCells
+                            columns={3}
+                            duration={1500}
+                            cellSets={[
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Obscured },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 0, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Bomb },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 1, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Bomb }, { type: CellType.Bomb }, { type: CellType.Obscured },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Obscured },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Normal, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
+                                    null, { type: CellType.Bomb }, null
+                                ],
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Bomb }, { type: CellType.Bomb },
+                                    { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Normal, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Bomb }, null
+                                ],
+                            ]}
+                        />
+                    </Paragraph>
+                    <Paragraph>
+                        <ParagraphText>A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.</ParagraphText>
                         
-                        <Box m={1}>
-                            <CyclingCells
-                                columns={3}
-                                duration={1500}
-                                cellSets={[
-                                    [
-                                        { type: CellType.Bomb }, { type: CellType.Bomb }, { type: CellType.Obscured },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Contiguous, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Bomb }, { type: CellType.Bomb },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Contiguous, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Bomb },
-                                        { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Contiguous, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
-                                        null, { type: CellType.Bomb }, null
-                                    ],
-                                ]}
-                            />
-                        </Box>
-                    </Typography>
-                    <Box flexBasis={0} flexGrow={1} display="flex" flexDirection="column" alignItems="center">
-                        <Box flexGrow={1} alignSelf="stretch">A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.</Box>
+                        <CyclingCells
+                            columns={3}
+                            duration={1500}
+                            cellSets={[
+                                [
+                                    { type: CellType.Bomb }, { type: CellType.Bomb }, { type: CellType.Obscured },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Contiguous, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Bomb }, { type: CellType.Bomb },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Contiguous, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Bomb },
+                                    { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Contiguous, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
+                                    null, { type: CellType.Bomb }, null
+                                ],
+                            ]}
+                        />
+                    </Paragraph>
+                    <Paragraph>
+                        <ParagraphText>A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.</ParagraphText>
                         
-                        <Box m={1}>
-                            <CyclingCells
-                                columns={3}
-                                duration={1500}
-                                cellSets={[
-                                    [
-                                        { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Obscured },
-                                        { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Split, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                    [
-                                        { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Bomb },
-                                        { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Split, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
-                                        null, { type: CellType.Bomb }, null
-                                    ],
-                                    [
-                                        { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Bomb },
-                                        { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Split, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
-                                        null, { type: CellType.Obscured }, null
-                                    ],
-                                ]}
-                            />
-                        </Box>
-                    </Box>
-                </Box>
+                        <CyclingCells
+                            columns={3}
+                            duration={1500}
+                            cellSets={[
+                                [
+                                    { type: CellType.Obscured }, { type: CellType.Obscured }, { type: CellType.Obscured },
+                                    { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Split, number: 2, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                                [
+                                    { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Bomb },
+                                    { type: CellType.Obscured }, { type: CellType.Empty, countType: CountType.Split, number: 3, resolved: false, targetIndexes: [], }, { type: CellType.Obscured },
+                                    null, { type: CellType.Bomb }, null
+                                ],
+                                [
+                                    { type: CellType.Bomb }, { type: CellType.Obscured }, { type: CellType.Bomb },
+                                    { type: CellType.Bomb }, { type: CellType.Empty, countType: CountType.Split, number: 4, resolved: false, targetIndexes: [], }, { type: CellType.Bomb },
+                                    null, { type: CellType.Obscured }, null
+                                ],
+                            ]}
+                        />
+                    </Paragraph>
+                </ParagraphSet>
 
-                <Typography mt={2}>
-                    A number not contained in a cell is a <strong>row clue</strong>. This shows the number of bombs along a line to the edge of the board.
-                </Typography>
-                <Typography mt={2}>
-                    A number in a blue cell is an <strong>area clue</strong>. This shows the number of bombs within a two-cell radius.
-                </Typography>
+                <ParagraphSet mt={2}>
+                    <Paragraph>
+                        <ParagraphText>
+                            A number not contained in a cell is a <strong>row clue</strong>. This shows the number of bombs along a line to the edge of the board.
+                        </ParagraphText>
+                    </Paragraph>
+                    <Paragraph>
+                        <ParagraphText>
+                            A number in a blue cell is an <strong>area clue</strong>. This shows the number of bombs within a two-cell radius.
+                        </ParagraphText>
+                    </Paragraph>
+                </ParagraphSet>
                 <Typography mt={2}>
                     Tap or click on any clue to highlight its associated cells.
                 </Typography>
