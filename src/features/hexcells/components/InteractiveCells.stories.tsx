@@ -3,13 +3,13 @@ import { useImmerReducer } from 'use-immer';
 import { generateInstance } from '../utils/createCellBoardInstance';
 import { GenerationConfig } from '../utils/generateBoard';
 import { hexCellReducer } from '../utils/hexCellReducer';
-import { Cells } from './Cells';
+import { InteractiveCells } from './InteractiveCells';
 
 const CellsWithReducer: React.FC<GenerationConfig> = config => {
     const [board, dispatch] = useImmerReducer(hexCellReducer, config, generateInstance);
 
     return (
-        <Cells
+        <InteractiveCells
             cells={board.cells}
             columns={board.columns}
             revealCell={index => setTimeout(() => dispatch({ type: 'reveal', index }), 200)}
@@ -21,7 +21,7 @@ const CellsWithReducer: React.FC<GenerationConfig> = config => {
 }
 
 export default {
-    title: 'Cells',
+    title: 'InteractiveCells',
     component: CellsWithReducer,
 };
 

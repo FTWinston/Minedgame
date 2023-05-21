@@ -1,4 +1,4 @@
-import { Cells, hexCellReducer } from 'src/features/hexcells';
+import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
 import { createCellBoardInstance } from 'src/features/hexcells/utils/createCellBoardInstance';
 import { useImmerReducer } from 'use-immer';
 import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
@@ -49,7 +49,7 @@ export const HexCells: React.FC<Props> = props => {
                 close={() => props.setShowHelp(false)}
             />
 
-            <Cells
+            <InteractiveCells
                 cells={board.cells}
                 columns={board.columns}
                 revealCell={index => { enableTimer(true); dispatch({ type: 'reveal', index }) }}

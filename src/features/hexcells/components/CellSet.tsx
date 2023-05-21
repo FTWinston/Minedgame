@@ -1,33 +1,21 @@
-import { useState } from 'react';
+import { CSSProperties } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import { useCellCascade } from '../hooks/useCellCascade';
 import { useTemporaryValue } from 'src/hooks/useTemporaryValue';
 import { CellBoardInfo } from '../types/CellBoard';
-import { CellType } from '../types/CellState';
+import { CellType, DisplayCellState } from '../types/CellState';
 import { Cell, cellHeight, cellWidth, Special } from './Cell';
-import { isObscured } from '../utils/resolved';
-import { isClueCell } from '../utils/isClueCell';
 
 interface Props extends Omit<CellBoardInfo, 'numBombs' | 'numErrors' | 'hintsUsed'> {
-    revealCell: (index: number) => void;
-    flagCell: (index: number) => void;
+    onClick?: (cell: DisplayCellState, index: number) => void;
+    onLongPress?: (cell: DisplayCellState, index: number) => void;
+    revealingIndex?: number;
+    highlightIndexes?: number[];
+    style?: CSSProperties;
     errorIndex?: number;
 }
 
 const gapSize = 0.025;
-
-const Root = styled(Box)({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100svh',
-    position: 'relative',
-    overflow: 'hidden',
-    padding: '2rem 0 3rem 0',
-    userSelect: 'none',
-});
 
 const CellContainer = styled('ul')({
     display: 'grid',
@@ -42,12 +30,9 @@ const CellWrapper = styled('li')({
     position: 'relative',
 });
 
-export const Cells: React.FC<Props> = props => {
+export const CellSet: React.FC<Props> = props => {
     const { columns, cells } = props;
     const rows = Math.ceil(cells.length / columns);
-
-    const [revealingIndex, setRevealingIndex] = useState<number | undefined>(undefined);
-    const [highlightIndexes, setHighlightIndexes] = useState<number[]>([]);
 
     const explodedIndex = cells.findIndex(cell => cell?.type === CellType.Exploded);
     const explosionCascadeCells = useCellCascade(explodedIndex, columns, rows);
@@ -74,7 +59,7 @@ export const Cells: React.FC<Props> = props => {
 
         const special = errorIndex === index
             ? Special.Error
-            : cell.type === CellType.Obscured && revealingIndex === index || highlightIndexes.includes(index)
+            : cell.type === CellType.Obscured && props.revealingIndex === index || props.highlightIndexes?.includes(index)
                 ? Special.Highlight
                 : undefined;
         
@@ -87,39 +72,22 @@ export const Cells: React.FC<Props> = props => {
                     direction={(cell as any).direction}
                     number={(cell as any).number}
                     special={special}
-                    onClick={() => {
-                        if (isObscured(cell) && !props.result) {
-                            setRevealingIndex(index);
-                            props.revealCell(index);
-                        }
-                        if (isClueCell(cell)) {
-                            setHighlightIndexes(highlightIndexes === cell.targetIndexes ? [] : cell.targetIndexes);
-                        }
-                    }}
-                    onLongPress={() => {
-                        if (isObscured(cell) && !props.result) {
-                            setRevealingIndex(index);
-                            props.flagCell(index);
-                        }
-                    }}
+                    onClick={() => props.onClick?.(cell, index)}
+                    onLongPress={() => props.onLongPress?.(cell, index)}
                 />
             </CellWrapper>
         )
     });
 
-    const cellSizeLimitByWidth = `calc(100vw / ${columns * 1.94})`;
-    const cellSizeLimitByHeight = `calc((100svh - 5rem) / ${rows - 0.25} / ${cellHeight + gapSize})`;
     const containerStyle: React.CSSProperties = {
+        ...props.style,
         gridTemplateColumns: `repeat(${columns}, ${cellWidth * 0.25 + gapSize * 0.5}em ${cellWidth * 0.5 + gapSize}em ) ${cellWidth * 0.25 + gapSize * 0.5}em`,
         gridTemplateRows: `repeat(${rows * 2}, ${cellHeight / 2 + gapSize}em)`,
-        fontSize: `min(${cellSizeLimitByWidth}, ${cellSizeLimitByHeight}, 20rem)`,
     };
 
     return (
-        <Root>
-            <CellContainer style={containerStyle} onContextMenu={(e: React.MouseEvent<Element>) => e.preventDefault()}>
-                {contents}
-            </CellContainer>
-        </Root>
+        <CellContainer style={containerStyle} onContextMenu={(e: React.MouseEvent<Element>) => e.preventDefault()}>
+            {contents}
+        </CellContainer>
     );
 }
