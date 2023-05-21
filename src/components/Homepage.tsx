@@ -29,7 +29,7 @@ export const Homepage: React.FC<Props> = props => {
             >
                 <Cell
                     cellType={CellType.Obscured}
-                    role="hidden"
+                    role="none"
                     sx={{
                         fontSize: '0.325em',
                         cursor: 'default',
