@@ -2,11 +2,11 @@ import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
 import { createCellBoardInstance } from 'src/features/hexcells/utils/createCellBoardInstance';
 import { useImmerReducer } from 'use-immer';
 import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
+import { Help } from 'src/features/help';
 import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
 import { Result } from './Result';
 import { useTimer } from 'src/hooks/useTimer';
-import { Help } from './Help';
 
 const getDefinition = suspendPromise<CellBoardDefinition[]>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
