@@ -4,16 +4,15 @@ import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import { TransitionProps } from '@mui/material/transitions';
 import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import { CyclingCells } from './CyclingCells';
 import { Cell, CellType } from 'src/features/hexcells';
 import { CountType, RowDirection } from 'src/features/hexcells/types/CellState';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 
 interface Props {
     open: boolean
