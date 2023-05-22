@@ -43,7 +43,7 @@ export const Unknown: Story = {
 
 export const Zero: Story = {
     args: {
-        cellType: CellType.Empty,
+        cellType: CellType.AdjacentClue,
         countType: CountType.Normal,
         number: 0,
     }
@@ -51,7 +51,7 @@ export const Zero: Story = {
 
 export const Three: Story = {
     args: {
-        cellType: CellType.Empty,
+        cellType: CellType.AdjacentClue,
         countType: CountType.Normal,
         number: 3,
     }
@@ -59,7 +59,7 @@ export const Three: Story = {
 
 export const Split: Story = {
     args: {
-        cellType: CellType.Empty,
+        cellType: CellType.AdjacentClue,
         countType: CountType.Split,
         number: 3,
     }
@@ -67,7 +67,7 @@ export const Split: Story = {
 
 export const Contiguous: Story = {
     args: {
-        cellType: CellType.Empty,
+        cellType: CellType.AdjacentClue,
         countType: CountType.Contiguous,
         number: 3,
     }

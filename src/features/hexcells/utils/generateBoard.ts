@@ -374,7 +374,7 @@ function addEmptyCellClue(state: GeneratingState, index: number, requireAdjacent
     }
 
     const cell: EmptyCell = {
-        type: CellType.Empty,
+        type: CellType.AdjacentClue,
         countType: CountType.Normal,
         number: 0,
     }
@@ -527,7 +527,7 @@ function createUnderlyingCell(state: GeneratingState, cell: CellState | null, in
             ?? [];
     }
 
-    if (result.type === CellType.Empty || result.type === CellType.Bomb || result.type === CellType.Unknown) {
+    if (result.type === CellType.AdjacentClue || result.type === CellType.Bomb || result.type === CellType.Unknown) {
         result.clueIndexes = [...state.clues.values()]
             .filter(clue => clue.associatedIndexes.includes(index))
             .map(clue => clue.clueIndex);

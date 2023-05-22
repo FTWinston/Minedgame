@@ -3,7 +3,7 @@ import { CellType, CountType } from '../types/CellState';
 import { Clue, ClueMap } from '../types/Clue';
 import { areValuesContiguous } from './areValuesContiguous';
 
-export type ResolutionResult = CellType.Empty | CellType.Bomb;
+export type ResolutionResult = CellType.AdjacentClue | CellType.Bomb;
 
 export type ResolvableCells = Map<number, ResolutionResult>;
 
@@ -12,9 +12,9 @@ function incrementCombination<TOtherValue = never>(combination: Array<Resolution
     // Starting at the end, change every bomb value to be empty, until we find an empty value.
     // Change that empty value to a bomb and return true (there may be more combinations possible), or false if it's not found (all combinations have been handled.)
     let currentIndex = combination.length - 1;
-    while (currentIndex >= 0 && combination[currentIndex] !== CellType.Empty) {
+    while (currentIndex >= 0 && combination[currentIndex] !== CellType.AdjacentClue) {
         if (combination[currentIndex] === CellType.Bomb) {
-            combination[currentIndex] = CellType.Empty;
+            combination[currentIndex] = CellType.AdjacentClue;
         }
         currentIndex--;
     }
@@ -41,11 +41,11 @@ function resolveContiguousOrSplitCells(
 
     // Create an initial combination that won't bugger up based on existing values.
     const currentCombination: CellType[] = cells.map(cell => {
-        if (cell === null || cell.cell.type === CellType.Empty) {
+        if (cell === null || cell.cell.type === CellType.AdjacentClue) {
             return CellType.Unknown;
         }
         if (cell.cell.type === CellType.Obscured) {
-            return CellType.Empty;
+            return CellType.AdjacentClue;
         }
         if (cell.cell.type === CellType.Bomb) {
             return CellType.Exploded;
@@ -67,7 +67,7 @@ function resolveContiguousOrSplitCells(
                 if (currentValue === CellType.Bomb) {
                     cellsThatCanBeBombs[i] = true;
                 }
-                else if (currentValue === CellType.Empty) {
+                else if (currentValue === CellType.AdjacentClue) {
                     cellsThatCanBeEmpty[i] = true;
                 }
             }
@@ -89,7 +89,7 @@ function resolveContiguousOrSplitCells(
         const canBeBomb = cellsThatCanBeBombs[i];
 
         if (canBeBomb !== canBeEmpty) {
-            results.set(cell.index, canBeBomb ? CellType.Bomb : CellType.Empty);
+            results.set(cell.index, canBeBomb ? CellType.Bomb : CellType.AdjacentClue);
         }
     }
 }
@@ -110,7 +110,7 @@ function resolveIndividualClues(board: MinimumResolvableBoardInfo, clues: ClueMa
         // all associated obscured cells can be resolved to be empty.
         else if (clue.numObscuredBombs === 0) {
             for (const associatedObscuredCellIndex of clue.associatedObscuredIndexes) {
-                results.set(associatedObscuredCellIndex, CellType.Empty);
+                results.set(associatedObscuredCellIndex, CellType.AdjacentClue);
             }
         }
 
@@ -149,7 +149,7 @@ function resolveCellsUsingBombCount(obscuredCellIndexes: ReadonlySet<number>, nu
     if (numBombs === 0) {
         // If there's no bombs left, every obscured cell can resolve to being empty.
         for (const obscuredCellIndex of obscuredCellIndexes) {
-            results.set(obscuredCellIndex, CellType.Empty);
+            results.set(obscuredCellIndex, CellType.AdjacentClue);
         }
     }
     else if (numBombs === obscuredCellIndexes.size) {
@@ -274,7 +274,7 @@ function resolveRelatedClueGroup(group: ClueGroup, maxNumBombs?: number): Resolv
 
     let validResults: ResolvableCells | null = null;
 
-    const currentCombination = new Array<ResolutionResult>(group.obscuredCellIndexes.length).fill(CellType.Empty);
+    const currentCombination = new Array<ResolutionResult>(group.obscuredCellIndexes.length).fill(CellType.AdjacentClue);
 
     while (true) {
         // Don't consider combinations with more bombs than remain on the board.

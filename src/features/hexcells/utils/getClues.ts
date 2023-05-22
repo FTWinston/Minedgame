@@ -45,7 +45,7 @@ export function addClue(
     cell: ClueCell,
     associatedIndexes: Array<number | null>
 ) {
-    const loop = cell.type === CellType.Empty;
+    const loop = cell.type === CellType.AdjacentClue;
     
     const clue: Clue = {
         clueIndex: index,
@@ -79,7 +79,7 @@ function addAvailableClues(board: MinimumResolvableBoardInfo, clues: ClueMap) {
 
         let associatedIndexes: Array<number | null>;
 
-        if (cell.type === CellType.Empty) {
+        if (cell.type === CellType.AdjacentClue) {
             associatedIndexes = getAdjacentIndexes(index, board.columns, rows);
         }
         else if (cell.type === CellType.RowClue) {

@@ -5,7 +5,7 @@ export function isClueCell(cell: CellState | null): cell is ClueCell {
         return false;
     }
     
-    return cell.type === CellType.Empty
+    return cell.type === CellType.AdjacentClue
         || cell.type === CellType.RowClue
         || cell.type === CellType.RadiusClue;
 }

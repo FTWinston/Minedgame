@@ -75,7 +75,7 @@ const InnerFillHexagon = styled(Box,
             backgroundColor = theme.palette.primary.dark;
             color = backgroundColor;
             break;
-        case CellType.Empty:
+        case CellType.AdjacentClue:
             backgroundColor = theme.palette.background.paper;
             color = fullyResolved
                 ? theme.palette.text.disabled
@@ -173,7 +173,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
     let content;
 
     switch (props.cellType) {
-        case CellType.Empty:
+        case CellType.AdjacentClue:
         case CellType.RowClue:
         case CellType.RadiusClue:
             switch (props.countType) {

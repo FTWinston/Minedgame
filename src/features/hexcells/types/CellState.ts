@@ -1,6 +1,6 @@
 export enum CellType {
     Obscured = 1,
-    Empty = 2,
+    AdjacentClue = 2,
     Bomb = 3,
     Unknown = 4, // Revealed, but showing a ?
     RowClue = 5,
@@ -25,7 +25,7 @@ export enum RowDirection {
 }
 
 export type EmptyCell = {
-    type: CellType.Empty;
+    type: CellType.AdjacentClue;
     countType: CountType;
     number: number;
 };
