@@ -7,12 +7,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { TransitionProps } from '@mui/material/transitions';
 import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { CyclingCells } from './CyclingCells';
 import { Cell, CellType } from 'src/features/hexcells';
 import { CountType, RowDirection } from 'src/features/hexcells/types/CellState';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface Props {
     open: boolean
@@ -22,7 +23,11 @@ interface Props {
 const Page = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-start',
     gap: '1.5em',
+    '&:not([hidden])': {
+        minHeight: '21.5em',
+    }
 });
 
 interface TabPageProps {
@@ -62,25 +67,29 @@ const Section = styled(Box)({
     gap: '0.5em',
 });
 
-const Paragraph = styled(Box)({
-    flexGrow: 1,
+const Paragraph = styled(Box)<{ grow?: boolean }>(({ grow }) => ({
     alignSelf: 'stretch',
-});
+    flexGrow: grow ? 1 : undefined,
+}));
 
 export const Help: React.FC<Props> = props => {
     // No transition time if showing immediately on mount.
     const [transitionProps, setTransitionProps] = useState<TransitionProps | undefined>({ timeout: 0 });
     useEffect(() => setTransitionProps(undefined), []);
 
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     
     const [tab, setTab] = useState(0);
 
     return (
         <Dialog
-            fullScreen
             open={props.open}
             onClose={props.close}
             TransitionProps={transitionProps}
+            fullWidth
+            fullScreen={fullScreen}
+            maxWidth="lg"
         >
             <AppBar sx={{ position: 'relative' }}>
                 <Toolbar>
@@ -103,7 +112,6 @@ export const Help: React.FC<Props> = props => {
             </AppBar>
             
             <DialogContent>
-
                 <TabPage index={0} currentIndex={tab}>
                     <Paragraph>
                         Minedgame is a logic puzzle involving hexagonal cells. Your goal is flag all of the cells that contain bombs, using clues in the other cells.
@@ -148,7 +156,7 @@ export const Help: React.FC<Props> = props => {
                     </Paragraph>
                     <Group>
                         <Section>
-                            <Paragraph>A <strong>basic clue</strong> shows the number of bombs in adjacent cells.</Paragraph>
+                            <Paragraph grow>A <strong>basic clue</strong> shows the number of bombs in adjacent cells.</Paragraph>
 
                             <CyclingCells
                                 columns={3}
@@ -183,7 +191,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph>A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.</Paragraph>
+                            <Paragraph grow>A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.</Paragraph>
                             
                             <CyclingCells
                                 columns={3}
@@ -208,7 +216,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph>A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.</Paragraph>
+                            <Paragraph grow>A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.</Paragraph>
                             
                             <CyclingCells
                                 columns={3}
@@ -244,7 +252,7 @@ export const Help: React.FC<Props> = props => {
                     </Paragraph>
                     <Group>
                         <Section>
-                            <Paragraph>
+                            <Paragraph grow>
                                 A number not contained in a cell is a <strong>row clue</strong>.
                                 This shows the number of bombs along a line.
                                 The number is rotated to indicate the line's direction, and the line always continues to the edge of the board, even when there are gaps between cells.<br/>
@@ -279,7 +287,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph>
+                            <Paragraph grow>
                                 A number in a blue cell is an <strong>area clue</strong>. This shows the number of bombs within a two-cell radius.
                             </Paragraph>
                             
