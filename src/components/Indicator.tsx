@@ -12,11 +12,6 @@ const spinSx = {
     animationDuration: '3s',
     animationIterationCount: 'infinite',
     animationName: 'loaderSpin',
-    width: '100vw',
-};
-
-const fixedSx = {
-    width: '100vw',
 };
 
 export const Indicator: React.FC<Props> = props => {
@@ -28,10 +23,13 @@ export const Indicator: React.FC<Props> = props => {
 
     return (
         <Box
-            sx={props.spin ? spinSx : fixedSx}
+            sx={props.spin ? spinSx : undefined}
             fontSize="20vmin"
             display="flex"
             justifyContent="center"
+            alignItems="center"
+            width="100vw"
+            height="100svh"
         >
             <Cell cellType={props.type}>
                 {content}
