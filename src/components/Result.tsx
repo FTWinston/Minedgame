@@ -10,6 +10,7 @@ import Zoom from '@mui/material/Zoom';
 import { TransitionProps } from '@mui/material/transitions';
 import ShareIcon from '@mui/icons-material/Share';
 import { Countdown } from './Countdown';
+import { Trans, useTranslation } from 'react-i18next';
 
 const SuccessTransition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -50,18 +51,15 @@ interface Props {
 }
 
 export const Result: React.FC<Props> = props => {
-    const title = props.result === 'success'
-        ? 'You win'
-        : 'You lose';
+    const { t } = useTranslation();
+    const title = t(props.result === 'success' ? 'win' : 'lose');
 
     const share = () => {
         let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
         if (props.result === 'failure') {
             text = `🚩 ${props.bombsLeft}   ${text}`;
         }
-        const title = props.result === 'success'
-            ? 'I won at Minedgame'
-            : 'I lost at Minedgame';
+        const title = t(props.result === 'success' ? 'shareWin' : 'shareLose');
         text = `${title} \n${text}\n`;
 
         navigator.share({
@@ -80,10 +78,10 @@ export const Result: React.FC<Props> = props => {
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Why not share your result with a friend?
+                    <Trans i18nKey="resultPrompt" />
                 </DialogContentText>
                 <DialogContentText>
-                    A new game is available every day, so come back tomorrow! Next game in:
+                    <Trans i18nKey="resultNextGame" />
                 </DialogContentText>
                 <Box textAlign="center" m={1}>
                     <Countdown endTime={import.meta.env.VITE_GENERATE_TIME_UTC} action={() => location.reload()} />
@@ -95,7 +93,7 @@ export const Result: React.FC<Props> = props => {
                         endIcon={<ShareIcon />}
                         onClick={share}
                     >
-                        Share
+                        {t('share')}
                     </Button>
                 </Box>
             </DialogContent>

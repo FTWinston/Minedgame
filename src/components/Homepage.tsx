@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { Cell, CellType } from 'src/features/hexcells';
 import { getDateForTime } from 'src/utils/getDateForTime';
 
@@ -15,6 +16,7 @@ export const Homepage: React.FC<Props> = props => {
     
     const date = getDateForTime(import.meta.env.VITE_GENERATE_TIME_UTC, false);
     const strDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(date);
+    const { t } = useTranslation();
     
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh" gap="0.5em">
@@ -36,7 +38,7 @@ export const Homepage: React.FC<Props> = props => {
                         marginBottom: '0.2em',
                     }}
                 />
-                Minedgame
+                {t('title')}
             </Typography>
 
             <Typography
@@ -46,7 +48,7 @@ export const Homepage: React.FC<Props> = props => {
                 color={theme.palette.text.secondary}
                 textAlign="center"
             >
-                A daily minesweeping puzzle
+                {t('subtitle')}
             </Typography>
 
             <Box margin="2em" display="flex" gap="1em">
@@ -56,7 +58,7 @@ export const Homepage: React.FC<Props> = props => {
                     size="large"
                     onClick={props.play}
                 >
-                    Play
+                    {t('play')}
                 </Button>
                 <Button
                     variant="outlined"
@@ -64,7 +66,7 @@ export const Homepage: React.FC<Props> = props => {
                     size="large"
                     onClick={props.help}
                 >
-                    How to play
+                    {t('help')}
                 </Button>
             </Box>
 

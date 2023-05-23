@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Indicator } from 'src/components/Indicator';
 import { CellType } from 'src/features/hexcells';
+import './language';
 import { theme } from './theme';
 import { ScreenSelector } from './components/ScreenSelector';
 import './index.css'

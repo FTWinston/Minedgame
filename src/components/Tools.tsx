@@ -9,6 +9,7 @@ import HintIcon from '@mui/icons-material/Lightbulb';
 import ErrorIcon from '@mui/icons-material/DangerousOutlined';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     bombsLeft: number;
@@ -71,6 +72,8 @@ const BigHintIcon = styled(HintIcon)({
 })
 
 export const Tools: React.FC<Props> = props => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Remaining
@@ -78,7 +81,7 @@ export const Tools: React.FC<Props> = props => {
                 variant="outlined"
                 icon={<BombIcon fontSize="large" />}
                 label={props.bombsLeft.toString()}
-                title="Number of bombs remaining"
+                title={t('bombsLeft')}
             />
 
             <Elapsed
@@ -86,12 +89,12 @@ export const Tools: React.FC<Props> = props => {
                 variant="outlined"
                 icon={<TimeIcon fontSize="large" />}
                 label={props.timeSpent}
-                title="Elapsed time"
+                title={t('elapsed')}
             />
 
             <Help
                 color="secondary"
-                title="Help"
+                title={t('help')}
                 size="large"
                 onClick={props.showHelp}
             >
@@ -105,9 +108,9 @@ export const Tools: React.FC<Props> = props => {
                     startIcon={<BigHintIcon />}
                     endIcon={props.hintsUsed > 0 ? <Number>({props.hintsUsed})</Number> : undefined}
                     onClick={props.getHint}
-                    title="Highlights a cell that can be solved"
+                    title={t('hintDesc')}
                 >
-                    Hint
+                    {t('hint')}
                 </Hint>
             </HintWrapper>
 
@@ -117,7 +120,7 @@ export const Tools: React.FC<Props> = props => {
                 variant="outlined"
                 icon={<ErrorIcon fontSize="large" />}
                 label={props.errors}
-                title="Number of errors made"
+                title={t('errors')}
             />
         </>
     );

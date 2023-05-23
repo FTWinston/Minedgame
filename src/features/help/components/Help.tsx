@@ -15,6 +15,7 @@ import { Cell, CellType } from 'src/features/hexcells';
 import { CountType, RowDirection } from 'src/features/hexcells/types/CellState';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface Props {
     open: boolean
@@ -99,6 +100,7 @@ export const Help: React.FC<Props> = props => {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     
     const [tab, setTab] = useState(0);
+    const { t } = useTranslation();
 
     return (
         <Dialog
@@ -112,9 +114,9 @@ export const Help: React.FC<Props> = props => {
             <AppBar sx={{ position: 'relative' }}>
                 <Toolbar>
                     <Tabs value={tab} sx={{ flex: 1 }} onChange={(_e, val) => setTab(val)} centered>
-                        <Tab label="Overview" id="help-tab-0" aria-controls="help-tabpanel-0" />
-                        <Tab label="Clues" id="help-tab-1" aria-controls="help-tabpanel-1" />
-                        <Tab label="Advanced" id="help-tab-2" aria-controls="help-tabpanel-2" />
+                        <Tab label={t('helpTab1')} id="help-tab-0" aria-controls="help-tabpanel-0" />
+                        <Tab label={t('helpTab2')} id="help-tab-1" aria-controls="help-tabpanel-1" />
+                        <Tab label={t('helpTab3')} id="help-tab-2" aria-controls="help-tabpanel-2" />
                     </Tabs>
                     
                     <IconButton
@@ -122,7 +124,7 @@ export const Help: React.FC<Props> = props => {
                         edge="end"
                         color="inherit"
                         onClick={props.close}
-                        aria-label="close"
+                        aria-label={t('close')}
                     >
                         <CloseIcon />
                     </IconButton>
@@ -131,50 +133,35 @@ export const Help: React.FC<Props> = props => {
             
             <DialogContent>
                 <TabPage index={0} currentIndex={tab}>
-                    <Paragraph>
-                        Minedgame is a logic puzzle involving hexagonal cells. Your goal is flag all of the cells that contain bombs, using clues in the other cells.
-                    </Paragraph>
+                    <Paragraph><Trans i18nKey="help1-1" /></Paragraph>
                     <Group>
                         <Section>
                             <Cell cellType={CellType.Obscured} />
-                            <Paragraph>
-                                This is an obscured cell. Most cells start like this: You don't yet know if it contains a bomb, or a clue.
-                            </Paragraph>
-                            <Paragraph>
-                                Tap or left click on an obscured cell to reveal its content. If it contains a clue, this will show. If it contains a bomb, you lose!
-                            </Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-1a" /></Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-1b" /></Paragraph>
                         </Section>
                         <Section>
                             <Cell cellType={CellType.Bomb} />
-                            <Paragraph>This is a bomb. When a cell is flagged as containing a bomb, it looks like this.</Paragraph>
-                            <Paragraph>
-                                Long press or right click on an obscured cell to flag it as a bomb. If it doesn't contain a bomb, this counts as an error.
-                            </Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-2a" /></Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-2b" /></Paragraph>
                         </Section>
                         <Section>
                             <Cell cellType={CellType.AdjacentClue} countType={CountType.Normal} number={3} />
-                            <Paragraph>This is a clue. (This one indicates that 3 of its adjacent cells contain bombs.)</Paragraph>
-                            <Paragraph>The number of un-flagged is shown in the bottom left of the screen. You win when this number reaches zero.</Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-3a" /></Paragraph>
+                            <Paragraph><Trans i18nKey="help1-2-3b" /></Paragraph>
                         </Section>
                     </Group>
 
-                    <Paragraph>
-                        <em>You should never have to guess</em>: it should always be possible to determine next move logically.
-                    </Paragraph>
-                    <Paragraph>
-                        If you are stuck, the <strong>hint</strong> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.
-                    </Paragraph>
-
-                    <NextButton variant="outlined" onClick={() => setTab(1)}>Next</NextButton>
+                    <Paragraph><Trans i18nKey="help1-3" /></Paragraph>
+                    <Paragraph><Trans i18nKey="help1-4" /></Paragraph>
+                    <NextButton variant="outlined" onClick={() => setTab(1)}>{t('next')}</NextButton>
                 </TabPage>
 
                 <TabPage index={1} currentIndex={tab}>
-                    <Paragraph>
-                        There are several different types of clue. Some examples of these are shown below.
-                    </Paragraph>
+                    <Paragraph><Trans i18nKey="help2-1" /></Paragraph>
                     <Group>
                         <Section>
-                            <Paragraph grow>A <strong>basic clue</strong> shows the number of bombs in adjacent cells.</Paragraph>
+                            <Paragraph grow><Trans i18nKey="help2-2-1" /></Paragraph>
 
                             <CyclingCells
                                 columns={3}
@@ -209,7 +196,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph grow>A <strong>contiguous clue</strong> is shown between curly brackets: this indicates that associated bombs are adjacent to each other.</Paragraph>
+                            <Paragraph grow><Trans i18nKey="help2-2-2" /></Paragraph>
                             
                             <CyclingCells
                                 columns={3}
@@ -234,7 +221,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph grow>A <strong>split clue</strong> is shown between dashes: this indicates that associated bombs are not all adjacent to each other.</Paragraph>
+                            <Paragraph grow><Trans i18nKey="help2-2-3" /></Paragraph>
                             
                             <CyclingCells
                                 columns={3}
@@ -259,25 +246,16 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                     </Group>
-                    <Paragraph>
-                        A clue will fade to grey when all of its associated cells have been revealed or flagged.
-                    </Paragraph>
+                    <Paragraph><Trans i18nKey="help2-3" /></Paragraph>
 
-                    <NextButton variant="outlined" onClick={() => setTab(2)}>Next</NextButton>
+                    <NextButton variant="outlined" onClick={() => setTab(2)}>{t('next')}</NextButton>
                 </TabPage>
 
                 <TabPage index={2} currentIndex={tab}>
-                    <Paragraph>
-                        Other types of clue relate to different cells, but they behave in a similar manner.
-                    </Paragraph>
+                    <Paragraph><Trans i18nKey="help3-1" /></Paragraph>
                     <Group>
                         <Section>
-                            <Paragraph grow>
-                                A number not contained in a cell is a <strong>row clue</strong>.
-                                This shows the number of bombs along a line.
-                                The number is rotated to indicate the line's direction, and the line always continues to the edge of the board, even when there are gaps between cells.<br/>
-                                (The line is always "down" from the angle of the number.)
-                            </Paragraph>
+                            <Paragraph grow><Trans i18nKey="help3-2-1" /></Paragraph>
                             
                             <CyclingCells
                                 columns={3}
@@ -307,9 +285,7 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                         <Section>
-                            <Paragraph grow>
-                                A number in a blue cell is an <strong>area clue</strong>. This shows the number of bombs within a two-cell radius.
-                            </Paragraph>
+                            <Paragraph grow><Trans i18nKey="help3-2-2" /></Paragraph>
                             
                             <CyclingCells
                                 columns={5}
@@ -340,11 +316,9 @@ export const Help: React.FC<Props> = props => {
                             />
                         </Section>
                     </Group>
-                    <Paragraph>
-                        Sometimes it isn't obvious which cells are associated with a clue. Tap or click on any clue to highlight its associated cells.
-                    </Paragraph>
+                    <Paragraph><Trans i18nKey="help3-3" /></Paragraph>
 
-                    <NextButton variant="outlined" onClick={props.close}>Done</NextButton>
+                    <NextButton variant="outlined" onClick={props.close}>{t('done')}</NextButton>
                 </TabPage>
             </DialogContent>
         </Dialog>
