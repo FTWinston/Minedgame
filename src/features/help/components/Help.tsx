@@ -14,21 +14,22 @@ import { CyclingCells } from './CyclingCells';
 import { Cell, CellType } from 'src/features/hexcells';
 import { CountType, RowDirection } from 'src/features/hexcells/types/CellState';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@mui/material/Button';
 
 interface Props {
     open: boolean
     close: () => void;
 }
 
-const Page = styled(Box)({
+const Page = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     gap: '1.5em',
     '&:not([hidden])': {
         minHeight: '21.5em',
-    }
-});
+    },
+}));
 
 interface TabPageProps {
     index: number;
@@ -54,23 +55,40 @@ const Group = styled(Box)(({ theme }) => ({
         flexDirection: 'column',
         alignItems: 'stretch',
         gap: '1.5em',
-        margin: '1.5em 0',
+        borderBottomColor: theme.palette.text.disabled,
+        borderBottomStyle: 'solid',
+        borderBottomWidth: '1px',
+        paddingBottom: '1.5em',
     },
 }));
 
-const Section = styled(Box)({
+const Section = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     flexBasis: 0,
     flexGrow: 1,
     gap: '0.5em',
-});
+    [theme.breakpoints.down('md')]: {
+        borderTopColor: theme.palette.text.disabled,
+        borderTopStyle: 'solid',
+        borderTopWidth: '1px',
+        paddingTop: '1em',
+    }
+}));
 
-const Paragraph = styled(Box)<{ grow?: boolean }>(({ grow }) => ({
+const Paragraph = styled(Box, 
+    { shouldForwardProp: (prop) => prop !== 'grow' })
+    <{ grow?: boolean }>(({ grow }) => ({
     alignSelf: 'stretch',
     flexGrow: grow ? 1 : undefined,
 }));
+
+
+const NextButton = styled(Button)({
+    alignSelf: 'center',
+    marginTop: '1em',
+});
 
 export const Help: React.FC<Props> = props => {
     // No transition time if showing immediately on mount.
@@ -140,14 +158,14 @@ export const Help: React.FC<Props> = props => {
                         </Section>
                     </Group>
 
-                    <Section>
-                        <Paragraph>
-                            <em>You should never have to guess</em>: it should always be possible to determine next move logically.
-                        </Paragraph>
-                        <Paragraph>
-                            If you are stuck, the <strong>hint</strong> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.
-                        </Paragraph>
-                    </Section>
+                    <Paragraph>
+                        <em>You should never have to guess</em>: it should always be possible to determine next move logically.
+                    </Paragraph>
+                    <Paragraph>
+                        If you are stuck, the <strong>hint</strong> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.
+                    </Paragraph>
+
+                    <NextButton variant="outlined" onClick={() => setTab(1)}>Next</NextButton>
                 </TabPage>
 
                 <TabPage index={1} currentIndex={tab}>
@@ -244,6 +262,8 @@ export const Help: React.FC<Props> = props => {
                     <Paragraph>
                         A clue will fade to grey when all of its associated cells have been revealed or flagged.
                     </Paragraph>
+
+                    <NextButton variant="outlined" onClick={() => setTab(2)}>Next</NextButton>
                 </TabPage>
 
                 <TabPage index={2} currentIndex={tab}>
@@ -323,6 +343,8 @@ export const Help: React.FC<Props> = props => {
                     <Paragraph>
                         Sometimes it isn't obvious which cells are associated with a clue. Tap or click on any clue to highlight its associated cells.
                     </Paragraph>
+
+                    <NextButton variant="outlined" onClick={props.close}>Done</NextButton>
                 </TabPage>
             </DialogContent>
         </Dialog>
