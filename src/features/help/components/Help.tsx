@@ -21,7 +21,7 @@ interface Props {
     close: () => void;
 }
 
-const Page = styled(Box)(({ theme }) => ({
+const Page = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -29,7 +29,7 @@ const Page = styled(Box)(({ theme }) => ({
     '&:not([hidden])': {
         minHeight: '21.5em',
     },
-}));
+});
 
 interface TabPageProps {
     index: number;
