@@ -78,8 +78,8 @@ const Section = styled(Box)(({ theme }) => ({
 }));
 
 const Paragraph = styled(Box, 
-    { shouldForwardProp: (prop) => prop !== 'grow' })
-    <{ grow?: boolean }>(({ grow }) => ({
+    { shouldForwardProp: (prop) => prop !== 'grow' }
+)<{ grow?: boolean }>(({ grow }) => ({
     alignSelf: 'stretch',
     flexGrow: grow ? 1 : undefined,
 }));

@@ -67,9 +67,13 @@ export const CellSet: React.FC<Props> = props => {
             <CellWrapper key={index} style={wrapperStyle}>
                 <Cell
                     cellType={explosionCascadeCells.has(index) && cell.type !== CellType.RowClue ? CellType.Exploded : cell.type}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     resolved={(cell as any).resolved}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     countType={(cell as any).countType}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     direction={(cell as any).direction}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     number={(cell as any).number}
                     special={special}
                     onClick={() => props.onClick?.(cell, index)}

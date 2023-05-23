@@ -23,12 +23,14 @@ interface Props {
     onLongPress?: () => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const cellWidth = 2.3094;
+// eslint-disable-next-line react-refresh/only-export-components
 export const cellHeight = 2;
 
 const OuterBorderHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'error' })
-    <{ state: CellType, error: boolean }>
+    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'error' }
+)<{ state: CellType, error: boolean }>
 (({ state, error, theme }) => {
     let backgroundColor, cursor;
     switch (state) {
@@ -37,6 +39,7 @@ const OuterBorderHexagon = styled(Box,
         case CellType.Obscured:
         case CellType.Hint:
             cursor = 'pointer';
+        // eslint-disable-next-line no-fallthrough
         default:
             backgroundColor = theme.palette.text.primary;
             break;
@@ -62,8 +65,8 @@ const OuterBorderHexagon = styled(Box,
 });
 
 const InnerFillHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'fullyResolved' && prop !== 'countType' })
-    <{ state: CellType, fullyResolved?: boolean, direction?: RowDirection }>
+    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'fullyResolved' && prop !== 'countType' }
+)<{ state: CellType, fullyResolved?: boolean, direction?: RowDirection }>
 (({ state, fullyResolved, direction, theme }) => {
     let backgroundColor, color, transform;
     switch (state) {
@@ -142,7 +145,8 @@ const InnerFillHexagon = styled(Box,
 });
 
 const GlowHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'revealing' })<{ state: CellType, revealing: boolean }>(({ state, revealing }) => {
+    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'revealing' }
+)<{ state: CellType, revealing: boolean }>(({ state, revealing }) => {
     let backgroundColor;
 
     if (state !== CellType.RowClue) {
