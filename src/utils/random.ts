@@ -6,10 +6,11 @@ export function getRandomInt(maxExclusive: number) {
     return Math.floor(Math.random() * maxExclusive);
 }
 
-export function getRandom<T>(values: T[]): T | null {
+export function pickRandom<T>(values: T[]): T {
     if (values.length === 0) {
-        return null;
+        throw new Error('pickRandom passed an empty array');
     }
+    
     return values[getRandomInt(values.length)];
 }
 

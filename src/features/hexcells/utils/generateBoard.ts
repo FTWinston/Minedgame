@@ -5,7 +5,7 @@ import { areValuesContiguous } from './areValuesContiguous';
 import { ShapeConfig, generateBoardShape } from './generateBoardShape';
 import { addClue, updateClues } from './getClues';
 import { ResolvableCells, getResolvableCells } from './getResolvableCells';
-import { deleteRandom, getRandom, getRandomFloat, insertRandom } from 'src/utils/random';
+import { deleteRandom, pickRandom, getRandomFloat, insertRandom } from 'src/utils/random';
 import { shuffle } from 'src/utils/shuffle';
 import { coordinateFromIndex, getAdjacentIndexes, getIndexesInRadius, getIndexesInRow } from './indexes';
 import { isClueCell } from './isClueCell';
@@ -246,11 +246,12 @@ function tryAddRowClue(state: GeneratingState): boolean {
             return false;
         }
 
-        const direction = getRandom(clueInfo.directions);
-        if (direction === null) {
+        if (clueInfo.directions.length === 0) {
             continue;
         }
 
+        const direction = pickRandom(clueInfo.directions);
+        
         if (addRowClue(state, clueInfo.index, direction)) {
             return true;
         }
@@ -268,7 +269,7 @@ function tryAddRadiusClue(state: GeneratingState): boolean {
 
         if (addRadiusClue(state, index)) {
             return true;
-        };
+        }
     }
 
     return false;
@@ -278,7 +279,7 @@ function revealInitialCell(state: GeneratingState, obscuredIndexes: number[]): b
     // Reveal an obscured cell at random. Ensure that it's not an entirely isolated zero on its own.
     // Try this a few times before giving up.
     for (let attempt = 1; attempt < 5; attempt++) {
-        const index = getRandom(obscuredIndexes)!;
+        const index = pickRandom(obscuredIndexes);
 
         if (addEmptyCellClue(state, index, true)) {
             state.initiallyRevealedIndexes.add(index);
@@ -295,7 +296,7 @@ function completeNewClue(
     index: number,
     cell: ClueCell,
     associatedIndexes: Array<number | null>,
-    mustHaveBombs: boolean = false,
+    mustHaveBombs = false,
 ) {
     const associatedCells = associatedIndexes
         .map(index => index === null ? null : state.underlying[index]) as Array<CellState | null>;
@@ -313,6 +314,7 @@ function completeNewClue(
             continue;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const associatedCellIndex = associatedIndexes[associationIndex]!;
         if (state.obscuredIndexes.has(associatedCellIndex)) {
             hasAnyObscured = true;
@@ -366,7 +368,7 @@ function completeNewClue(
     return true;
 }
 
-function addEmptyCellClue(state: GeneratingState, index: number, requireAdjacentCells: boolean = false) {
+function addEmptyCellClue(state: GeneratingState, index: number, requireAdjacentCells = false) {
     const associatedIndexes = getAdjacentIndexes(index, state.columns, state.rows);
 
     if (requireAdjacentCells && !associatedIndexes.some(assoc => assoc !== null && state.underlying[assoc])) {
