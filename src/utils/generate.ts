@@ -40,8 +40,19 @@ function generateStage(): CellBoardDefinition {
 
 async function generateAndPush() {
     const definitions: CellBoardDefinition[] = [];
+    const numStages = 2;
 
-    definitions.push(generateStage());
+    for (let stage = 1; stage <= numStages; stage++) {
+        const stageDesc = `generating stage ${stage} of ${numStages}`;
+        console.time(stageDesc);
+        
+        try {
+            definitions.push(generateStage());
+        }
+        finally {
+            console.timeEnd(stageDesc);
+        }
+    }
 
     await pushFile(JSON.stringify(definitions));
 }
