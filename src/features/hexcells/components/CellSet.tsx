@@ -90,7 +90,7 @@ export const CellSet: React.FC<Props> = props => {
     };
 
     return (
-        <CellContainer style={containerStyle} onContextMenu={(e: React.MouseEvent<Element>) => e.preventDefault()}>
+        <CellContainer style={containerStyle}>
             {contents}
         </CellContainer>
     );

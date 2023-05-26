@@ -7,6 +7,7 @@ import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
 import { Result } from './Result';
 import { useTimer } from 'src/hooks/useTimer';
+import { useEffect } from 'react';
 
 const getDefinition = suspendPromise<CellBoardDefinition[]>(
     fetch(import.meta.env.VITE_GAME_DATA_URL)
@@ -29,6 +30,14 @@ export const HexCells: React.FC<Props> = props => {
     if (board.result && timerEnabled) {
         enableTimer(false);
     }
+
+    // Disable context menu everywhere when a game is rendering.
+    // Otherwise, when right clicking to flag the final bomb, the context menu could show on account of a dialog or transition.
+    useEffect(() => {
+        const listener = (e: MouseEvent) => e.preventDefault();
+        document.addEventListener('contextmenu', listener);
+        return () => document.removeEventListener('contextmenu', listener);
+    }, []);
     
     const result = board.result
         ? (
