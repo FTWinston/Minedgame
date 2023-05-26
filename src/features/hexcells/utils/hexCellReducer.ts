@@ -137,7 +137,11 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
             return;
         }
         case 'new': {
-            return action.board;
+            return {
+                ...action.board,
+                hintsUsed: state.hintsUsed,
+                numErrors: state.numErrors,
+            }
         }
         default:
             throw new UnexpectedValueError(action);

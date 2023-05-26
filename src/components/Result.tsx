@@ -47,6 +47,7 @@ interface Props {
     bombsLeft: number;
     errors: number;
     hintsUsed: number;
+    stage: number;
     timeSpent: string;
 }
 
@@ -57,7 +58,7 @@ export const Result: React.FC<Props> = props => {
     const share = () => {
         let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
         if (props.result === 'failure') {
-            text = `🚩 ${props.bombsLeft}   ${text}`;
+            text = `🚩 ${props.bombsLeft}   📖 ${props.stage}   ${text}`;
         }
         const title = t(props.result === 'success' ? 'shareWin' : 'shareLose');
         text = `${title} \n${text}\n`;

@@ -13,6 +13,8 @@ export const Default: Story = {
         bombsLeft: 10,
         errors: 7,
         hintsUsed: 3,
+        currentStage: 1,
+        totalStages: 2,
         timeSpent: '0:07',
     }
 }

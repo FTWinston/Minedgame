@@ -7,6 +7,7 @@ import TimeIcon from '@mui/icons-material/TimerOutlined';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import HintIcon from '@mui/icons-material/Lightbulb';
 import ErrorIcon from '@mui/icons-material/DangerousOutlined';
+import StageIcon from '@mui/icons-material/AutoStories';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,8 @@ interface Props {
     errors: number;
     hintsUsed: number;
     timeSpent: string;
+    currentStage: number;
+    totalStages: number;
     getHint?: () => void;
     showHelp?: () => void;
 }
@@ -55,6 +58,19 @@ const Errors = styled(BorderlessChip)({
     right: 0,
 });
 
+const Stage = styled(BorderlessChip)({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    '& > .MuiChip-label': {
+        marginLeft: '0.275em',
+        marginTop: '0.1em',
+    }
+});
+
 const HintWrapper = styled(Box)({
     position: 'absolute',
     bottom: '0',
@@ -82,6 +98,14 @@ export const Tools: React.FC<Props> = props => {
                 icon={<BombIcon fontSize="large" />}
                 label={props.bombsLeft.toString()}
                 title={t('bombsLeft')}
+            />
+
+            <Stage
+                color="secondary"
+                variant="outlined"
+                icon={<StageIcon fontSize="large" />}
+                label={`${props.currentStage} of ${props.totalStages}`}
+                title={t('currentStage')}
             />
 
             <Elapsed

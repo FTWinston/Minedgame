@@ -8,3 +8,4 @@ export { hexCellReducer } from './utils/hexCellReducer';
 export { generateBoard } from './utils/generateBoard';
 export type { GenerationConfig } from './utils/generateBoard';
 export { getConfiguration } from './utils/getConfiguration';
+export { createCellBoardInstance } from './utils/createCellBoardInstance';
