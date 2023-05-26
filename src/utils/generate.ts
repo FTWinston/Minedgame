@@ -1,43 +1,49 @@
 import { Handler, HandlerContext, HandlerEvent } from '@netlify/functions';
 import { Octokit } from 'octokit';
 import { createTokenAuth } from '@octokit/auth-token';
-import { GenerationConfig, generateBoard } from 'src/features/hexcells/utils/generateBoard';
+import { getConfiguration, generateBoard, GenerationConfig, CellBoardDefinition } from 'src/features/hexcells';
 
 export const handler: Handler = async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _event: HandlerEvent,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _context: HandlerContext
 ) => {
-    await generate();
+    await generateAndPush();
 
     return { statusCode: 200 };
 };
 
-async function generate() {
-    const config: GenerationConfig = {
-        orientation: 'portrait',
-        numCells: 50,
-        gapFraction: 0.3,
-        bombFraction: 0.45,
-        unknownFraction: 0.05,
-        rowClueChance: 5,
-        radiusClueChance: 0.025,
-        revealChance: 0.1,
-        contiguousClueChance: 0.5,
-        splitClueChance: 0.4,
-        remainingBombCountFraction: 0.33,
-    };
+function generateStage(): CellBoardDefinition {
+    console.time('getting configuration');
+    let config: GenerationConfig;
+    
+    try {
+        config = getConfiguration();
+    }
+    finally {
+        console.timeEnd('getting configuration');
+    }
 
     console.time('generating definition');
-    let definition: string;
+    let definition: CellBoardDefinition;
 
     try {
-        definition = JSON.stringify([generateBoard(config)]);
+        definition = generateBoard(config);
     }
     finally {
         console.timeEnd('generating definition');
     }
 
-    await pushFile(definition);
+    return definition;
+}
+
+async function generateAndPush() {
+    const definitions: CellBoardDefinition[] = [];
+
+    definitions.push(generateStage());
+
+    await pushFile(JSON.stringify(definitions));
 }
 
 async function pushFile(definition: string) {

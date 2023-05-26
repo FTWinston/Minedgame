@@ -1,5 +1,5 @@
-export function getRandomFloat() {
-    return Math.random();
+export function getRandomFloat(min = 0, max = 1) {
+    return min + Math.random() * (max - min);
 }
 
 export function getRandomInt(maxExclusive: number) {
@@ -10,7 +10,7 @@ export function pickRandom<T>(values: T[]): T {
     if (values.length === 0) {
         throw new Error('pickRandom passed an empty array');
     }
-    
+
     return values[getRandomInt(values.length)];
 }
 
