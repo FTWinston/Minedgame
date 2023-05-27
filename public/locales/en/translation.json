@@ -16,6 +16,7 @@
     "close": "Close",
     "next": "Next",
     "done": "Done",
+    "stageNumber": "{{current}} of {{total}}",
     "currentStage": "Current stage",
     "resultPrompt": "Why not share your result with a friend?",
     "resultNextGame": "A new game is available every day, so come back tomorrow! Next game in:",

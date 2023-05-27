@@ -104,7 +104,7 @@ export const Tools: React.FC<Props> = props => {
                 color="secondary"
                 variant="outlined"
                 icon={<StageIcon fontSize="large" />}
-                label={`${props.currentStage} of ${props.totalStages}`}
+                label={t('stageNumber', { current: props.currentStage, total: props.totalStages })}
                 title={t('currentStage')}
             />
 
