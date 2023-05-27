@@ -116,8 +116,8 @@ export const Tools: React.FC<Props> = props => {
                     color="secondary"
                     variant="outlined"
                     icon={<StageIcon fontSize="large" />}
-                    label={t('stageNumber', { current: props.currentStage, total: props.totalStages })}
-                    title={t('currentStage')}
+                    label={<>{props.currentStage}<Typography component="span" fontSize="0.75em"> / </Typography>{props.totalStages}</>}
+                    title={t('currentStage', { current: props.currentStage, total: props.totalStages })}
                 />
     
                 <IconButton
