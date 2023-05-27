@@ -47,7 +47,7 @@ export const HexCells: React.FC<Props> = props => {
         return () => document.removeEventListener('contextmenu', listener);
     }, []);
     
-    const result = board.result
+    const result = game.result && (displayNumber >= totalStages || game.result === 'failure')
         ? (
             <Result
                 result={game.result}
