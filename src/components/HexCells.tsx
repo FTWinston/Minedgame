@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useImmerReducer } from 'use-immer';
 import Slide from '@mui/material/Slide';
 import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
@@ -38,8 +38,16 @@ export const HexCells: React.FC<Props> = props => {
     }
 
     const [displayNumber, setDisplayNumber] = useState(stageNumber);
+
+    // Disable context menu everywhere when a game is rendering.
+    // Otherwise, when right clicking to flag the final bomb, the context menu could show on account of a dialog or transition.
+    useEffect(() => {
+        const listener = (e: MouseEvent) => e.preventDefault();
+        document.addEventListener('contextmenu', listener);
+        return () => document.removeEventListener('contextmenu', listener);
+    }, []);
     
-    const result = game.result && (displayNumber >= totalStages || game.result === 'failure')
+    const result = board.result
         ? (
             <Result
                 result={game.result}

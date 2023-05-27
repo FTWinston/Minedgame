@@ -74,7 +74,6 @@ export const Result: React.FC<Props> = props => {
         <Dialog
             open={true}
             TransitionComponent={props.result === 'success' ? SuccessTransition : FailureTransition}
-            onContextMenu={e => e.preventDefault()}
         >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
