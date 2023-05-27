@@ -62,6 +62,9 @@ const Stage = styled(BorderlessChip)({
 
 const Hint = styled(Button)({
     fontSize: '1.25em',
+    borderBottomWidth: '0 !important',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
 });
 
 const BigHintIcon = styled(HintIcon)({
