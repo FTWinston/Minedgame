@@ -23,6 +23,23 @@ interface Props {
     showHelp?: () => void;
 }
 
+const Row = styled(Box)({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+});
+
+const TopRow = styled(Row)({
+    top: 0,
+});
+
+const BottomRow = styled(Row)({
+    bottom: 0,
+});
+
 const Number = styled(Typography)({
     fontSize: 'inherit !important',
 });
@@ -34,49 +51,13 @@ const BorderlessChip = styled(Chip)({
     fontFamily: 'monospace',
 });
 
-const Remaining = styled(BorderlessChip)({
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-});
-
-const Elapsed = styled(BorderlessChip)({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-});
-
-const Help = styled(IconButton)({
-    position: 'absolute',
-    top: 0,
-    right: 0,
-});
-
-const Errors = styled(BorderlessChip)({
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-});
-
 const Stage = styled(BorderlessChip)({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    position: 'relative',
+    top: '-0.1rem',
     '& > .MuiChip-label': {
         marginLeft: '0.275em',
-        marginTop: '0.1em',
+        marginTop: '0.1rem',
     }
-});
-
-const HintWrapper = styled(Box)({
-    position: 'absolute',
-    bottom: '0',
-    left: 0,
-    right: 0,
-    textAlign: 'center',
 });
 
 const Hint = styled(Button)({
@@ -92,40 +73,15 @@ export const Tools: React.FC<Props> = props => {
 
     return (
         <>
-            <Remaining
-                color="primary"
-                variant="outlined"
-                icon={<BombIcon fontSize="large" />}
-                label={props.bombsLeft.toString()}
-                title={t('bombsLeft')}
-            />
+            <BottomRow>
+                <BorderlessChip
+                    color="primary"
+                    variant="outlined"
+                    icon={<BombIcon fontSize="large" />}
+                    label={props.bombsLeft.toString()}
+                    title={t('bombsLeft')}
+                />
 
-            <Stage
-                color="secondary"
-                variant="outlined"
-                icon={<StageIcon fontSize="large" />}
-                label={t('stageNumber', { current: props.currentStage, total: props.totalStages })}
-                title={t('currentStage')}
-            />
-
-            <Elapsed
-                color="secondary"
-                variant="outlined"
-                icon={<TimeIcon fontSize="large" />}
-                label={props.timeSpent}
-                title={t('elapsed')}
-            />
-
-            <Help
-                color="secondary"
-                title={t('help')}
-                size="large"
-                onClick={props.showHelp}
-            >
-                <HelpIcon fontSize="inherit" />
-            </Help>
-
-            <HintWrapper>
                 <Hint
                     color="success"
                     variant="text"
@@ -136,16 +92,43 @@ export const Tools: React.FC<Props> = props => {
                 >
                     {t('hint')}
                 </Hint>
-            </HintWrapper>
 
-            <Errors
-                color="error"
-                disabled={props.errors === 0}
-                variant="outlined"
-                icon={<ErrorIcon fontSize="large" />}
-                label={props.errors}
-                title={t('errors')}
-            />
+                <BorderlessChip
+                    color="error"
+                    disabled={props.errors === 0}
+                    variant="outlined"
+                    icon={<ErrorIcon fontSize="large" />}
+                    label={props.errors}
+                    title={t('errors')}
+                />
+            </BottomRow>
+
+            <TopRow>
+                <BorderlessChip
+                    color="secondary"
+                    variant="outlined"
+                    icon={<TimeIcon fontSize="large" />}
+                    label={props.timeSpent}
+                    title={t('elapsed')}
+                />
+
+                <Stage
+                    color="secondary"
+                    variant="outlined"
+                    icon={<StageIcon fontSize="large" />}
+                    label={t('stageNumber', { current: props.currentStage, total: props.totalStages })}
+                    title={t('currentStage')}
+                />
+    
+                <IconButton
+                    color="secondary"
+                    title={t('help')}
+                    size="large"
+                    onClick={props.showHelp}
+                >
+                    <HelpIcon fontSize="inherit" />
+                </IconButton>
+            </TopRow>
         </>
     );
 }
