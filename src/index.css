@@ -18,6 +18,10 @@ body {
   min-height: 100svh;
 }
 
+#root {
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
 }

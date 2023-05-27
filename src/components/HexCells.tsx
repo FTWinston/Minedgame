@@ -1,7 +1,7 @@
-import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
+import { useState } from 'react';
 import { useImmerReducer } from 'use-immer';
-import { TransitionGroup } from 'react-transition-group';
-import { Slide } from '@mui/material';
+import Slide from '@mui/material/Slide';
+import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
 import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
 import { Help } from 'src/features/help';
 import { suspendPromise } from 'src/utils/suspendPromise';
@@ -34,11 +34,12 @@ export const HexCells: React.FC<Props> = props => {
 
         if (game.result === 'success' && stageNumber < totalStages) {
             definitionsDispatch({ type: 'increment' });
-            gameDispatch({ type: 'new', board: instantiateStage(stageNumber + 1) });
         }
     }
+
+    const [displayNumber, setDisplayNumber] = useState(stageNumber);
     
-    const result = game.result && (stageNumber >= totalStages || game.result === 'failure')
+    const result = game.result && (displayNumber >= totalStages || game.result === 'failure')
         ? (
             <Result
                 result={game.result}
@@ -58,26 +59,33 @@ export const HexCells: React.FC<Props> = props => {
                 close={() => props.setShowHelp(false)}
             />
 
-            <TransitionGroup>
-            <Slide key={stageNumber} direction="right"/* mountOnEnter unmountOnExit*/>
+            <Slide
+                direction={displayNumber === stageNumber ? 'right' : 'left'}
+                timeout={1000}
+                appear={false}
+                in={displayNumber === stageNumber}
+                onExited={() => {
+                    setDisplayNumber(stageNumber);
+                    gameDispatch({ type: 'new', board: instantiateStage(stageNumber) });
+                }}
+            >
                 <div>
-                <InteractiveCells
-                    cells={game.cells}
-                    columns={game.columns}
-                    revealCell={index => { enableTimer(true); gameDispatch({ type: 'reveal', index }) }}
-                    flagCell={index => { enableTimer(true); gameDispatch({ type: 'flag', index }) }}
-                    result={game.result}
-                    errorIndex={game.errorIndex}
-                />
+                    <InteractiveCells
+                        cells={game.cells}
+                        columns={game.columns}
+                        revealCell={index => { enableTimer(true); gameDispatch({ type: 'reveal', index }) }}
+                        flagCell={index => { enableTimer(true); gameDispatch({ type: 'flag', index }) }}
+                        result={game.result}
+                        errorIndex={game.errorIndex}
+                    />
                 </div>
             </Slide>
-            </TransitionGroup>
 
             <Tools
                 bombsLeft={game.numBombs}
                 errors={game.numErrors}
                 hintsUsed={game.hintsUsed}
-                currentStage={stageNumber}
+                currentStage={displayNumber}
                 totalStages={totalStages}
                 timeSpent={timeSpent}
                 getHint={() => { enableTimer(true); gameDispatch({ type: 'hint' })} }
