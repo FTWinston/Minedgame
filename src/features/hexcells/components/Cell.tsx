@@ -164,19 +164,46 @@ const GlowHexagon = styled(Box,
 });
 
 const Text = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'fullyResolved' }
-)<{ cellType: CellType, fullyResolved?: boolean }>(({ cellType, fullyResolved, theme }) => ({
-    fontSize: '1.2em',
-    color: fullyResolved
-        ? theme.palette.text.disabled
-        : undefined,
-    textDecoration: cellType === CellType.RowClue
-        ? 'underline'
-        : undefined,
-    textDecorationColor: cellType === CellType.RowClue && !fullyResolved
-        ? theme.palette.primary.main
-        : undefined,
-}));
+    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'countType' && prop !== 'fullyResolved' }
+)<{ cellType: CellType, countType?: CountType, fullyResolved?: boolean }>(({ cellType, countType, fullyResolved, theme }) => {
+    let before, after;
+
+    if (countType === CountType.Contiguous) {
+        before = {
+            content: '"{"',
+            display: 'inline-block',
+        };
+        after = {
+            content: '"}"',
+            display: 'inline-block',
+        };
+    }
+    else if (countType === CountType.Split) {
+        before = {
+            content: '"-"',
+            display: 'inline-block',
+        };
+        after = {
+            content: '"-"',
+            display: 'inline-block',
+        };
+    }
+
+    return {
+        fontSize: '1.2em',
+        color: fullyResolved
+            ? theme.palette.text.disabled
+            : undefined,
+        textDecoration: cellType === CellType.RowClue
+            ? 'underline'
+            : undefined,
+        textDecorationColor: cellType === CellType.RowClue && !fullyResolved
+            ? theme.palette.primary.main
+            : undefined,
+        '&::before': before,
+        '&::after': after,
+    };
+});
 
 export const Cell: React.FC<PropsWithChildren<Props>> = props => {
     let content;
@@ -185,18 +212,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
         case CellType.AdjacentClue:
         case CellType.RowClue:
         case CellType.RadiusClue:
-            switch (props.countType) {
-                case CountType.Split:
-                    content = `-${props.number}-`;
-                    break;
-                case CountType.Contiguous:
-                    content = `{${props.number}}`;
-                    break;
-                case CountType.Normal:
-                default:
-                    content = props.number;
-                    break;
-            }
+            content = props.number;
             break;
         case CellType.Unknown:
             content = '?';
@@ -222,7 +238,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
         >
             <InnerFillHexagon cellType={props.cellType} direction={props.direction}>
                 <GlowHexagon cellType={props.cellType} revealing={props.special === Special.Highlight}>
-                    <Text cellType={props.cellType} fullyResolved={props.resolved}>
+                    <Text cellType={props.cellType} countType={props.countType} fullyResolved={props.resolved}>
                         {content}
                     </Text>
                 </GlowHexagon>
