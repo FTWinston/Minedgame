@@ -71,6 +71,7 @@ export const HexCells: React.FC<Props> = props => {
             >
                 <div>
                     <InteractiveCells
+                        key={displayNumber}
                         cells={game.cells}
                         columns={game.columns}
                         revealCell={index => { enableTimer(true); gameDispatch({ type: 'reveal', index }) }}
