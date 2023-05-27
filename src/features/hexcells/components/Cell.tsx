@@ -65,7 +65,7 @@ const OuterBorderHexagon = styled(Box,
 });
 
 const InnerFillHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'fullyResolved' && prop !== 'countType' }
+    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'fullyResolved' && prop !== 'direction' }
 )<{ state: CellType, fullyResolved?: boolean, direction?: RowDirection }>
 (({ state, fullyResolved, direction, theme }) => {
     let backgroundColor, color, transform;
@@ -100,22 +100,22 @@ const InnerFillHexagon = styled(Box,
                 : theme.palette.text.primary;
             switch (direction) {
                 case RowDirection.TopToBottom:
-                    transform = 'translate(0, 0.6em)';
+                    transform = 'translate(0, 0.5em)';
                     break;
                 case RowDirection.TLBR:
-                    transform = 'rotate(-60deg) translate(0, 0.6em)';
+                    transform = 'rotate(-60deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.TRBL:
-                    transform = 'rotate(60deg) translate(0, 0.6em)';
+                    transform = 'rotate(60deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BottomToTop:
-                    transform = 'rotate(-180deg) translate(0, 0.6em)';
+                    transform = 'rotate(-180deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BLTR:
-                    transform = 'rotate(-120deg) translate(0, 0.6em)';
+                    transform = 'rotate(-120deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BRTL:
-                    transform = 'rotate(120deg) translate(0, 0.6em)';
+                    transform = 'rotate(120deg) translate(0, 0.5em)';
                     break;
             }
             break;
@@ -169,9 +169,13 @@ const GlowHexagon = styled(Box,
     };
 });
 
-const Text = styled(Box)({
+const Text = styled(Box,
+    { shouldForwardProp: (prop) => prop !== 'state' }
+)<{ state: CellType }>(({ state, theme }) => ({
     fontSize: '1.2em',
-})
+    textDecoration: state === CellType.RowClue ? 'underline' : undefined,
+    textDecorationColor: state === CellType.RowClue ? theme.palette.primary.main : undefined,
+}));
 
 export const Cell: React.FC<PropsWithChildren<Props>> = props => {
     let content;
@@ -217,7 +221,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
         >
             <InnerFillHexagon state={props.cellType} fullyResolved={props.resolved} direction={props.direction}>
                 <GlowHexagon state={props.cellType} revealing={props.special === Special.Highlight}>
-                    <Text>
+                    <Text state={props.cellType}>
                         {content}
                     </Text>
                 </GlowHexagon>
