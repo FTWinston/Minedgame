@@ -84,7 +84,7 @@ export const Tools: React.FC<Props> = props => {
 
                 <Hint
                     color="success"
-                    variant="text"
+                    variant="outlined"
                     startIcon={<BigHintIcon />}
                     endIcon={props.hintsUsed > 0 ? <Number>({props.hintsUsed})</Number> : undefined}
                     onClick={props.getHint}
