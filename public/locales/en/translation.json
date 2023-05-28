@@ -29,7 +29,7 @@
     "help1-2-2a": "This is a bomb. When a cell is flagged as containing a bomb, it looks like this.",
     "help1-2-2b": "Long press or right click on an obscured cell to flag it as a bomb. If it doesn't contain a bomb, this counts as an error.",
     "help1-2-3a": "This is a clue. (This one indicates that 3 of its adjacent cells contain bombs.)",
-    "help1-2-3b": "The number of un-flagged is shown in the bottom left of the screen. You win when this number reaches zero.",
+    "help1-2-3b": "The number of un-flagged bombs is shown in the bottom left of the screen. You win when this number reaches zero.",
     "help1-3": "<em>You should never have to guess</em>: it should always be possible to determine next move logically.",
     "help1-4": "If you are stuck, the <strong>hint</strong> button will indicate a cell that you should be able to determine the state of. It won't indicate whether this cell contains a bomb.",
     "help2-1": "There are several different types of clue. Some examples of these are shown below.",
