@@ -138,7 +138,7 @@ export const Help: React.FC<Props> = props => {
                         <Trans
                             i18nKey="help1-1"
                             components={{
-                                Link: <Link href="https://store.steampowered.com/app/265890/Hexcells/" />
+                                Link: <Link color="secondary" href="https://store.steampowered.com/app/265890/Hexcells/" />
                             }}
                         />
                     </Paragraph>
