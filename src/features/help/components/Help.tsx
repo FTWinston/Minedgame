@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -10,12 +11,12 @@ import Box from '@mui/material/Box';
 import { styled, useTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@mui/material/Button';
 import { CyclingCells } from './CyclingCells';
 import { Cell, CellType } from 'src/features/hexcells';
 import { CountType, RowDirection } from 'src/features/hexcells/types/CellState';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Button from '@mui/material/Button';
-import { Trans, useTranslation } from 'react-i18next';
+import { Link } from '@mui/material';
 
 interface Props {
     open: boolean
@@ -133,7 +134,14 @@ export const Help: React.FC<Props> = props => {
             
             <DialogContent>
                 <TabPage index={0} currentIndex={tab}>
-                    <Paragraph><Trans i18nKey="help1-1" /></Paragraph>
+                    <Paragraph>
+                        <Trans
+                            i18nKey="help1-1"
+                            components={{
+                                Link: <Link color="secondary" href="https://store.steampowered.com/app/265890/Hexcells/" />
+                            }}
+                        />
+                    </Paragraph>
                     <Group>
                         <Section>
                             <Cell cellType={CellType.Obscured} />

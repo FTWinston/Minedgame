@@ -29,11 +29,11 @@ export const cellWidth = 2.3094;
 export const cellHeight = 2;
 
 const OuterBorderHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'error' }
-)<{ state: CellType, error: boolean }>
-(({ state, error, theme }) => {
+    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'error' }
+)<{ cellType: CellType, error: boolean }>
+(({ cellType, error, theme }) => {
     let backgroundColor, cursor;
-    switch (state) {
+    switch (cellType) {
         case CellType.RowClue:
             break;
         case CellType.Obscured:
@@ -65,11 +65,11 @@ const OuterBorderHexagon = styled(Box,
 });
 
 const InnerFillHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'fullyResolved' && prop !== 'countType' }
-)<{ state: CellType, fullyResolved?: boolean, direction?: RowDirection }>
-(({ state, fullyResolved, direction, theme }) => {
+    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'direction' }
+)<{ cellType: CellType, direction?: RowDirection }>
+(({ cellType, direction, theme }) => {
     let backgroundColor, color, transform;
-    switch (state) {
+    switch (cellType) {
         case CellType.Obscured:
             backgroundColor = theme.palette.warning.main;
             color = backgroundColor;
@@ -80,9 +80,7 @@ const InnerFillHexagon = styled(Box,
             break;
         case CellType.AdjacentClue:
             backgroundColor = theme.palette.background.paper;
-            color = fullyResolved
-                ? theme.palette.text.disabled
-                : theme.palette.text.primary;
+            color = theme.palette.text.primary;
             break;
         case CellType.Unknown:
             backgroundColor = theme.palette.background.paper;
@@ -90,32 +88,28 @@ const InnerFillHexagon = styled(Box,
             break;
         case CellType.RadiusClue:
             backgroundColor = theme.palette.primary.dark;
-            color = fullyResolved
-                ? theme.palette.text.disabled
-                : theme.palette.text.primary;
+            color = theme.palette.text.primary;
             break;
         case CellType.RowClue:
-            color = fullyResolved
-                ? theme.palette.text.disabled
-                : theme.palette.text.primary;
+            color = theme.palette.text.primary;
             switch (direction) {
                 case RowDirection.TopToBottom:
-                    transform = 'translate(0, 0.6em)';
+                    transform = 'translate(0, 0.5em)';
                     break;
                 case RowDirection.TLBR:
-                    transform = 'rotate(-60deg) translate(0, 0.6em)';
+                    transform = 'rotate(-60deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.TRBL:
-                    transform = 'rotate(60deg) translate(0, 0.6em)';
+                    transform = 'rotate(60deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BottomToTop:
-                    transform = 'rotate(-180deg) translate(0, 0.6em)';
+                    transform = 'rotate(-180deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BLTR:
-                    transform = 'rotate(-120deg) translate(0, 0.6em)';
+                    transform = 'rotate(-120deg) translate(0, 0.5em)';
                     break;
                 case RowDirection.BRTL:
-                    transform = 'rotate(120deg) translate(0, 0.6em)';
+                    transform = 'rotate(120deg) translate(0, 0.5em)';
                     break;
             }
             break;
@@ -145,11 +139,11 @@ const InnerFillHexagon = styled(Box,
 });
 
 const GlowHexagon = styled(Box,
-    { shouldForwardProp: (prop) => prop !== 'state' && prop !== 'revealing' }
-)<{ state: CellType, revealing: boolean }>(({ state, revealing }) => {
+    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'revealing' }
+)<{ cellType: CellType, revealing: boolean }>(({ cellType, revealing }) => {
     let backgroundColor;
 
-    if (state !== CellType.RowClue) {
+    if (cellType !== CellType.RowClue) {
         backgroundColor = revealing
             ? 'rgba(255,255,255, 0.75)'
             : 'rgba(255,255,255, 0.15)';
@@ -169,9 +163,47 @@ const GlowHexagon = styled(Box,
     };
 });
 
-const Text = styled(Box)({
-    fontSize: '1.2em',
-})
+const Text = styled(Box,
+    { shouldForwardProp: (prop) => prop !== 'cellType' && prop !== 'countType' && prop !== 'fullyResolved' }
+)<{ cellType: CellType, countType?: CountType, fullyResolved?: boolean }>(({ cellType, countType, fullyResolved, theme }) => {
+    let before, after;
+
+    if (countType === CountType.Contiguous) {
+        before = {
+            content: '"{"',
+            display: 'inline-block',
+        };
+        after = {
+            content: '"}"',
+            display: 'inline-block',
+        };
+    }
+    else if (countType === CountType.Split) {
+        before = {
+            content: '"-"',
+            display: 'inline-block',
+        };
+        after = {
+            content: '"-"',
+            display: 'inline-block',
+        };
+    }
+
+    return {
+        fontSize: '1.2em',
+        color: fullyResolved
+            ? theme.palette.text.disabled
+            : undefined,
+        textDecoration: cellType === CellType.RowClue
+            ? 'underline'
+            : undefined,
+        textDecorationColor: cellType === CellType.RowClue && !fullyResolved
+            ? theme.palette.primary.main
+            : undefined,
+        '&::before': before,
+        '&::after': after,
+    };
+});
 
 export const Cell: React.FC<PropsWithChildren<Props>> = props => {
     let content;
@@ -180,18 +212,7 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
         case CellType.AdjacentClue:
         case CellType.RowClue:
         case CellType.RadiusClue:
-            switch (props.countType) {
-                case CountType.Split:
-                    content = `-${props.number}-`;
-                    break;
-                case CountType.Contiguous:
-                    content = `{${props.number}}`;
-                    break;
-                case CountType.Normal:
-                default:
-                    content = props.number;
-                    break;
-            }
+            content = props.number;
             break;
         case CellType.Unknown:
             content = '?';
@@ -209,15 +230,15 @@ export const Cell: React.FC<PropsWithChildren<Props>> = props => {
 
     return (
         <OuterBorderHexagon
-            state={props.cellType}
+            cellType={props.cellType}
             error={props.special === Special.Error}
             {...handlers}
             sx={props.sx}
             role={props.role}
         >
-            <InnerFillHexagon state={props.cellType} fullyResolved={props.resolved} direction={props.direction}>
-                <GlowHexagon state={props.cellType} revealing={props.special === Special.Highlight}>
-                    <Text>
+            <InnerFillHexagon cellType={props.cellType} direction={props.direction}>
+                <GlowHexagon cellType={props.cellType} revealing={props.special === Special.Highlight}>
+                    <Text cellType={props.cellType} countType={props.countType} fullyResolved={props.resolved}>
                         {content}
                     </Text>
                 </GlowHexagon>
