@@ -20,7 +20,7 @@ export const Homepage: React.FC<Props> = props => {
     const { t } = useTranslation();
     
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh" gap="0.5em">
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh" gap="1.5em">
             <Typography
                 fontFamily="Rajdhani"
                 variant="h1"
@@ -29,6 +29,7 @@ export const Homepage: React.FC<Props> = props => {
                 display="flex"
                 alignItems="center"
                 gap="0.15em"
+                marginBottom="-1.5rem"
             >
                 <Cell
                     cellType={CellType.Obscured}
@@ -52,7 +53,7 @@ export const Homepage: React.FC<Props> = props => {
                 {t('subtitle')}
             </Typography>
 
-            <Box margin="2em" display="flex" gap="1em">
+            <Box display="flex" gap="1em">
                 <Button
                     variant="contained"
                     color="primary"
@@ -71,7 +72,7 @@ export const Homepage: React.FC<Props> = props => {
                 </Button>
             </Box>
 
-            <Typography color={theme.palette.text.secondary} marginBottom="0.5em">{strDate}</Typography>
+            <Typography color={theme.palette.text.secondary}>{strDate}</Typography>
             
             <Link href="https://github.com/FTWinston/Minedgame" title={t('githubLink')} target="_blank">
                 <svg aria-hidden viewBox="0 0 16 16" width="32" height="32">
