@@ -68,7 +68,7 @@ export const HexCells: React.FC<Props> = props => {
             />
 
             <Slide
-                direction={displayNumber === stageNumber ? 'right' : 'left'}
+                direction={displayNumber === stageNumber ? 'left' : 'right'}
                 timeout={1000}
                 appear={false}
                 in={displayNumber === stageNumber}
