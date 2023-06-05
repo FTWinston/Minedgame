@@ -3,7 +3,7 @@ import { CellType, CountType, EmptyCell, RadiusClue, RowClue, RowDirection, Unde
 import { Clue, ClueMap } from '../types/Clue';
 import { areValuesContiguous } from './areValuesContiguous';
 import { ShapeConfig, generateBoardShape } from './generateBoardShape';
-import { addClue, updateClues } from './getClues';
+import { addClue, getClues, updateClues } from './getClues';
 import { ResolvableCells, getResolvableCells } from './getResolvableCells';
 import { deleteRandom, pickRandom, getRandomFloat, insertRandom } from 'src/utils/random';
 import { shuffle } from 'src/utils/shuffle';
@@ -169,7 +169,7 @@ function createInitialState(config: FullConfig): GeneratingState {
 }
 
 /** Determine what cells can be resolved. If they're bombs, mark them as such. If they're empty, mark them unknown, and add to state.revealableIndexes. */
-function resolveCells(state: GeneratingState) {
+function resolveCells(state: GeneratingState, assignUnderlying: boolean) {
     // If a previous step left some "pre-computed" resolvable cells, reuse those. Otherwise, resolve.
     const resolvableCells = state.nextResolvableCells
         ?? getResolvableCells(state, state.clues);
@@ -189,20 +189,34 @@ function resolveCells(state: GeneratingState) {
     for (const [index, cellType] of resolvableCells) {
         state.obscuredIndexes.delete(index);
 
-        // Allocate and reveal any just-resolved bombs.
         if (cellType === CellType.Bomb) {
-            state.cells[index] = state.underlying[index] = { type: CellType.Bomb };
-            state.numBombsSoFar++;
+            // Allocate and reveal any just-resolved bombs.
+            if (assignUnderlying) {
+                state.underlying[index] = { type: CellType.Bomb };
+                state.numBombsSoFar++;
+            }
+            state.cells[index] = state.underlying[index];
         }
-        // Allocate just-resolved empty cells to unknown, but don't reveal them yet.
-        // (All just-resolved bombs must be resolved before these can be allocated to Empty, as these may affect the clues we allocate!)
-        else {
+        else if (assignUnderlying) {
+            // Allocate just-resolved empty cells to unknown, but don't reveal them yet.
+            // (All just-resolved bombs must be resolved before these can be allocated to Empty, as these may affect the clues we allocate!)
             state.underlying[index] = { type: CellType.Unknown };
             revealableIndexes.push(index);
         }
+        else {
+            // Assume the underlying cell is already determined.
+            // Reveal that, and add a clue based on it.
+            const cell = state.underlying[index] as ClueCell;
+            state.cells[index] = cell;
+
+            const associatedIndexes = getAdjacentIndexes(index, state.columns, state.rows);
+            addClue(state, state.clues, index, cell, associatedIndexes);
+        }
     }
 
-    revealCells(state, revealableIndexes);
+    if (assignUnderlying) {
+        revealCells(state, revealableIndexes);
+    }
     return true;
 }
 
@@ -556,7 +570,7 @@ export function generateBoard(config: GenerationConfig): CellBoardDefinition {
 
     // Repeat the following until there are no obscured cells left. Then the whole board has been resolved!
     while (state.obscuredIndexes.size > 0) {
-        if (!resolveCells(state)) {
+        if (!resolveCells(state, true)) {
             // If a new clue was just added and it didn't help, discard it, unless we've been stuck for a while.
             if (++turnsSinceLastResolution < 100) {
                 state = prevState;
@@ -576,6 +590,11 @@ export function generateBoard(config: GenerationConfig): CellBoardDefinition {
         updateClues(state, state.clues);
     }
 
+    // TODO: enable this, but test it first.
+    if (false) {
+        removeSuperfluousClues(state);
+    }
+
     return createBoardDefinition(state);
 }
 
@@ -593,4 +612,56 @@ function copyState(state: GeneratingState): GeneratingState {
         potentialRowClueIndexes: [...state.potentialRowClueIndexes],
         potentialRadiusClueIndexes: [...state.potentialRadiusClueIndexes],
     };
+}
+
+/**
+ * See if the board can be resolved with each of the initial clues removed (in turn).
+ * Remove the ones that don't make it unsolvable, to make the puzzle harder.
+ */
+function removeSuperfluousClues(state: GeneratingState) {
+    for (const indexToObscure of state.initiallyRevealedIndexes) {
+        const testState = copyState(state);
+        removeInitialClue(testState, indexToObscure);
+
+        if (isBoardSolvable(testState)) {
+            removeInitialClue(state, indexToObscure);
+        }
+    }
+}
+
+function removeInitialClue(state: GeneratingState, indexToObscure: number) {
+    state.initiallyRevealedIndexes.delete(indexToObscure);
+    const cellToObscure = state.cells[indexToObscure];
+    
+    if (cellToObscure?.type === CellType.RowClue || cellToObscure?.type === CellType.RadiusClue) {
+        state.cells[indexToObscure] = null;
+        state.underlying[indexToObscure] = null;
+    }
+}
+
+function isBoardSolvable(state: GeneratingState) {
+    // Reset obscuredIndexes before continuing.
+    state.obscuredIndexes.clear();
+    state.cells.forEach((cell, index) => {
+        if (cell && !state.initiallyRevealedIndexes.has(index)) {
+            state.obscuredIndexes.add(index);
+        }
+    });
+
+    // Clear hints, as those will now have the wrong order.
+    state.hints = [];
+
+    // Reset clues, as those are based on "currently revealed" state.
+    state.clues = getClues(state);
+    
+    while (state.obscuredIndexes.size > 0) {
+        if (resolveCells(state, true)) {
+            updateClues(state, state.clues);
+        }
+        else {
+            return false;
+        }
+    }
+
+    return true;
 }
