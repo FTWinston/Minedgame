@@ -6,7 +6,6 @@ import { ShapeConfig, generateBoardShape } from './generateBoardShape';
 import { addClue, getClues, updateClues } from './getClues';
 import { ResolvableCells, getResolvableCells } from './getResolvableCells';
 import { Random } from 'src/utils/random';
-import { shuffle } from 'src/utils/shuffle';
 import { coordinateFromIndex, getAdjacentIndexes, getIndexesInRadius, getIndexesInRow } from './indexes';
 import { isClueCell } from './isClueCell';
 
@@ -187,7 +186,7 @@ function resolveCells(state: GeneratingState, assignUnderlying: boolean) {
 
     // Add the index of every resolvable cell to the hints, in a random order.
     const resolvableIndexes = [...resolvableCells.keys()];
-    shuffle(resolvableIndexes, state.random);
+    state.random.shuffle(resolvableIndexes);
     state.hints.push(...resolvableIndexes);
 
     for (const [index, cellType] of resolvableCells) {
