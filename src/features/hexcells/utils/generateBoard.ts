@@ -590,13 +590,11 @@ export function generateBoard(config: GenerationConfig): CellBoardDefinition {
         updateClues(state, state.clues);
     }
 
-    /*
     if (!isBoardSolvable(state)) {
         throw new Error('generated unsolvable board!');
     }
 
     removeSuperfluousClues(state);
-    */
 
     return createBoardDefinition(state);
 }
