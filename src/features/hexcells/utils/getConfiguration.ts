@@ -6,7 +6,7 @@ export function getConfiguration(): GenerationConfig {
         orientation: 'portrait',
         numCells: 50,
         gapFraction: getRandomFloat(0.08, 0.45),
-        bombFraction: getRandomFloat(0.3, 0.7),
+        bombFraction: getRandomFloat(0.35, 0.65),
         
         contiguousClueChance: getRandomFloat(0.25, 1),
         splitClueChance: getRandomFloat(0.2, 0.8),
