@@ -4,6 +4,7 @@ import { generateInstance } from '../utils/createCellBoardInstance';
 import { GenerationConfig } from '../utils/generateBoard';
 import { hexCellReducer } from '../utils/hexCellReducer';
 import { InteractiveCells } from './InteractiveCells';
+import { getConfiguration } from '../utils/getConfiguration';
 
 const CellsWithReducer: React.FC<GenerationConfig> = config => {
     const [board, dispatch] = useImmerReducer(hexCellReducer, config, generateInstance);
@@ -37,15 +38,5 @@ export const Basic: Story = {
 }
 
 export const Complex: Story = {
-    args: {
-        orientation: 'landscape',
-        numCells: 34,
-        gapFraction: 0.3,
-        bombFraction: 0.25,
-        unknownFraction: 0.15,
-        radiusClueChance: 0.05,
-        revealChance: 0.1,
-        contiguousClueChance: 0.5,
-        splitClueChance: 0.4,
-    },
+    args: getConfiguration(),
 }

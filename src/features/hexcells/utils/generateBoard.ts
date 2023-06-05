@@ -590,10 +590,13 @@ export function generateBoard(config: GenerationConfig): CellBoardDefinition {
         updateClues(state, state.clues);
     }
 
-    // TODO: enable this, but test it first.
-    if (false) {
-        removeSuperfluousClues(state);
+    /*
+    if (!isBoardSolvable(state)) {
+        throw new Error('generated unsolvable board!');
     }
+
+    removeSuperfluousClues(state);
+    */
 
     return createBoardDefinition(state);
 }
@@ -620,11 +623,11 @@ function copyState(state: GeneratingState): GeneratingState {
  */
 function removeSuperfluousClues(state: GeneratingState) {
     for (const indexToObscure of state.initiallyRevealedIndexes) {
-        const testState = copyState(state);
-        removeInitialClue(testState, indexToObscure);
+        const removeThisClue = (state: GeneratingState) => removeInitialClue(state, indexToObscure);
 
-        if (isBoardSolvable(testState)) {
-            removeInitialClue(state, indexToObscure);
+        if (isBoardSolvable(state, removeThisClue)) {
+            console.log(`removed clue at index ${indexToObscure}`);
+            removeThisClue(state);
         }
     }
 }
@@ -639,7 +642,13 @@ function removeInitialClue(state: GeneratingState, indexToObscure: number) {
     }
 }
 
-function isBoardSolvable(state: GeneratingState) {
+function isBoardSolvable(state: GeneratingState, modifyState?: (state: GeneratingState) => void) {
+    // Copy the state, because solving it modifies it.
+    state = copyState(state);
+
+    // Perform any required action on the copied state.
+    modifyState?.(state);
+
     // Reset obscuredIndexes before continuing.
     state.obscuredIndexes.clear();
     state.cells.forEach((cell, index) => {
