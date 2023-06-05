@@ -188,7 +188,6 @@ function resolveCells(state: GeneratingState) {
 
     for (const [index, cellType] of resolvableCells) {
         state.obscuredIndexes.delete(index);
-        state.hints.push(index);
 
         // Allocate and reveal any just-resolved bombs.
         if (cellType === CellType.Bomb) {
