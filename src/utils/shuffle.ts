@@ -1,6 +1,6 @@
-import { getRandomInt } from './random';
+import { Random } from './random';
 
-export function shuffle(items: unknown[]) {
+export function shuffle(items: unknown[], random: Random) {
     let currentIndex = items.length;
     let temporaryValue: unknown;
     let randomIndex: number;
@@ -9,7 +9,7 @@ export function shuffle(items: unknown[]) {
     while (0 !== currentIndex) {
   
         // Pick a remaining element...
-        randomIndex = getRandomInt(currentIndex);
+        randomIndex = random.getInt(currentIndex);
         currentIndex -= 1;
   
         // And swap it with the current element.

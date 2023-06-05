@@ -1,4 +1,4 @@
-import { getRandomFloat, getRandomInt } from 'src/utils/random';
+import { Random } from 'src/utils/random';
 import { indexFromCoordinate } from './indexes';
 
 export interface ShapeConfig {
@@ -12,11 +12,16 @@ export interface ShapeConfig {
 }
 
 /** Decide bounds based on number of cells. */
-function determineSize(landscapeOrientation: boolean, numCells: number, numGaps: number) {
+function determineSize(
+    random: Random,
+    landscapeOrientation: boolean,
+    numCells: number,
+    numGaps: number
+) {
     const totalCells = numCells + numGaps;
     
     let rows = Math.sqrt(totalCells);
-    rows *= getRandomFloat() * 0.3 + 0.85;
+    rows *= random.getFloat(0.85, 1.15);
     rows = Math.ceil(rows) + 2;
 
     let columns = Math.floor(totalCells / rows) + 2;
@@ -35,7 +40,13 @@ function determineSize(landscapeOrientation: boolean, numCells: number, numGaps:
 }
 
 /** Replace random cells with null, but do so symmetrically, either rotationally or mirrored. */
-function placeNulls<TCellState>(board: Array<TCellState | null>, rows: number, columns: number, numToAssign: number) {
+function placeNulls<TCellState>(
+    random: Random,
+    board: Array<TCellState | null>,
+    rows: number,
+    columns: number,
+    numToAssign: number
+) {
     let primaryIndexes: number[] = [];
     let mirroredIndexes: number[] = [];
 
@@ -63,7 +74,7 @@ function placeNulls<TCellState>(board: Array<TCellState | null>, rows: number, c
         let indexIndex: number;
 
         do {
-            indexIndex = getRandomInt(primaryIndexes.length);
+            indexIndex = random.getInt(primaryIndexes.length);
             boardIndex = primaryIndexes[indexIndex];
         } while (board[boardIndex] === null);
 
@@ -77,14 +88,14 @@ function placeNulls<TCellState>(board: Array<TCellState | null>, rows: number, c
     }
 }
 
-export function generateBoardShape<TCellState>(config: ShapeConfig, cell: TCellState) {
+export function generateBoardShape<TCellState>(config: ShapeConfig, random: Random, cell: TCellState) {
     const numGaps = Math.round(config.gapFraction * config.numCells);
 
     const {
         rows,
         columns,
         numIndexesExcludingBorder 
-    } = determineSize(config.orientation === 'landscape', config.numCells, numGaps);
+    } = determineSize(random, config.orientation === 'landscape', config.numCells, numGaps);
 
     const cells: Array<TCellState | null> = new Array(rows * columns)
         .fill(cell);
@@ -101,7 +112,7 @@ export function generateBoardShape<TCellState>(config: ShapeConfig, cell: TCellS
 
     const numToRemove = Math.round(config.gapFraction * numIndexesExcludingBorder);
     if (numToRemove > 0) {
-        placeNulls(cells, rows, columns, numToRemove);
+        placeNulls(random, cells, rows, columns, numToRemove);
     }
 
     return { rows, columns, cells };

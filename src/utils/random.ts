@@ -1,31 +1,46 @@
-export function getRandomFloat(min = 0, max = 1) {
-    return min + Math.random() * (max - min);
-}
+export class Random {
+    readonly seed: number;
 
-export function getRandomInt(maxExclusive: number) {
-    return Math.floor(Math.random() * maxExclusive);
-}
-
-export function pickRandom<T>(values: T[]): T {
-    if (values.length === 0) {
-        throw new Error('pickRandom passed an empty array');
+    constructor(seed?: number) {
+        // TODO: actually use seed, for reproducability.
+        this.seed = seed === undefined
+            ? 0
+            : seed;
     }
 
-    return values[getRandomInt(values.length)];
-}
-
-export function insertRandom<T>(array: T[], value: T) {
-    const index = getRandomInt(array.length + 1);
-    array.splice(index, 0, value);
-}
-
-export function deleteRandom<T>(values: T[]): T | null {
-    if (values.length === 0) {
-        return null;
+    getFloat(min = 0, max = 1) {
+        return min + Math.random() * (max - min);
     }
 
-    const index = getRandomInt(values.length);
-    const result = values[index];
-    values.splice(index, 1);
-    return result;
+    getBoolean(chanceOfTrue = 0.5) {
+        return Math.random() <= chanceOfTrue;
+    }
+
+    getInt(maxExclusive: number) {
+        return Math.floor(Math.random() * maxExclusive);
+    }
+
+    pick<T>(values: T[]): T {
+        if (values.length === 0) {
+            throw new Error('pickRandom passed an empty array');
+        }
+    
+        return values[this.getInt(values.length)];
+    }
+
+    insert<T>(array: T[], value: T) {
+        const index = this.getInt(array.length + 1);
+        array.splice(index, 0, value);
+    }
+
+    delete<T>(values: T[]): T | null {
+        if (values.length === 0) {
+            return null;
+        }
+    
+        const index = this.getInt(values.length);
+        const result = values[index];
+        values.splice(index, 1);
+        return result;
+    }
 }

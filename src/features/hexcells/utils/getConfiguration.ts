@@ -1,26 +1,28 @@
-import { getRandomFloat, getRandomInt } from 'src/utils/random';
+import { Random } from 'src/utils/random';
 import { GenerationConfig } from './generateBoard';
 
 export function getConfiguration(): GenerationConfig {
+    const random = new Random();
+
     const config: Required<GenerationConfig> = {
         orientation: 'portrait',
         numCells: 50,
-        gapFraction: getRandomFloat(0.08, 0.45),
-        bombFraction: getRandomFloat(0.35, 0.65),
+        gapFraction: random.getFloat(0.08, 0.45),
+        bombFraction: random.getFloat(0.35, 0.65),
         
-        contiguousClueChance: getRandomFloat(0.25, 1),
-        splitClueChance: getRandomFloat(0.2, 0.8),
-        rowClueChance: getRandomFloat(1, 4),
-        radiusClueChance: getRandomFloat(0.0125, 0.05),
+        contiguousClueChance: random.getFloat(0.25, 1),
+        splitClueChance: random.getFloat(0.2, 0.8),
+        rowClueChance: random.getFloat(1, 4),
+        radiusClueChance: random.getFloat(0.0125, 0.05),
 
-        revealChance: getRandomFloat(0.05, 0.2),
-        unknownFraction: getRandomFloat(0.025, 0.1),
+        revealChance: random.getFloat(0.05, 0.2),
+        unknownFraction: random.getFloat(0.025, 0.1),
 
         remainingBombCountFraction: 0.1, // TODO: Use a higher number for more challenging boards.
     };
 
     // Increase the value of one clue type signficantly. (Or don't, for a more evenly-spread board.)
-    switch (getRandomInt(6)) {
+    switch (random.getInt(6)) {
         case 0:
             config.contiguousClueChance *= 20;
             break;
@@ -40,7 +42,7 @@ export function getConfiguration(): GenerationConfig {
 
     // Increase the value of a random clue type somewhat, twice. (Or don't!)
     for (let i=0; i<2; i++) {
-        switch (getRandomInt(9)) {
+        switch (random.getInt(9)) {
             case 0:
                 config.contiguousClueChance *= 5;
                 break;
