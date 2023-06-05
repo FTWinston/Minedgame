@@ -10,14 +10,19 @@ const CellsWithReducer: React.FC<GenerationConfig> = config => {
     const [board, dispatch] = useImmerReducer(hexCellReducer, config, generateInstance);
 
     return (
-        <InteractiveCells
-            cells={board.cells}
-            columns={board.columns}
-            revealCell={index => setTimeout(() => dispatch({ type: 'reveal', index }), 200)}
-            flagCell={index => setTimeout(() => dispatch({ type: 'flag', index }), 200)}
-            result={board.result}
-            errorIndex={board.errorIndex}
-        />
+        <>
+            <InteractiveCells
+                cells={board.cells}
+                columns={board.columns}
+                revealCell={index => setTimeout(() => dispatch({ type: 'reveal', index }), 200)}
+                flagCell={index => setTimeout(() => dispatch({ type: 'flag', index }), 200)}
+                result={board.result}
+                errorIndex={board.errorIndex}
+            />
+            <div style={{position: 'absolute', left: 0, bottom: 0, color: 'white'}}>
+                {board.numBombs}
+            </div>
+        </>
     )
 }
 
