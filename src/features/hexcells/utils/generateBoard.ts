@@ -82,6 +82,8 @@ function expandConfig(config: GenerationConfig): FullConfig {
         fullChance: 0,
     };
 
+    console.log('generating board with config: ' + JSON.stringify(fullConfig));
+
     // Make the "chance" variables cumulative.
     fullConfig.splitClueChance += fullConfig.contiguousClueChance;
     fullConfig.rowClueChance += fullConfig.splitClueChance;
@@ -573,7 +575,6 @@ function createBoardDefinition(state: GeneratingState): CellBoardDefinition {
 
 export function generateBoard(config: GenerationConfig): CellBoardDefinition {
     const fullConfig = expandConfig(config);
-    console.log('generating board with config', fullConfig);
 
     let state: GeneratingState = createInitialState(fullConfig);
     let prevState = state;
