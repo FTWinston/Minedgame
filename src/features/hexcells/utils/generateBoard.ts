@@ -198,6 +198,9 @@ function resolveCells(state: GeneratingState, assignUnderlying: boolean) {
                 state.underlying[index] = { type: CellType.Bomb };
                 state.numBombsSoFar++;
             }
+            else if (state.numBombs !== undefined) {
+                state.numBombs--;
+            }
             state.cells[index] = state.underlying[index];
         }
         else if (assignUnderlying) {
@@ -650,11 +653,12 @@ function isBoardSolvable(state: GeneratingState, modifyState?: (state: Generatin
     // Perform any required action on the copied state.
     modifyState?.(state);
 
-    // Reset obscuredIndexes before continuing.
+    // Reset obscuredIndexes before continuing, ensure cells are actually obscured.
     state.obscuredIndexes.clear();
-    state.cells.forEach((cell, index) => {
+    state.cells.forEach((cell, index, cells) => {
         if (cell && !state.initiallyRevealedIndexes.has(index)) {
             state.obscuredIndexes.add(index);
+            cells[index] = { type: CellType.Obscured };
         }
     });
 
@@ -663,6 +667,9 @@ function isBoardSolvable(state: GeneratingState, modifyState?: (state: Generatin
 
     // Reset clues, as those are based on "currently revealed" state.
     state.clues = getClues(state);
+
+    // Allocate numBombs, by determining the actual number of bombs.
+    state.numBombs = state.cells.reduce((total, cell) => { if (cell?.type === CellType.Bomb) { total++; } return total}, 0);
     
     while (state.obscuredIndexes.size > 0) {
         if (resolveCells(state, true)) {
