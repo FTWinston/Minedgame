@@ -675,8 +675,8 @@ function isBoardSolvable(state: GeneratingState, modifyState?: (state: Generatin
     state.clues = getClues(state);
 
     // Allocate numBombs, by determining the actual number of bombs.
-    state.numBombs = state.cells.reduce((total, cell) => { if (cell?.type === CellType.Bomb) { total++; } return total}, 0);
-    
+    state.numBombs = state.underlying.reduce((total, cell) => cell?.type === CellType.Bomb ? total + 1 : total, 0);
+
     while (state.obscuredIndexes.size > 0) {
         if (resolveCells(state, true)) {
             updateClues(state, state.clues);
