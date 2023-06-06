@@ -624,6 +624,7 @@ function copyState(state: GeneratingState): GeneratingState {
         potentialSplitClueCells: [...state.potentialSplitClueCells],
         potentialRowClueIndexes: [...state.potentialRowClueIndexes],
         potentialRadiusClueIndexes: [...state.potentialRadiusClueIndexes],
+        nextResolvableCells: undefined,
     };
 }
 
