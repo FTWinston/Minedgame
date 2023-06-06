@@ -636,9 +636,14 @@ function removeSuperfluousClues(state: GeneratingState) {
     for (const indexToObscure of state.initiallyRevealedIndexes) {
         const removeThisClue = (state: GeneratingState) => removeInitialClue(state, indexToObscure);
 
-        if (isBoardSolvable(state, removeThisClue)) {
+        const solvedWithoutClue = isBoardSolvable(state, removeThisClue);
+
+        if (solvedWithoutClue) {
             console.log(`removed clue at index ${indexToObscure}`);
             removeThisClue(state);
+            
+            // Keep the hints from the state which was solved with this clue removed.
+            state.hints = solvedWithoutClue.hints;
         }
     }
 }
@@ -683,9 +688,9 @@ function isBoardSolvable(state: GeneratingState, modifyState?: (state: Generatin
             updateClues(state, state.clues);
         }
         else {
-            return false;
+            return null;
         }
     }
 
-    return true;
+    return state;
 }
