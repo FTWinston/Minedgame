@@ -573,6 +573,7 @@ function createBoardDefinition(state: GeneratingState): CellBoardDefinition {
 
 export function generateBoard(config: GenerationConfig): CellBoardDefinition {
     const fullConfig = expandConfig(config);
+    console.log('generating board with config', fullConfig);
 
     let state: GeneratingState = createInitialState(fullConfig);
     let prevState = state;
