@@ -679,7 +679,7 @@ function isBoardSolvable(state: GeneratingState, modifyState?: (state: Generatin
     state.numBombs = state.underlying.reduce((total, cell) => cell?.type === CellType.Bomb ? total + 1 : total, 0);
 
     while (state.obscuredIndexes.size > 0) {
-        if (resolveCells(state, true)) {
+        if (resolveCells(state, false)) {
             updateClues(state, state.clues);
         }
         else {
