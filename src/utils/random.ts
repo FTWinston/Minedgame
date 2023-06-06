@@ -1,23 +1,23 @@
-export class Random {
-    readonly seed: number;
+import { nanoid } from 'nanoid/non-secure';
+import seedrandom from 'seedrandom';
 
-    constructor(seed?: number) {
-        // TODO: actually use seed, for reproducability.
-        this.seed = seed === undefined
-            ? 0
-            : seed;
+export class Random {
+    private readonly random: seedrandom.PRNG;
+
+    constructor(seed?: string) {
+        this.random = seedrandom(seed);
     }
 
     getFloat(min = 0, max = 1) {
-        return min + Math.random() * (max - min);
+        return min + this.random() * (max - min);
     }
 
     getBoolean(chanceOfTrue = 0.5) {
-        return Math.random() <= chanceOfTrue;
+        return this.random() <= chanceOfTrue;
     }
 
     getInt(maxExclusive: number) {
-        return Math.floor(Math.random() * maxExclusive);
+        return Math.floor(this.random() * maxExclusive);
     }
 
     pick<T>(values: T[]): T {
@@ -63,3 +63,5 @@ export class Random {
         }
     }
 }
+
+export const generateSeed = nanoid;

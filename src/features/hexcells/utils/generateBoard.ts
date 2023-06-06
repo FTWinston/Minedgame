@@ -5,11 +5,14 @@ import { areValuesContiguous } from './areValuesContiguous';
 import { ShapeConfig, generateBoardShape } from './generateBoardShape';
 import { addClue, getClues, updateClues } from './getClues';
 import { ResolvableCells, getResolvableCells } from './getResolvableCells';
-import { Random } from 'src/utils/random';
+import { Random, generateSeed } from 'src/utils/random';
 import { coordinateFromIndex, getAdjacentIndexes, getIndexesInRadius, getIndexesInRow } from './indexes';
 import { isClueCell } from './isClueCell';
 
 export interface GenerationConfig extends ShapeConfig {
+    /** Seed to use for all random generation. */
+    seed?: string;
+
     /** Fraction of obscured cells that will be revealed to be bombs. Lower values are easier. */
     bombFraction: number;
 
@@ -67,6 +70,7 @@ interface GeneratingState {
 function expandConfig(config: GenerationConfig): FullConfig {
     const fullConfig: FullConfig = {
         ...config,
+        seed: config.seed ?? generateSeed(),
         orientation: config.orientation ?? 'portrait',
         unknownFraction: config.unknownFraction ?? 0,
         contiguousClueChance: config.contiguousClueChance ?? 0,
@@ -138,7 +142,7 @@ function getPotentialRadiusClueIndexes(random: Random, cells: (CellState | null)
 
 /** Prepare the shape of the board, with every cell obscured, and any extra info needed for generation purposes. */
 function createInitialState(config: FullConfig): GeneratingState {
-    const random = new Random(0); // TODO: add config.seed, and use that
+    const random = new Random(config.seed);
 
     const { cells, rows, columns } = generateBoardShape<CellState>(config, random, { type: CellType.Obscured });
 
