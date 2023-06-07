@@ -2,6 +2,7 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../src/theme';
+import '../src/language';
 import '../src/index.css';
 
 const preview: Preview = {
