@@ -11,6 +11,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import ShareIcon from '@mui/icons-material/Share';
 import { Countdown } from './Countdown';
 import { Trans, useTranslation } from 'react-i18next';
+import DialogActions from '@mui/material/DialogActions';
 
 const SuccessTransition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -86,17 +87,23 @@ export const Result: React.FC<Props> = props => {
                 <Box textAlign="center" m={1}>
                     <Countdown endTime={import.meta.env.VITE_GENERATE_TIME_UTC} action={() => location.reload()} />
                 </Box>
-                <Box textAlign="center">
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        endIcon={<ShareIcon />}
-                        onClick={share}
-                    >
-                        {t('share')}
-                    </Button>
-                </Box>
             </DialogContent>
+            <DialogActions sx={{justifyContent: 'center'}}>
+                <Button
+                    variant="text"
+                    onClick={() => location.reload()}
+                >
+                    {t('tryAgain')}
+                </Button>
+                <Button
+                    autoFocus={props.result === 'failure'}
+                    variant="contained"
+                    endIcon={<ShareIcon />}
+                    onClick={share}
+                >
+                    {t('share')}
+                </Button>
+            </DialogActions>
         </Dialog>
     );
 }

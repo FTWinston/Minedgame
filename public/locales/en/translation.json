@@ -16,6 +16,7 @@
     "close": "Close",
     "next": "Next",
     "done": "Done",
+    "tryAgain": "Try again",
     "githubLink": "View code on github",
     "currentStage": "Currently on stage {{current}} of {{total}} of today's puzzle",
     "resultPrompt": "Why not share your result with a friend?",
