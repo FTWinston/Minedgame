@@ -4,7 +4,7 @@ import { GenerationConfig } from './generateBoard';
 export function getConfiguration(): GenerationConfig {
     const random = new Random();
 
-    const config: Required<GenerationConfig> = {
+    const config: Omit<Required<GenerationConfig>, 'seed'> = {
         orientation: 'portrait',
         numCells: 50,
         gapFraction: random.getFloat(0.08, 0.45),
