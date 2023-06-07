@@ -96,7 +96,6 @@ export const Result: React.FC<Props> = props => {
                     {t('tryAgain')}
                 </Button>
                 <Button
-                    autoFocus={props.result === 'failure'}
                     variant="contained"
                     endIcon={<ShareIcon />}
                     onClick={share}
