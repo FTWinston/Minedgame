@@ -245,11 +245,12 @@ function tryModifyClue(state: GeneratingState, cluesToTry: Clue[], countType: Co
         }
 
         const cell = state.cells[clue.clueIndex] as ClueCell;
+        const underlying = state.underlying[clue.clueIndex] as ClueCell;
 
         // Try each that remains, until we find one that lets more cells
         // be revealed if its type is changed.
         const prevType = clue.countType;
-        clue.countType = cell.countType = countType;
+        clue.countType = cell.countType = underlying.countType = countType;
 
         const nextResolvableCells = getResolvableCells(state, state.clues);
         if (nextResolvableCells.size > 0) {
@@ -258,7 +259,7 @@ function tryModifyClue(state: GeneratingState, cluesToTry: Clue[], countType: Co
         }
 
         // Reset the count type on a cell that a cell that wasn't (yet) worth changing.
-        clue.countType = cell.countType = prevType;
+        clue.countType = cell.countType = underlying.countType = prevType;
     }
     
     return false;
