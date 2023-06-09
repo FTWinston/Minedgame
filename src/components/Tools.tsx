@@ -46,7 +46,7 @@ const Number = styled(Typography)({
 
 const BorderlessChip = styled(Chip)({
     border: 'none',
-    fontSize: '2.25em',
+    fontSize: '1.85rem',
     padding: '24px 8px',
     fontFamily: 'monospace',
 });
@@ -55,20 +55,20 @@ const Stage = styled(BorderlessChip)({
     position: 'relative',
     top: '-0.1rem',
     '& > .MuiChip-label': {
-        marginLeft: '0.275em',
+        marginLeft: '0.225rem',
         marginTop: '0.1rem',
     }
 });
 
 const Hint = styled(Button)({
-    fontSize: '1.25em',
+    fontSize: '1.25rem',
     borderBottomWidth: '0 !important',
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
 });
 
 const BigHintIcon = styled(HintIcon)({
-    fontSize: '1.5em !important',
+    fontSize: '1.75rem !important',
 })
 
 export const Tools: React.FC<Props> = props => {
