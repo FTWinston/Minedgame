@@ -49,6 +49,11 @@ async function generateAndPush() {
         try {
             definitions.push(generateStage());
         }
+        catch {
+            // In the event of an error, no definition was generated for this stage, so decrement the counter
+            console.log(`Failed to generate a definition for stage ${stage}. Retrying...`);
+            stage--;
+        }
         finally {
             console.timeEnd(stageDesc);
         }
