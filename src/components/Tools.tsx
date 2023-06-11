@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import BombIcon from '@mui/icons-material/FlagOutlined';
@@ -40,8 +41,12 @@ const BottomRow = styled(Row)({
     bottom: 0,
 });
 
-const Number = styled(Typography)({
-    fontSize: 'inherit !important',
+const CenteredBadge = styled(Badge)({
+    '& > .MuiBadge-badge': {
+        top: '40%', 
+        right: '51%',
+        backgroundColor: 'transparent',
+    },
 });
 
 const BorderlessChip = styled(Chip)({
@@ -88,8 +93,14 @@ export const Tools: React.FC<Props> = props => {
                 <Hint
                     color="success"
                     variant="outlined"
-                    startIcon={<BigHintIcon />}
-                    endIcon={props.hintsUsed > 0 ? <Number>({props.hintsUsed})</Number> : undefined}
+                    startIcon={
+                        <CenteredBadge
+                            badgeContent={props.hintsUsed}
+                            color="success"
+                        >
+                            <BigHintIcon />
+                        </CenteredBadge>
+                    }
                     onClick={props.getHint}
                     title={t('hintDesc')}
                 >
