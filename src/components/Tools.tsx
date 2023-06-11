@@ -54,6 +54,9 @@ const BorderlessChip = styled(Chip)({
     fontSize: 'min(7.5vw, 2.25em)',
     padding: '24px 8px',
     fontFamily: 'monospace',
+    '& > .MuiChip-label': {
+        minWidth: '2.25em',
+    },
 });
 
 const Stage = styled(BorderlessChip)({
@@ -62,7 +65,7 @@ const Stage = styled(BorderlessChip)({
     '& > .MuiChip-label': {
         marginLeft: '0.275em',
         marginTop: '0.1rem',
-    }
+    },
 });
 
 const Hint = styled(Button)({
