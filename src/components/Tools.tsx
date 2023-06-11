@@ -26,7 +26,7 @@ interface Props {
 const Row = styled(Box)({
     position: 'absolute',
     left: 0,
-    right: 0,
+    minWidth: '100vw',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -46,7 +46,7 @@ const Number = styled(Typography)({
 
 const BorderlessChip = styled(Chip)({
     border: 'none',
-    fontSize: '2.25em',
+    fontSize: 'min(7.5vw, 2.25em)',
     padding: '24px 8px',
     fontFamily: 'monospace',
 });
@@ -61,7 +61,7 @@ const Stage = styled(BorderlessChip)({
 });
 
 const Hint = styled(Button)({
-    fontSize: '1.25em',
+    fontSize: 'min(7.5vw, 1.25em)',
     borderBottomWidth: '0 !important',
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
