@@ -20,7 +20,10 @@ export const Homepage: React.FC<Props> = props => {
     const { t } = useTranslation();
     
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="90svh" gap="1.5em">
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+            position="fixed" top={0} left={0} right={0} bottom={0}
+            minHeight="90svh" gap="1.5em"
+        >
             <Typography
                 fontFamily="Rajdhani"
                 variant="h1"

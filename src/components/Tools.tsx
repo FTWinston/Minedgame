@@ -25,7 +25,7 @@ interface Props {
 }
 
 const Row = styled(Box)({
-    position: 'absolute',
+    position: 'fixed',
     left: 0,
     minWidth: '100vw',
     display: 'flex',

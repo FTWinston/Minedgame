@@ -21,7 +21,6 @@ const Root = styled(Box)({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100vw',
-    height: '100svh',
     position: 'relative',
     overflow: 'hidden',
     padding: '2rem 0 3rem 0',

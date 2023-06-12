@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useImmerReducer } from 'use-immer';
+import Box from '@mui/material/Box';
 import Slide from '@mui/material/Slide';
 import { InteractiveCells, hexCellReducer } from 'src/features/hexcells';
 import { CellBoardDefinition } from 'src/features/hexcells/types/CellBoard';
@@ -77,7 +78,7 @@ export const HexCells: React.FC<Props> = props => {
                     gameDispatch({ type: 'new', board: instantiateStage(stageNumber) });
                 }}
             >
-                <div>
+                <Box position="fixed" top={0} left={0} right={0} bottom={0} display="flex" alignItems="center">
                     <InteractiveCells
                         key={displayNumber}
                         cells={game.cells}
@@ -87,7 +88,7 @@ export const HexCells: React.FC<Props> = props => {
                         result={game.result}
                         errorIndex={game.errorIndex}
                     />
-                </div>
+                </Box>
             </Slide>
 
             <Tools

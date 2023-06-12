@@ -114,7 +114,7 @@ export const Help: React.FC<Props> = props => {
         >
             <AppBar sx={{ position: 'relative' }}>
                 <Toolbar>
-                    <Tabs value={tab} sx={{ flex: 1 }} onChange={(_e, val) => setTab(val)} centered>
+                    <Tabs value={tab} sx={{ flex: 1 }} onChange={(_e, val) => setTab(val)}>
                         <Tab label={t('helpTab1')} id="help-tab-0" aria-controls="help-tabpanel-0" />
                         <Tab label={t('helpTab2')} id="help-tab-1" aria-controls="help-tabpanel-1" />
                         <Tab label={t('helpTab3')} id="help-tab-2" aria-controls="help-tabpanel-2" />
