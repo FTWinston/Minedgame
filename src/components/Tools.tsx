@@ -27,11 +27,18 @@ interface Props {
 const Row = styled(Box)({
     position: 'fixed',
     left: 0,
+    display: 'flex',
+    overflowY: 'hidden',
+    overflowX: 'auto',
+    maxWidth: '100vw',
+});
+
+const RowContent = styled(Box)({
     minWidth: '100vw',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-});
+})
 
 const TopRow = styled(Row)({
     top: 0,
@@ -73,6 +80,7 @@ const Hint = styled(Button)({
     borderBottomWidth: '0 !important',
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+    flexShrink: 0,
 });
 
 const BigHintIcon = styled(HintIcon)({
@@ -85,66 +93,70 @@ export const Tools: React.FC<Props> = props => {
     return (
         <>
             <BottomRow>
-                <BorderlessChip
-                    color="primary"
-                    variant="outlined"
-                    icon={<BombIcon fontSize="large" />}
-                    label={props.bombsLeft.toString()}
-                    title={t('bombsLeft')}
-                />
+                <RowContent>
+                    <BorderlessChip
+                        color="primary"
+                        variant="outlined"
+                        icon={<BombIcon fontSize="large" />}
+                        label={props.bombsLeft.toString()}
+                        title={t('bombsLeft')}
+                    />
 
-                <Hint
-                    color="success"
-                    variant="outlined"
-                    startIcon={
-                        <CenteredBadge
-                            badgeContent={props.hintsUsed}
-                            color="success"
-                        >
-                            <BigHintIcon />
-                        </CenteredBadge>
-                    }
-                    onClick={props.getHint}
-                    title={t('hintDesc')}
-                >
-                    {t('hint')}
-                </Hint>
+                    <Hint
+                        color="success"
+                        variant="outlined"
+                        startIcon={
+                            <CenteredBadge
+                                badgeContent={props.hintsUsed}
+                                color="success"
+                            >
+                                <BigHintIcon />
+                            </CenteredBadge>
+                        }
+                        onClick={props.getHint}
+                        title={t('hintDesc')}
+                    >
+                        {t('hint')}
+                    </Hint>
 
-                <BorderlessChip
-                    color="error"
-                    disabled={props.errors === 0}
-                    variant="outlined"
-                    icon={<ErrorIcon fontSize="large" />}
-                    label={props.errors}
-                    title={t('errors')}
-                />
+                    <BorderlessChip
+                        color="error"
+                        disabled={props.errors === 0}
+                        variant="outlined"
+                        icon={<ErrorIcon fontSize="large" />}
+                        label={props.errors}
+                        title={t('errors')}
+                    />
+                </RowContent>
             </BottomRow>
 
             <TopRow>
-                <BorderlessChip
-                    color="secondary"
-                    variant="outlined"
-                    icon={<TimeIcon fontSize="large" />}
-                    label={props.timeSpent}
-                    title={t('elapsed')}
-                />
+                <RowContent>
+                    <BorderlessChip
+                        color="secondary"
+                        variant="outlined"
+                        icon={<TimeIcon fontSize="large" />}
+                        label={props.timeSpent}
+                        title={t('elapsed')}
+                    />
 
-                <Stage
-                    color="secondary"
-                    variant="outlined"
-                    icon={<StageIcon fontSize="large" />}
-                    label={<>{props.currentStage}<Typography component="span" fontSize="0.75em"> / </Typography>{props.totalStages}</>}
-                    title={t('currentStage', { current: props.currentStage, total: props.totalStages })}
-                />
-    
-                <IconButton
-                    color="secondary"
-                    title={t('help')}
-                    size="large"
-                    onClick={props.showHelp}
-                >
-                    <HelpIcon fontSize="inherit" />
-                </IconButton>
+                    <Stage
+                        color="secondary"
+                        variant="outlined"
+                        icon={<StageIcon fontSize="large" />}
+                        label={<>{props.currentStage}<Typography component="span" fontSize="0.75em"> / </Typography>{props.totalStages}</>}
+                        title={t('currentStage', { current: props.currentStage, total: props.totalStages })}
+                    />
+        
+                    <IconButton
+                        color="secondary"
+                        title={t('help')}
+                        size="large"
+                        onClick={props.showHelp}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </RowContent>
             </TopRow>
         </>
     );
