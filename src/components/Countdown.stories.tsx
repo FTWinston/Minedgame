@@ -8,9 +8,13 @@ export default {
 
 type Story = StoryObj<typeof Countdown>;
 
+const endDate = new Date();
+endDate.setDate(endDate.getDate() + 1);
+endDate.setHours(4);
+
 export const Default: Story = {
     args: {
-        endTime: '21:33',
+        endDate,
         action: () => alert('done'),
     }
 }
