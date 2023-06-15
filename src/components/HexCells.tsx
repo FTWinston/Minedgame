@@ -17,6 +17,7 @@ const getDefinitions = suspendPromise<CellBoardDefinition[]>(
 );
 
 interface Props {
+    date: Date;
     showHelp: boolean;
     setShowHelp: (show: boolean) => void;
 }
@@ -51,11 +52,13 @@ export const HexCells: React.FC<Props> = props => {
     const result = game.result && (displayNumber >= totalStages || game.result === 'failure')
         ? (
             <Result
+                date={props.date}
                 result={game.result}
                 bombsLeft={game.numBombs}
                 errors={game.numErrors}
                 hintsUsed={game.hintsUsed}
                 stage={stageNumber}
+                totalStages={totalStages}
                 timeSpent={timeSpent}
             />
         )

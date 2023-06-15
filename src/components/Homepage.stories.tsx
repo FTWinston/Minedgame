@@ -10,6 +10,7 @@ type Story = StoryObj<typeof Homepage>;
 
 export const Default: Story = {
     args: {
+        date: new Date(),
         play: () => {},
         help: () => {},
     },

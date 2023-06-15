@@ -10,6 +10,7 @@ type Story = StoryObj<typeof Result>;
 
 export const Success: Story = {
     args: {
+        date: new Date(),
         result: 'success',
         bombsLeft: 0,
         errors: 0,
@@ -20,6 +21,7 @@ export const Success: Story = {
 
 export const Failure: Story = {
     args: {
+        date: new Date(),
         result: 'failure',
         bombsLeft: 10,
         errors: 7,

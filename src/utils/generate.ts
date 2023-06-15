@@ -2,6 +2,7 @@ import { Handler, HandlerContext, HandlerEvent } from '@netlify/functions';
 import { Octokit } from 'octokit';
 import { createTokenAuth } from '@octokit/auth-token';
 import { getConfiguration, generateBoard, GenerationConfig, CellBoardDefinition } from 'src/features/hexcells';
+import { getDateString } from './getDateString';
 
 export const handler: Handler = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -107,7 +108,7 @@ async function pushFile(definition: string) {
     }
     
     const content = Buffer.from(definition).toString('base64');
-    const message = `Daily generation ${new Date().toISOString().split('T')[0]}`;
+    const message = `Daily generation ${getDateString(new Date())}`;
 
     console.time('pushing new definition');
 

@@ -5,18 +5,15 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { Cell, CellType } from 'src/features/hexcells';
-import { getDateForTime } from 'src/utils/getDateForTime';
 
 interface Props {
+    date: Date;
     play: () => void;
     help: () => void;
 }
 
 export const Homepage: React.FC<Props> = props => {
     const theme = useTheme();
-    
-    const date = getDateForTime(import.meta.env.VITE_GENERATE_TIME_UTC, false);
-    const strDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(date);
     const { t } = useTranslation();
     
     return (
@@ -75,7 +72,9 @@ export const Homepage: React.FC<Props> = props => {
                 </Button>
             </Box>
 
-            <Typography color={theme.palette.text.secondary}>{strDate}</Typography>
+            <Typography color={theme.palette.text.secondary}>
+                {new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(props.date)}
+            </Typography>
             
             <Link href="https://github.com/FTWinston/Minedgame" title={t('githubLink')} target="_blank">
                 <svg aria-hidden viewBox="0 0 16 16" width="32" height="32">

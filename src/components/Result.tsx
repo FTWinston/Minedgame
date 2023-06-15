@@ -1,5 +1,5 @@
 
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
@@ -12,6 +12,8 @@ import ShareIcon from '@mui/icons-material/Share';
 import { Countdown } from './Countdown';
 import { Trans, useTranslation } from 'react-i18next';
 import DialogActions from '@mui/material/DialogActions';
+import { useOneDayLater } from 'src/hooks/useOneDayLater';
+import { updateStats } from 'src/utils/stats';
 
 const SuccessTransition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -44,24 +46,29 @@ const FailureTransition = forwardRef(function Transition(
 });
 
 interface Props {
+    date: Date;
     result: 'success' | 'failure';
     bombsLeft: number;
     errors: number;
     hintsUsed: number;
     stage: number;
+    totalStages: number;
     timeSpent: string;
 }
 
 export const Result: React.FC<Props> = props => {
     const { t } = useTranslation();
-    const title = t(props.result === 'success' ? 'win' : 'lose');
+    const success = props.result === 'success';
+    const nextGameDate = useOneDayLater(props.date);
+
+    const gameStats = useMemo(() => updateStats(props.date, success, props.errors), [props.date, success, props.errors]);
 
     const share = () => {
         let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
         if (props.result === 'failure') {
             text = `🚩 ${props.bombsLeft}   📖 ${props.stage}   ${text}`;
         }
-        const title = t(props.result === 'success' ? 'shareWin' : 'shareLose');
+        const title = t(success ? 'shareWin' : 'shareLose');
         text = `${title} \n${text}\n`;
 
         navigator.share({
@@ -74,18 +81,32 @@ export const Result: React.FC<Props> = props => {
     return (
         <Dialog
             open={true}
-            TransitionComponent={props.result === 'success' ? SuccessTransition : FailureTransition}
+            TransitionComponent={success ? SuccessTransition : FailureTransition}
         >
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>
+                <Trans i18nKey={success ? 'resultTitleWin' : 'resultTitleLose'} />
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    <Trans i18nKey="resultPrompt" />
+                    {t(success ? 'resultGameSummaryWin' : 'resultGameSummaryLose', {
+                        elapsed: props.timeSpent,
+                        stage: props.stage,
+                        totalStages: props.totalStages,
+                        errors: props.errors,
+                        remaining: props.bombsLeft
+                    })}
                 </DialogContentText>
-                <DialogContentText>
-                    <Trans i18nKey="resultNextGame" />
+                <DialogContentText mt={1}>
+                    {t(gameStats.winStreak > 0 && gameStats.perfectWinStreak === gameStats.winStreak ? 'resultPerfectStreakSummary' : 'resultStreakSummary', {
+                        count: gameStats.winStreak,
+                        perfect: gameStats.perfectWinStreak,
+                    })}
+                </DialogContentText>
+                <DialogContentText mt={1}>
+                    {t('resultNextGame')}
                 </DialogContentText>
                 <Box textAlign="center" m={1}>
-                    <Countdown endTime={import.meta.env.VITE_GENERATE_TIME_UTC} action={() => location.reload()} />
+                    <Countdown endDate={nextGameDate} action={() => location.reload()} />
                 </Box>
             </DialogContent>
             <DialogActions sx={{justifyContent: 'center'}}>

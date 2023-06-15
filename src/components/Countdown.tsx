@@ -1,21 +1,19 @@
 
 import { Typography } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
-import { getDateForTime } from 'src/utils/getDateForTime';
+import { useEffect, useState } from 'react';
 
 interface Props {
-    endTime: string;
+    endDate: Date;
     action: () => void;
 }
 
 export const Countdown: React.FC<Props> = props => {
-    const { endTime, action } = props;
-    const endDate = useMemo(() => getDateForTime(endTime, true).getTime(), [endTime]);
+    const { action, endDate } = props;
     const [remaining, setRemaining] = useState('');
 
     useEffect(() => {
         const updateRemaining = () => {
-            const remainingMs = Math.max(0, endDate - Date.now());
+            const remainingMs = Math.max(0, endDate.getTime() - Date.now());
 
             if (remainingMs === 0) {
                 action();
