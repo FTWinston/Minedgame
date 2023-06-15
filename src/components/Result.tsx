@@ -97,7 +97,7 @@ export const Result: React.FC<Props> = props => {
                     })}
                 </DialogContentText>
                 <DialogContentText mt={1}>
-                    {t(gameStats.winStreak > 0 && gameStats.perfectWinStreak === gameStats.winStreak ? 'resultPerfectStreakSummary' : 'resultStreakSummary', {
+                    {t(gameStats.winStreak > 1 && gameStats.perfectWinStreak === gameStats.winStreak ? 'resultPerfectStreakSummary' : 'resultStreakSummary', {
                         count: gameStats.winStreak,
                         perfect: gameStats.perfectWinStreak,
                     })}
