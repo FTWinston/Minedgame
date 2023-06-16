@@ -1,6 +1,6 @@
 import { getDateString } from './getDateString';
 
-export interface Stats {
+interface Stats {
     totalWins: number;
     totalLosses: number;
     totalMistakes: number;
@@ -10,18 +10,23 @@ export interface Stats {
     version: number;
 }
 
+export interface StatsOutput extends Stats {
+    updated: boolean;
+}
+
 export function getStats(): Stats {
     return loadStats() ?? createNewStats();
 }
 
-export function updateStats(gameDate: Date, successToday: boolean, mistakesToday: number): Stats {
-    const stats = getStats();
+export function updateStats(gameDate: Date, successToday: boolean, mistakesToday: number): StatsOutput {
+    const stats = getStats() as StatsOutput;
 
     const lastPlayedDate = new Date(stats.lastPlayed);
     const today = getStartOfDay(gameDate);
 
     // If today's game has already been played, don't update the stats.
     if (lastPlayedDate >= today) {
+        stats.updated = false;
         return stats;
     }
 
@@ -52,6 +57,7 @@ export function updateStats(gameDate: Date, successToday: boolean, mistakesToday
 
     saveStats(stats);
 
+    stats.updated = true;
     return stats;
 }
 

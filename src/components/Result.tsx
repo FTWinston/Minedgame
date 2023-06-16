@@ -78,6 +78,8 @@ export const Result: React.FC<Props> = props => {
         });
     }
 
+    const showIgnoringStats = !gameStats.updated && gameStats.winStreak > 1;
+
     return (
         <Dialog
             open={true}
@@ -96,6 +98,7 @@ export const Result: React.FC<Props> = props => {
                         remaining: props.bombsLeft
                     })}
                 </DialogContentText>
+                {showIgnoringStats ? <DialogContentText mt={1}>{t('resultsIgnoringStats')}</DialogContentText> : undefined}
                 <DialogContentText mt={1}>
                     {t(gameStats.winStreak > 1 && gameStats.perfectWinStreak === gameStats.winStreak ? 'resultPerfectStreakSummary' : 'resultStreakSummary', {
                         count: gameStats.winStreak,
