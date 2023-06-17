@@ -65,7 +65,7 @@ export const Result: React.FC<Props> = props => {
 
     const share = () => {
         let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
-        if (props.result === 'failure') {
+        if (!success) {
             text = `🚩 ${props.bombsLeft}   📖 ${props.stage}   ${text}`;
         }
         const title = t(success ? 'shareWin' : 'shareLose');
@@ -78,7 +78,9 @@ export const Result: React.FC<Props> = props => {
         });
     }
 
-    const showIgnoringStats = !gameStats.updated && gameStats.winStreak > 1;
+    const showIgnoringStats = !gameStats.updated && (
+        gameStats.winStreak > 1 || (!success && gameStats.winStreak > 0)
+    );
 
     return (
         <Dialog
