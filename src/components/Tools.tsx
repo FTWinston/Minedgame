@@ -12,6 +12,7 @@ import StageIcon from '@mui/icons-material/AutoStories';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
+import Tooltip from '@mui/material/Tooltip';
 
 interface Props {
     bombsLeft: number;
@@ -94,68 +95,76 @@ export const Tools: React.FC<Props> = props => {
         <>
             <BottomRow>
                 <RowContent>
-                    <BorderlessChip
-                        color="primary"
-                        variant="outlined"
-                        icon={<BombIcon fontSize="large" />}
-                        label={props.bombsLeft.toString()}
-                        title={t('bombsLeft')}
-                    />
+                    <Tooltip describeChild title={t('bombsLeft')}>
+                        <BorderlessChip
+                            color="primary"
+                            variant="outlined"
+                            icon={<BombIcon fontSize="large" />}
+                            label={props.bombsLeft.toString()}
+                        />
+                    </Tooltip>
 
-                    <Hint
-                        color="success"
-                        variant="outlined"
-                        startIcon={
-                            <CenteredBadge
-                                badgeContent={props.hintsUsed}
-                                color="success"
-                            >
-                                <BigHintIcon />
-                            </CenteredBadge>
-                        }
-                        onClick={props.getHint}
-                        title={t('hintDesc')}
-                    >
-                        {t('hint')}
-                    </Hint>
+                    <Tooltip describeChild title={t('hintDesc')}>
+                        <Hint
+                            color="success"
+                            variant="outlined"
+                            startIcon={
+                                <CenteredBadge
+                                    badgeContent={props.hintsUsed}
+                                    color="success"
+                                >
+                                    <BigHintIcon />
+                                </CenteredBadge>
+                            }
+                            onClick={props.getHint}
+                        >
+                            {t('hint')}
+                        </Hint>
+                    </Tooltip>
 
-                    <BorderlessChip
-                        color="error"
-                        disabled={props.errors === 0}
-                        variant="outlined"
-                        icon={<ErrorIcon fontSize="large" />}
-                        label={props.errors}
-                        title={t('errors')}
-                    />
+                    <Tooltip describeChild title={t('errors')}>
+                        <span>
+                            <BorderlessChip
+                                color="error"
+                                disabled={props.errors === 0}
+                                variant="outlined"
+                                icon={<ErrorIcon fontSize="large" />}
+                                label={props.errors}
+                            />
+                        </span>
+                    </Tooltip>
                 </RowContent>
             </BottomRow>
 
             <TopRow>
                 <RowContent>
-                    <BorderlessChip
-                        color="secondary"
-                        variant="outlined"
-                        icon={<TimeIcon fontSize="large" />}
-                        label={props.timeSpent}
-                        title={t('elapsed')}
-                    />
+                    <Tooltip describeChild title={t('elapsed')}>
+                        <BorderlessChip
+                            color="secondary"
+                            variant="outlined"
+                            icon={<TimeIcon fontSize="large" />}
+                            label={props.timeSpent}
+                        />
+                    </Tooltip>
 
-                    <Stage
-                        color="secondary"
-                        variant="outlined"
-                        icon={<StageIcon fontSize="large" />}
-                        label={<>{props.currentStage}<Typography component="span" fontSize="0.75em"> / </Typography>{props.totalStages}</>}
-                        title={t('currentStage', { current: props.currentStage, total: props.totalStages })}
-                    />
+                    <Tooltip describeChild title={t('currentStage', { current: props.currentStage, total: props.totalStages })}>
+                        <Stage
+                            color="secondary"
+                            variant="outlined"
+                            icon={<StageIcon fontSize="large" />}
+                            label={<>{props.currentStage}<Typography component="span" fontSize="0.75em"> / </Typography>{props.totalStages}</>}
+                        />
+                    </Tooltip>
         
-                    <IconButton
-                        color="secondary"
-                        title={t('help')}
-                        size="large"
-                        onClick={props.showHelp}
-                    >
-                        <HelpIcon fontSize="inherit" />
-                    </IconButton>
+                    <Tooltip describeChild title={t('help')}>
+                        <IconButton
+                            color="secondary"
+                            size="large"
+                            onClick={props.showHelp}
+                        >
+                            <HelpIcon fontSize="inherit" />
+                        </IconButton>
+                    </Tooltip>
                 </RowContent>
             </TopRow>
         </>
