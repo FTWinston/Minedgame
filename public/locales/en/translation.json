@@ -8,9 +8,9 @@
     "hint": "Hint",
     "hintDesc": "Highlights a cell that can be solved",
     "errors": "Number of errors made",
+    "alreadyPlayed": "You've already played today's puzzle. Playing it again won't affect your stats.",
     "resultTitleWin": "You win",
     "resultTitleLose": "You lose",
-
     "resultSummaryErrors_zero": "no mistakes",
     "resultSummaryErrors_one": "1 mistake",
     "resultSummaryErrors_other": "{{count}} mistakes",

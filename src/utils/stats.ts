@@ -14,10 +14,6 @@ export interface StatsOutput extends Stats {
     updated: boolean;
 }
 
-export function getStats(): Stats {
-    return loadStats() ?? createNewStats();
-}
-
 export function updateStats(gameDate: Date, successToday: boolean, mistakesToday: number): StatsOutput {
     const stats = getStats() as StatsOutput;
 
@@ -59,6 +55,23 @@ export function updateStats(gameDate: Date, successToday: boolean, mistakesToday
 
     stats.updated = true;
     return stats;
+}
+
+export function hasPlayedDate(gameDate: Date) {
+    const stats = loadStats();
+
+    if (stats === null) {
+        return false;
+    }
+
+    const lastPlayedDate = new Date(stats.lastPlayed);
+    const today = getStartOfDay(gameDate);
+
+    return lastPlayedDate >= today;
+}
+
+function getStats(): Stats {
+    return loadStats() ?? createNewStats();
 }
 
 function getStartOfDay(date: Date): Date {

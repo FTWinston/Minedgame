@@ -2,9 +2,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
+import AlreadyPlayedIcon from '@mui/icons-material/TaskAlt';
 import { useTranslation } from 'react-i18next';
 import { Cell, CellType } from 'src/features/hexcells';
+import { hasPlayedDate } from 'src/utils/stats';
 
 interface Props {
     date: Date;
@@ -12,9 +14,15 @@ interface Props {
     help: () => void;
 }
 
+const AlreadyPlayed = styled(AlreadyPlayedIcon)({
+    position: 'absolute',
+    right: '-1.25em',
+})
+
 export const Homepage: React.FC<Props> = props => {
     const theme = useTheme();
     const { t } = useTranslation();
+    const alreadyPlayed = hasPlayedDate(props.date);
     
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
@@ -72,8 +80,9 @@ export const Homepage: React.FC<Props> = props => {
                 </Button>
             </Box>
 
-            <Typography color={theme.palette.text.secondary}>
+            <Typography color={theme.palette.text.secondary} position="relative">
                 {new Intl.DateTimeFormat(undefined, { dateStyle: 'full' }).format(props.date)}
+                {alreadyPlayed ? <AlreadyPlayed color="secondary" titleAccess={t('alreadyPlayed')} /> : undefined}
             </Typography>
             
             <Link href="https://github.com/FTWinston/Minedgame" title={t('githubLink')} target="_blank">
