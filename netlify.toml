@@ -8,4 +8,6 @@ functions = ""
     Access-Control-Allow-Origin = "*"
   for = "/today.json"
     [headers.values]
-    Cache-Control = "public"
+    Cache-Control = '''
+  public,
+  immutable'''
