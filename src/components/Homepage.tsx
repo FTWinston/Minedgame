@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import { styled, useTheme } from '@mui/material/styles';
 import AlreadyPlayedIcon from '@mui/icons-material/TaskAlt';
 import { useTranslation } from 'react-i18next';
-import { Cell, CellType } from 'src/features/hexcells';
+import { Cell } from 'src/features/hexcells/components/Cell';
+import { CellType } from 'src/features/hexcells/types/CellState';
 import { hasPlayedDate } from 'src/utils/stats';
 import Tooltip from '@mui/material/Tooltip';
 

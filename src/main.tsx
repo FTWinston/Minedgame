@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { ThemeProvider } from '@mui/material/styles';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Indicator } from 'src/components/Indicator';
-import { CellType } from 'src/features/hexcells';
+import { CellType } from 'src/features/hexcells/types/CellState';
 import './language';
 import { theme } from './theme';
 import { ScreenSelector } from './components/ScreenSelector';
