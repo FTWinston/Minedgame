@@ -3,6 +3,8 @@ import { Octokit } from 'octokit';
 import { createTokenAuth } from '@octokit/auth-token';
 import { getConfiguration, generateBoard, GenerationConfig, CellBoardDefinition } from 'src/features/hexcells';
 import { getDateString } from './getDateString';
+import { getDateForTime } from './getDateForTime';
+import { getOneDayLater } from './getOneDayLater';
 
 export const handler: Handler = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,10 +62,18 @@ async function generateAndPush() {
         }
     }
 
-    await pushFile(JSON.stringify(definitions));
+    // Push the new game definition.
+    const message = `Daily generation ${getDateString(new Date())}`;
+    await pushFile(message, import.meta.env.VITE_GIT_DATA_PATH, JSON.stringify(definitions));
+
+    // Push the header file indicating the cache expiry time.
+    const expiryDate = getOneDayLater(getDateForTime(import.meta.env.VITE_CACHE_EXPIRY_TIME_UTC));
+    const headersFileContent = `/today.json
+    Expires: ${expiryDate.toUTCString()}`;
+    await pushFile(message, import.meta.env.VITE_GIT_HEADERS_PATH, headersFileContent);
 }
 
-async function pushFile(definition: string) {
+async function pushFile(message: string, path: string, content: string) {
     console.time('authenticating with github');
     let octokit: Octokit;
 
@@ -79,7 +89,6 @@ async function pushFile(definition: string) {
 
     const owner: string = import.meta.env.VITE_GITHUB_OWNER;
     const repo: string = import.meta.env.VITE_GITHUB_REPO;
-    const path: string = import.meta.env.VITE_GIT_DATA_PATH;
     const branch: string = import.meta.env.VITE_GIT_DATA_BRANCH;
 
     const headers = {
@@ -107,9 +116,6 @@ async function pushFile(definition: string) {
         console.timeEnd('reading existing file');
     }
     
-    const content = Buffer.from(definition).toString('base64');
-    const message = `Daily generation ${getDateString(new Date())}`;
-
     console.time('pushing new definition');
 
     try
@@ -124,7 +130,7 @@ async function pushFile(definition: string) {
                 name: import.meta.env.VITE_GIT_COMMITTER_NAME,
                 email: import.meta.env.VITE_GIT_COMMITTER_EMAIL,
             },
-            content,
+            content: Buffer.from(content).toString('base64'),
             sha,
             headers,
         });

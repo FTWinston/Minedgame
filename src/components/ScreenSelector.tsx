@@ -9,7 +9,7 @@ const HexCells = lazy(() => import('./HexCells'));
 export const ScreenSelector: React.FC = () => {
     const [showGame, setShowGame] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
-    const [gameDate] = useState(() => getDateForTime(import.meta.env.VITE_GENERATE_TIME_UTC))
+    const [gameDate] = useState(() => getDateForTime(import.meta.env.VITE_NEXT_GAME_READY_TIME_UTC))
     
     if (showGame) {
         return (
