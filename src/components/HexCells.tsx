@@ -22,7 +22,7 @@ interface Props {
     setShowHelp: (show: boolean) => void;
 }
 
-export const HexCells: React.FC<Props> = props => {
+const HexCells: React.FC<Props> = props => {
     const [{ instantiateStage, stageNumber, totalStages }, definitionsDispatch] = useImmerReducer(stagesReducer, getDefinitions(), createStagesState)
     const [game, gameDispatch] = useImmerReducer(hexCellReducer, 1, instantiateStage);
     const {
@@ -109,3 +109,5 @@ export const HexCells: React.FC<Props> = props => {
         </>
     )
 }
+
+export default HexCells;
