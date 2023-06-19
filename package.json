@@ -29,7 +29,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.3.1",
-    "react-lazy-with-preload": "^2.2.1",
     "seedrandom": "^3.0.5",
     "use-immer": "^0.9.0"
   },
@@ -55,6 +54,7 @@
     "prop-types": "^15.8.1",
     "storybook": "^7.0.12",
     "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "vite": "^4.3.2",
+    "vite-plugin-preload": "^0.3.0"
   }
 }
