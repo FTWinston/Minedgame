@@ -35,6 +35,9 @@ export type CellBoardAction = {
 } | {
     type: 'hint';
 } | {
-    type: 'new';
+    type: 'next';
+    board: CellBoard;
+} | {
+    type: 'reset';
     board: CellBoard;
 }

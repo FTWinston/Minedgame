@@ -8,6 +8,7 @@ import { Help } from 'src/features/help';
 import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
 import { Result } from './Result';
+import { useCounter } from 'src/hooks/useCounter';
 import { useTimer } from 'src/hooks/useTimer';
 import { createStagesState, stagesReducer } from 'src/utils/stagesReducer';
 
@@ -28,7 +29,8 @@ const HexCells: React.FC<Props> = props => {
     const {
         display: timeSpent,
         enabled: timerEnabled,
-        setEnabled: enableTimer
+        setEnabled: enableTimer,
+        reset: resetTimer,
     } = useTimer();
 
     if (game.result && timerEnabled) {
@@ -40,6 +42,15 @@ const HexCells: React.FC<Props> = props => {
     }
 
     const [displayNumber, setDisplayNumber] = useState(stageNumber);
+    const [attempt, addAttempt] = useCounter();
+
+    const reset = () => {
+        addAttempt();
+        resetTimer();
+        setDisplayNumber(1);
+        definitionsDispatch({ type: 'reset' });
+        gameDispatch({ type: 'reset', board: instantiateStage(1) })
+    }
 
     // Disable context menu everywhere when a game is rendering.
     // Otherwise, when right clicking to flag the final bomb, the context menu could show on account of a dialog or transition.
@@ -60,6 +71,7 @@ const HexCells: React.FC<Props> = props => {
                 stage={stageNumber}
                 totalStages={totalStages}
                 timeSpent={timeSpent}
+                retry={reset}
             />
         )
         : undefined;
@@ -78,10 +90,10 @@ const HexCells: React.FC<Props> = props => {
                 in={displayNumber === stageNumber}
                 onExited={() => {
                     setDisplayNumber(stageNumber);
-                    gameDispatch({ type: 'new', board: instantiateStage(stageNumber) });
+                    gameDispatch({ type: 'next', board: instantiateStage(stageNumber) });
                 }}
             >
-                <Box position="fixed" top={0} left={0} right={0} bottom={0} display="flex" alignItems="center">
+                <Box key={attempt} position="fixed" top={0} left={0} right={0} bottom={0} display="flex" alignItems="center">
                     <InteractiveCells
                         key={displayNumber}
                         cells={game.cells}

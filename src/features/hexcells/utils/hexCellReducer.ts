@@ -136,11 +136,18 @@ export function hexCellReducer(state: CellBoard, action: CellBoardAction): CellB
             }
             return;
         }
-        case 'new': {
+        case 'next': {
             return {
                 ...action.board,
                 hintsUsed: state.hintsUsed,
                 numErrors: state.numErrors,
+            }
+        }
+        case 'reset': {
+            return {
+                ...action.board,
+                hintsUsed: 0,
+                numErrors: 0,
             }
         }
         default:

@@ -14,6 +14,15 @@ export function useTimer() {
     });
     const [enabled, setEnabled] = useState(false);
 
+    const reset = () => {
+        setEnabled(false);
+        setTime({
+            minutes: 0,
+            seconds: 0,
+            display: '0:00',
+        });
+    }
+
     useEffect(() => {
         if (!enabled) {
             return;
@@ -41,5 +50,6 @@ export function useTimer() {
         display,
         enabled,
         setEnabled,
+        reset,
     };
 }

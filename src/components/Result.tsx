@@ -54,6 +54,7 @@ interface Props {
     stage: number;
     totalStages: number;
     timeSpent: string;
+    retry: () => void;
 }
 
 export const Result: React.FC<Props> = props => {
@@ -117,7 +118,7 @@ export const Result: React.FC<Props> = props => {
             <DialogActions sx={{justifyContent: 'center'}}>
                 <Button
                     variant="text"
-                    onClick={() => location.reload()}
+                    onClick={props.retry}
                 >
                     {t('tryAgain')}
                 </Button>

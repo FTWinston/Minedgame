@@ -9,6 +9,8 @@ interface Stages {
 
 type StagesAction = {
     type: 'increment';
+} | {
+    type: 'reset';
 };
 
 export function createStagesState(definitions: CellBoardDefinition[]): Stages {
@@ -31,8 +33,18 @@ export function stagesReducer(state: Stages, action: StagesAction): Stages | voi
                 stageNumber: state.stageNumber + 1,
             }
         }
+        case 'reset': {
+            if (state.stageNumber === 1) {
+                return state;
+            }
+
+            return {
+                ...state,
+                stageNumber: 1,
+            }
+        }
         default:
-            throw new UnexpectedValueError(action.type);
+            throw new UnexpectedValueError(action);
     }
 }
 
