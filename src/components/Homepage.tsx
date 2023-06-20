@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Cell } from 'src/features/hexcells/components/Cell';
 import { CellType } from 'src/features/hexcells/types/CellState';
 import { hasPlayedDate } from 'src/utils/stats';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from './Tooltip';
 
 interface Props {
     date: Date;

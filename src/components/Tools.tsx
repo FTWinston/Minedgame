@@ -12,7 +12,7 @@ import StageIcon from '@mui/icons-material/AutoStories';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from './Tooltip';
 
 interface Props {
     bombsLeft: number;
@@ -95,7 +95,7 @@ export const Tools: React.FC<Props> = props => {
         <>
             <BottomRow>
                 <RowContent>
-                    <Tooltip describeChild title={t('bombsLeft')}>
+                    <Tooltip title={t('bombsLeft')}>
                         <BorderlessChip
                             color="primary"
                             variant="outlined"
@@ -104,7 +104,7 @@ export const Tools: React.FC<Props> = props => {
                         />
                     </Tooltip>
 
-                    <Tooltip describeChild title={t('hintDesc')}>
+                    <Tooltip title={t('hintDesc')}>
                         <Hint
                             color="success"
                             variant="outlined"
@@ -122,7 +122,7 @@ export const Tools: React.FC<Props> = props => {
                         </Hint>
                     </Tooltip>
 
-                    <Tooltip describeChild title={t('errors')}>
+                    <Tooltip title={t('errors')}>
                         <span>
                             <BorderlessChip
                                 color="error"
@@ -138,7 +138,7 @@ export const Tools: React.FC<Props> = props => {
 
             <TopRow>
                 <RowContent>
-                    <Tooltip describeChild title={t('elapsed')}>
+                    <Tooltip title={t('elapsed')}>
                         <BorderlessChip
                             color="secondary"
                             variant="outlined"
@@ -147,7 +147,7 @@ export const Tools: React.FC<Props> = props => {
                         />
                     </Tooltip>
 
-                    <Tooltip describeChild title={t('currentStage', { current: props.currentStage, total: props.totalStages })}>
+                    <Tooltip title={t('currentStage', { current: props.currentStage, total: props.totalStages })}>
                         <Stage
                             color="secondary"
                             variant="outlined"
@@ -156,7 +156,7 @@ export const Tools: React.FC<Props> = props => {
                         />
                     </Tooltip>
         
-                    <Tooltip describeChild title={t('help')}>
+                    <Tooltip title={t('help')}>
                         <IconButton
                             color="secondary"
                             size="large"
