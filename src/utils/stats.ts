@@ -42,6 +42,9 @@ export function updateStats(gameDate: Date, successToday: boolean, mistakesToday
         if (mistakesToday === 0) {
             stats.perfectWinStreak++;
         }
+        else {
+            stats.perfectWinStreak = 0;
+        }
     }
     else {
         stats.totalLosses++;
