@@ -70,7 +70,7 @@ async function generateAndPush() {
     const expiryDate = getOneDayLater(getDateForTime(import.meta.env.VITE_CACHE_EXPIRY_TIME_UTC));
     const headersFileContent = `/today.json
     Expires: ${expiryDate.toUTCString()}`;
-    await pushFile(message, import.meta.env.VITE_GIT_HEADERS_PATH, headersFileContent);
+    await pushFile('Updating expiry header', import.meta.env.VITE_GIT_HEADERS_PATH, headersFileContent);
 }
 
 async function pushFile(message: string, path: string, content: string) {
