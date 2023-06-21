@@ -13,6 +13,7 @@ import { Countdown } from './Countdown';
 import { Trans, useTranslation } from 'react-i18next';
 import DialogActions from '@mui/material/DialogActions';
 import { useOneDayLater } from 'src/hooks/useOneDayLater';
+import { shareLoss, shareWin } from 'src/utils/share';
 import { updateStats } from 'src/utils/stats';
 
 const SuccessTransition = forwardRef(function Transition(
@@ -64,20 +65,9 @@ export const Result: React.FC<Props> = props => {
 
     const gameStats = useMemo(() => updateStats(props.date, success, props.errors), [props.date, success, props.errors]);
 
-    const share = () => {
-        let text = `⏱️ ${props.timeSpent}   💡 ${props.hintsUsed}   ❌ ${props.errors}`;
-        if (!success) {
-            text = `🚩 ${props.bombsLeft}   📖 ${props.stage}   ${text}`;
-        }
-        const title = t(success ? 'shareWin' : 'shareLose');
-        text = `${title} \n${text}\n`;
-
-        navigator.share({
-            title,
-            text,
-            url: document.location.href,
-        });
-    }
+    const share = () => success
+        ? shareWin(t, gameStats, props.timeSpent, props.hintsUsed, props.errors)
+        : shareLoss(t, gameStats, props.timeSpent, props.stage, props.bombsLeft);
 
     const showIgnoringStats = !gameStats.updated && (
         gameStats.winStreak > 1 || (!success && gameStats.winStreak > 0)
