@@ -66,8 +66,8 @@ export const Result: React.FC<Props> = props => {
     const gameStats = useMemo(() => updateStats(props.date, success, props.errors), [props.date, success, props.errors]);
 
     const share = () => success
-        ? shareWin(t, gameStats, props.timeSpent, props.hintsUsed, props.errors)
-        : shareLoss(t, gameStats, props.timeSpent, props.stage, props.bombsLeft);
+        ? shareWin(t, props.timeSpent, props.hintsUsed, props.errors, gameStats.winStreak, gameStats.perfectWinStreak)
+        : shareLoss(t, props.timeSpent, props.stage, props.bombsLeft);
 
     const showIgnoringStats = !gameStats.updated && (
         gameStats.winStreak > 1 || (!success && gameStats.winStreak > 0)
