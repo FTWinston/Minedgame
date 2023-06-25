@@ -4,6 +4,7 @@ interface Stats {
     totalWins: number;
     totalLosses: number;
     totalMistakes: number;
+    totalHints: number;
     winStreak: number;
     perfectWinStreak: number;
     lastPlayed: string;
@@ -14,7 +15,7 @@ export interface StatsOutput extends Stats {
     updated: boolean;
 }
 
-export function updateStats(gameDate: Date, successToday: boolean, mistakesToday: number): StatsOutput {
+export function updateStats(gameDate: Date, successToday: boolean, mistakesToday: number, hintsToday: number): StatsOutput {
     const stats = getStats() as StatsOutput;
 
     const lastPlayedDate = new Date(stats.lastPlayed);
@@ -36,10 +37,11 @@ export function updateStats(gameDate: Date, successToday: boolean, mistakesToday
     if (successToday) {
         stats.totalWins++;
         stats.totalMistakes += mistakesToday;
+        stats.totalHints += hintsToday;
 
         stats.winStreak ++;
 
-        if (mistakesToday === 0) {
+        if (mistakesToday === 0 && hintsToday === 0) {
             stats.perfectWinStreak++;
         }
         else {
@@ -63,7 +65,7 @@ export function updateStats(gameDate: Date, successToday: boolean, mistakesToday
 export function hasPlayedDate(gameDate: Date) {
     const stats = loadStats();
 
-    if (stats === null) {
+    if (stats === null || !stats) {
         return false;
     }
 
@@ -74,7 +76,18 @@ export function hasPlayedDate(gameDate: Date) {
 }
 
 function getStats(): Stats {
-    return loadStats() ?? createNewStats();
+    const newStats = createNewStats();
+
+    const savedStats = loadStats();
+
+    if (savedStats) {
+        return {
+            ...newStats,
+            ...savedStats,
+        };
+    }
+
+    return newStats;
 }
 
 function getStartOfDay(date: Date): Date {
@@ -97,6 +110,7 @@ function createNewStats(): Stats {
         totalWins: 0,
         totalLosses: 0,
         totalMistakes: 0,
+        totalHints: 0,
         winStreak: 0,
         perfectWinStreak: 0,
         lastPlayed: '2023-01-01',

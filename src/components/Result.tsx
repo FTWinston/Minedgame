@@ -63,7 +63,7 @@ export const Result: React.FC<Props> = props => {
     const success = props.result === 'success';
     const nextGameDate = useOneDayLater(props.date);
 
-    const gameStats = useMemo(() => updateStats(props.date, success, props.errors), [props.date, success, props.errors]);
+    const gameStats = useMemo(() => updateStats(props.date, success, props.errors, props.hintsUsed), [props.date, success, props.errors, props.hintsUsed]);
 
     const share = () => success
         ? shareWin(t, props.timeSpent, props.hintsUsed, props.errors, gameStats.winStreak, gameStats.perfectWinStreak)
@@ -87,6 +87,7 @@ export const Result: React.FC<Props> = props => {
                         elapsed: props.timeSpent,
                         stage: props.stage,
                         totalStages: props.totalStages,
+                        hints: props.hintsUsed,
                         errors: props.errors,
                         remaining: props.bombsLeft
                     })}
