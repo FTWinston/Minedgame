@@ -31,7 +31,7 @@ const CellWrapper = styled('li')({
 });
 
 export const CellSet: React.FC<Props> = props => {
-    const { columns, cells } = props;
+    const { columns, cells, onClick, onLongPress } = props;
     const rows = Math.ceil(cells.length / columns);
 
     const explodedIndex = cells.findIndex(cell => cell?.type === CellType.Exploded);
@@ -76,8 +76,8 @@ export const CellSet: React.FC<Props> = props => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     number={(cell as any).number}
                     special={special}
-                    onClick={() => props.onClick?.(cell, index)}
-                    onLongPress={() => props.onLongPress?.(cell, index)}
+                    onClick={onClick ? () => onClick(cell, index) : undefined}
+                    onLongPress={onLongPress && cell.type === CellType.Obscured ? () => onLongPress(cell, index) : undefined}
                 />
             </CellWrapper>
         )
