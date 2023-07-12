@@ -54,7 +54,6 @@ interface Props {
     hintsUsed: number;
     stage: number;
     totalStages: number;
-    timeSpent: string;
     retry: () => void;
 }
 
@@ -66,8 +65,8 @@ export const Result: React.FC<Props> = props => {
     const gameStats = useMemo(() => updateStats(props.date, success, props.errors, props.hintsUsed), [props.date, success, props.errors, props.hintsUsed]);
 
     const share = () => success
-        ? shareWin(t, props.timeSpent, props.hintsUsed, props.errors, gameStats.winStreak, gameStats.perfectWinStreak)
-        : shareLoss(t, props.timeSpent, props.stage, props.bombsLeft);
+        ? shareWin(t, props.hintsUsed, props.errors, gameStats.winStreak, gameStats.perfectWinStreak)
+        : shareLoss(t, props.stage, props.bombsLeft);
 
     const showIgnoringStats = !gameStats.updated && (
         gameStats.winStreak > 1 || (!success && gameStats.winStreak > 0)
@@ -84,7 +83,6 @@ export const Result: React.FC<Props> = props => {
             <DialogContent>
                 <DialogContentText>
                     {t(success ? 'resultGameSummaryWin' : 'resultGameSummaryLose', {
-                        elapsed: props.timeSpent,
                         stage: props.stage,
                         totalStages: props.totalStages,
                         hints: props.hintsUsed,

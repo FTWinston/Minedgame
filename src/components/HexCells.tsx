@@ -9,7 +9,6 @@ import { suspendPromise } from 'src/utils/suspendPromise';
 import { Tools } from './Tools';
 import { Result } from './Result';
 import { useCounter } from 'src/hooks/useCounter';
-import { useTimer } from 'src/hooks/useTimer';
 import { createStagesState, stagesReducer } from 'src/utils/stagesReducer';
 
 const getDefinitions = suspendPromise<CellBoardDefinition[]>(
@@ -26,12 +25,7 @@ interface Props {
 const HexCells: React.FC<Props> = props => {
     const [{ instantiateStage, stageNumber, totalStages }, definitionsDispatch] = useImmerReducer(stagesReducer, getDefinitions(), createStagesState)
     const [game, gameDispatch] = useImmerReducer(hexCellReducer, 1, instantiateStage);
-    const {
-        display: timeSpent,
-        enabled: timerEnabled,
-        setEnabled: enableTimer,
-        reset: resetTimer,
-    } = useTimer();
+    const [timerEnabled, enableTimer] = useState(false); // TODO: rename and/or remove this
 
     if (game.result && timerEnabled) {
         enableTimer(false);
@@ -46,7 +40,7 @@ const HexCells: React.FC<Props> = props => {
 
     const reset = () => {
         addAttempt();
-        resetTimer();
+        enableTimer(false);
         setDisplayNumber(1);
         definitionsDispatch({ type: 'reset' });
         gameDispatch({ type: 'reset', board: instantiateStage(1) })
@@ -70,7 +64,6 @@ const HexCells: React.FC<Props> = props => {
                 hintsUsed={game.hintsUsed}
                 stage={stageNumber}
                 totalStages={totalStages}
-                timeSpent={timeSpent}
                 retry={reset}
             />
         )
@@ -112,7 +105,6 @@ const HexCells: React.FC<Props> = props => {
                 hintsUsed={game.hintsUsed}
                 currentStage={displayNumber}
                 totalStages={totalStages}
-                timeSpent={timeSpent}
                 getHint={() => { enableTimer(true); gameDispatch({ type: 'hint' })} }
                 showHelp={() => props.setShowHelp(true)}
             />

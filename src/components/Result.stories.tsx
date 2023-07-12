@@ -15,7 +15,6 @@ export const Success: Story = {
         bombsLeft: 0,
         errors: 0,
         hintsUsed: 3,
-        timeSpent: '0:07',
     }
 }
 
@@ -26,6 +25,5 @@ export const Failure: Story = {
         bombsLeft: 10,
         errors: 7,
         hintsUsed: 0,
-        timeSpent: '0:07',
     }
 }

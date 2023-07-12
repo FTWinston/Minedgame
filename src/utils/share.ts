@@ -2,14 +2,13 @@ import { TFunction } from 'i18next';
 
 export function shareWin(
     t: TFunction<'translation', undefined, 'translation'>,
-    timeSpent: string,
     hintsUsed: number,
     errors: number,
     winStreak: number,
     perfectStreak: number,
 ) {
     const title = t('shareWin');
-    let text = t('shareWinDetail', { timeSpent, hintsUsed, errors });
+    let text = t('shareWinDetail', { hintsUsed, errors });
 
     if (winStreak > 1) {
         const streakText = perfectStreak === winStreak
@@ -24,12 +23,11 @@ export function shareWin(
 
 export function shareLoss(
     t: TFunction<'translation', undefined, 'translation'>,
-    timeSpent: string,
     stage: number,
     bombsLeft: number,
 ) {
     const title = t('shareLoss');
-    const text = t('shareLossDetail', { timeSpent, stage, bombsLeft });
+    const text = t('shareLossDetail', { stage, bombsLeft });
 
     share(title, text);    
 }

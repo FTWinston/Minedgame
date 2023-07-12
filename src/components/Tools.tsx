@@ -4,7 +4,6 @@ import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import BombIcon from '@mui/icons-material/FlagOutlined';
-import TimeIcon from '@mui/icons-material/TimerOutlined';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import HintIcon from '@mui/icons-material/Lightbulb';
 import ErrorIcon from '@mui/icons-material/DangerousOutlined';
@@ -18,7 +17,6 @@ interface Props {
     bombsLeft: number;
     errors: number;
     hintsUsed: number;
-    timeSpent: string;
     currentStage: number;
     totalStages: number;
     getHint?: () => void;
@@ -138,15 +136,6 @@ export const Tools: React.FC<Props> = props => {
 
             <TopRow>
                 <RowContent>
-                    <Tooltip describeChild title={t('elapsed')}>
-                        <BorderlessChip
-                            color="secondary"
-                            variant="outlined"
-                            icon={<TimeIcon fontSize="large" />}
-                            label={props.timeSpent}
-                        />
-                    </Tooltip>
-
                     <Tooltip describeChild title={t('currentStage', { current: props.currentStage, total: props.totalStages })}>
                         <Stage
                             color="secondary"
