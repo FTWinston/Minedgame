@@ -61,7 +61,6 @@ const BorderlessChip = styled(Chip)({
     padding: '24px 8px',
     fontFamily: 'monospace',
     '& > .MuiChip-label': {
-        minWidth: '2.25em',
     },
 });
 
@@ -72,6 +71,16 @@ const Stage = styled(BorderlessChip)({
         marginLeft: '0.275em',
         marginTop: '0.1rem',
     },
+});
+
+const Errors = styled(BorderlessChip)({
+    flexDirection: 'row-reverse',
+    '& > .MuiChip-label': {
+        paddingRight: '8px',
+    },
+    '& > .MuiChip-icon': {
+        margin: 0,
+    }
 });
 
 const Hint = styled(Button)({
@@ -122,7 +131,7 @@ export const Tools: React.FC<Props> = props => {
 
                     <Tooltip describeChild title={t('errors')}>
                         <span>
-                            <BorderlessChip
+                            <Errors
                                 color="error"
                                 disabled={props.errors === 0}
                                 variant="outlined"
