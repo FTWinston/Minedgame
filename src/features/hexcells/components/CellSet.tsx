@@ -5,6 +5,7 @@ import { useTemporaryValue } from 'src/hooks/useTemporaryValue';
 import { CellBoardInfo } from '../types/CellBoard';
 import { CellType, DisplayCellState } from '../types/CellState';
 import { Cell, cellHeight, cellWidth, Special } from './Cell';
+import { isObscured } from '../utils/resolved';
 
 interface Props extends Omit<CellBoardInfo, 'numBombs' | 'numErrors' | 'hintsUsed'> {
     onClick?: (cell: DisplayCellState, index: number) => void;
@@ -77,7 +78,7 @@ export const CellSet: React.FC<Props> = props => {
                     number={(cell as any).number}
                     special={special}
                     onClick={onClick ? () => onClick(cell, index) : undefined}
-                    onLongPress={onLongPress && cell.type === CellType.Obscured ? () => onLongPress(cell, index) : undefined}
+                    onLongPress={onLongPress && isObscured(cell) ? () => onLongPress(cell, index) : undefined}
                 />
             </CellWrapper>
         )
