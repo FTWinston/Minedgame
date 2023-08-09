@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { SxProps, Theme, styled } from '@mui/material/styles';
 import { useLongPress } from 'src/hooks/useLongPress';
 import { CellType, CountType, RowDirection } from '../types/CellState';
+import { isClueType } from '../utils/isClueCell';
 import './Cell.css';
 
 export enum Special {
@@ -168,25 +169,27 @@ const Text = styled(Box,
 )<{ cellType: CellType, countType?: CountType, fullyResolved?: boolean }>(({ cellType, countType, fullyResolved, theme }) => {
     let before, after;
 
-    if (countType === CountType.Contiguous) {
-        before = {
-            content: '"{"',
-            display: 'inline-block',
-        };
-        after = {
-            content: '"}"',
-            display: 'inline-block',
-        };
-    }
-    else if (countType === CountType.Split) {
-        before = {
-            content: '"-"',
-            display: 'inline-block',
-        };
-        after = {
-            content: '"-"',
-            display: 'inline-block',
-        };
+    if (isClueType(cellType)) {
+        if (countType === CountType.Contiguous) {
+            before = {
+                content: '"{"',
+                display: 'inline-block',
+            };
+            after = {
+                content: '"}"',
+                display: 'inline-block',
+            };
+        }
+        else if (countType === CountType.Split) {
+            before = {
+                content: '"-"',
+                display: 'inline-block',
+            };
+            after = {
+                content: '"-"',
+                display: 'inline-block',
+            };
+        }
     }
 
     return {
@@ -206,24 +209,19 @@ const Text = styled(Box,
 });
 
 export const Cell: React.FC<PropsWithChildren<Props>> = props => {
-    let content;
-
-    switch (props.cellType) {
-        case CellType.AdjacentClue:
-        case CellType.RowClue:
-        case CellType.RadiusClue:
-            content = props.number;
-            break;
-        case CellType.Unknown:
-            content = '?';
-            break;
-        case CellType.Hint:
-            content = '!';
-            break;
-    }
+    let content: React.ReactNode;
 
     if (props.children) {
         content = props.children;
+    }
+    else if (isClueType(props.cellType)) {
+        content = props.number;
+    }
+    else if (props.cellType === CellType.Unknown) {
+        content = '?';
+    }
+    else if (props.cellType === CellType.Hint) {
+        content = '!';
     }
 
     const handlers = useLongPress(props.onLongPress, props.onClick);

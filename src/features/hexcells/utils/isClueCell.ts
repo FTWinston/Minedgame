@@ -5,7 +5,11 @@ export function isClueCell(cell: CellState | null): cell is ClueCell {
         return false;
     }
     
-    return cell.type === CellType.AdjacentClue
-        || cell.type === CellType.RowClue
-        || cell.type === CellType.RadiusClue;
+    return isClueType(cell.type);
+}
+
+export function isClueType(cellType: CellType) {
+    return cellType === CellType.AdjacentClue
+        || cellType === CellType.RowClue
+        || cellType === CellType.RadiusClue;
 }
