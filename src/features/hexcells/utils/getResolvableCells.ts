@@ -34,7 +34,16 @@ function resolveContiguousOrSplitCells(
     board: MinimumResolvableBoardInfo
 ) {
     const cells = clue.associatedIndexes
-        .map(index => (index === null || board.cells[index] === null ? null : { index, cell: board.cells[index]! }));
+        .map(index => {
+            if (index === null) {
+                return null;
+            }
+            const cell = board.cells[index];
+            if (cell === null) {
+                return null;
+            }
+            return { index, cell };
+        });
 
     const cellsThatCanBeEmpty = new Array<boolean>(cells.length).fill(false);
     const cellsThatCanBeBombs = new Array<boolean>(cells.length).fill(false);
@@ -57,7 +66,7 @@ function resolveContiguousOrSplitCells(
     const contiguous = clue.countType === CountType.Contiguous;
 
     // Consider every valid combination (right number of bombs, bombs are contiguous or not).
-    while (true) {
+    while (true) { // eslint-disable-line no-constant-condition
         if (currentCombination.filter(value => value === CellType.Bomb).length === clue.numObscuredBombs
             && areValuesContiguous(currentCombination, isBomb, clue.loop) === contiguous) {
             
@@ -276,7 +285,7 @@ function resolveRelatedClueGroup(group: ClueGroup, maxNumBombs?: number): Resolv
 
     const currentCombination = new Array<ResolutionResult>(group.obscuredCellIndexes.length).fill(CellType.AdjacentClue);
 
-    while (true) {
+    while (true) { // eslint-disable-line no-constant-condition
         // Don't consider combinations with more bombs than remain on the board.
         if (maxNumBombs === undefined || currentCombination.filter(value => value === CellType.Bomb).length <= maxNumBombs) {
             const potentialResult = new Map();
@@ -310,7 +319,7 @@ function resolveRelatedClueGroup(group: ClueGroup, maxNumBombs?: number): Resolv
         if (!incrementCombination(currentCombination)) {
             break;
         }
-    };
+    }
 
     return validResults;
 }
@@ -331,7 +340,7 @@ export function getResolvableCells(board: MinimumResolvableBoardInfo, clues: Clu
     const obscuredCellIndexes = getAllObscuredCellIndexes(board);
 
     // If the number in that set matches the number of bombs remaining, then we know what they all are.
-    let numBombs = board.numBombs;
+    const numBombs = board.numBombs;
     if (numBombs !== undefined) {
         results = resolveCellsUsingBombCount(obscuredCellIndexes, numBombs);
 
