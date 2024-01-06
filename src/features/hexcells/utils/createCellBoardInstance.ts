@@ -1,7 +1,7 @@
-import { CellBoard, CellBoardDefinition } from "../types/CellBoard";
+import { CellBoard, CellBoardDefinition } from '../types/CellBoard';
 import { CellType, DisplayCellState } from '../types/CellState';
 import { GenerationConfig, generateBoard } from './generateBoard';
-import { isClueCell } from "./isClueCell";
+import { isClueCell } from './isClueCell';
 import { isClueResolved } from './resolved';
 
 export function createCellBoardInstance(definition: CellBoardDefinition): CellBoard {
